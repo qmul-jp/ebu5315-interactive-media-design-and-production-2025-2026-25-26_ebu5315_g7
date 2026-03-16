@@ -1,2 +1,25 @@
-[![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/HLEvEf24)
-[![Open in Visual Studio Code](https://classroom.github.com/assets/open-in-vscode-2e0aaae1b6195c2367325f4f02e2d04e9abb55f0b24a779b69b11b9e10269abc.svg)](https://classroom.github.com/online_ide?assignment_repo_id=23142382&assignment_repo_type=AssignmentRepo)
+# EBU5315
+
+## Group Number: 25-26_ebu5315_g7
+
+## Project Title:
+
+## Members:
+
+Changhao Yan(Github: jacobhauturier), 2024213595, 241118647, jp2024213595@qmul.ac.uk
+
+Qitian Zhou(Github: chai-xiaomi), 2024213599, 241118876, 2741747729@qq.com
+
+Yue Qu(Github: quyue5), 2024213593, 241118393, 2958253710@qq.com
+
+## Assigned TA:
+
+Yingnan Zhou(Github: YINGOF), 2946214153@qq.com
+
+## Allocation of tasks
+
+Yue Qu: Homepage
+
+Qitian Zhou: Game
+
+Changhao Yan: Quiz
