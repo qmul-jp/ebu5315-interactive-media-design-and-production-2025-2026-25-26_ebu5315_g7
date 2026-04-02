@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Game</title>
+    <link rel="stylesheet" href="game_styles.css">
+</head>
+<body>
+    <!-- Main Container with Background -->
+    <div class="main">
+        <!-- Game Container -->
+        <div class="gameContainer">
+            <!-- Show Frame -->
+            <div class="showFrame"></div>
+            <!-- Demo Frame -->
+            <div class="demoFrame"></div>
+            <!-- Play Button -->
+            <button class="playButton" onclick="openPopWindow()">Play</button>
+        </div>
+    </div>
+
+    <!-- Pop-up Window -->
+    <div class="popOverlay" id="popOverlay">
+        <div class="popWindow" id="popWindow">
+            <div class="screenFrame">
+                <div class="operateBar">
+                <canvas id="drawMap" ></canvas>   
+                </div>
+                
+                
+            </div>
+            <div class="gearBar">
+                <canvas id="drawCircles"></canvas>
+            </div>
+            <button class="closeButton" onclick="closePopWindow()">Exit</button>
+        </div>
+    </div>
+    <script>
+        const popOverlay = document.getElementById('popOverlay');
+        function openPopWindow() {
+            document.getElementById('popWindow').style.display = 'flex';
+            document.getElementById('popOverlay').style.display = 'block';
+            
+            requestAnimationFrame(() => {
+            resizeCanvas();
+            buildGame();
+            });
+        }
+        function closePopWindow() {
+            document.getElementById('popWindow').style.display = 'none';
+            document.getElementById('popOverlay').style.display = 'none';
+        }
+        popOverlay.addEventListener('click', (e) => {
+      // 只有点击遮罩层本身（而非弹窗内部）才关闭
+        if (e.target === popOverlay) {
+            popOverlay.style.display = 'none';
+        }
+        });
+    </script>
+    <script src="game_main.js"></script><!--1.6-->
+</body>
+</html>
