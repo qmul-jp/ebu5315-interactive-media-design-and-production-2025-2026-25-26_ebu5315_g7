@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>圆 · 几何教学平台</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="./navbar/navbar.css">
+    <script src="./navbar/navbar.js"></script>
+</head>
+<body>
+    <!-- 顶部导航栏，由Web Component接管 -->
+    <top-navbar page-type="index" i18n-nav-home="nav.home"></top-navbar>
+
+    <!-- 主要内容区 -->
+    <main class="main-content">
+        <!-- 首页英雄区域 -->
+        <section id="home" class="module active">
+            <div class="hero-section">
+                <h1 data-i18n="hero.title">探索几何的无限魅力</h1>
+                <p class="subtitle" data-i18n="hero.subtitle">专业的数学几何学习平台，让抽象的几何概念变得直观易懂</p>
+                
+                <!-- 首页顶部搜索框 -->
+                <div class="hero-search-box">
+                    <input type="text" class="hero-search-input" placeholder="搜索知识点，如：垂径定理、圆周角..." data-i18n-placeholder="hero.searchPlaceholder"/>
+                    <button class="hero-search-btn">
+                        <span class="search-icon">🔍</span>
+                    </button>
+                </div>
+                
+                <div class="hero-buttons">
+                    <a href="./quiz/quiz.html" class="cta-button" data-i18n="hero.startLearning">开始学习</a>
+                    <a href="./game/game_page.html" class="cta-button secondary" data-i18n="hero.geometryGames">几何游戏</a>
+                </div>
+            </div>
+            
+            <!-- 特色功能 -->
+            <div class="features-section">
+                <h2 data-i18n="features.title">平台特色</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">📚</div>
+                        <h3 data-i18n="features.systematic">系统教学</h3>
+                        <p data-i18n="features.systematicDesc">从基础到进阶，系统化学习几何知识</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🔍</div>
+                        <h3 data-i18n="features.intelligent">智能搜索</h3>
+                        <p data-i18n="features.intelligentDesc">快速找到你需要的几何知识点</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">✏️</div>
+                        <h3 data-i18n="features.quiz">随堂检测</h3>
+                        <p data-i18n="features.quizDesc">实时检验学习成果，巩固知识点</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🎮</div>
+                        <h3 data-i18n="features.games">几何游戏</h3>
+                        <p data-i18n="features.gamesDesc">通过游戏化方式加深几何概念理解</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 圆的重要知识点 - 幻灯片展示 -->
+            <div class="knowledge-section">
+                <h2 data-i18n="knowledge.title">圆的重要知识点</h2>
+                <div class="knowledge-slider">
+                    <button class="slider-btn prev-btn" id="knowledge-prev">&#10094;</button>
+                    <div class="knowledge-slides">
+                        <div class="knowledge-slide active">
+                            <div class="knowledge-icon">🔴</div>
+                            <h3 data-i18n="knowledge.verticalTheorem">垂径定理</h3>
+                            <p data-i18n="knowledge.verticalTheoremDesc">垂直于弦的直径平分弦且平分弦所对的两条弧</p>
+                        </div>
+                        <div class="knowledge-slide">
+                            <div class="knowledge-icon">📐</div>
+                            <h3 data-i18n="knowledge.circumferentialAngle">圆周角定理</h3>
+                            <p data-i18n="knowledge.circumferentialAngleDesc">同弧或等弧所对的圆周角相等，等于圆心角的一半</p>
+                        </div>
+                        <div class="knowledge-slide">
+                            <div class="knowledge-icon">🔄</div>
+                            <h3 data-i18n="knowledge.standardEquation">圆的标准方程</h3>
+                            <p data-i18n="knowledge.standardEquationDesc">(x-a)² + (y-b)² = r²，其中(a,b)为圆心坐标，r为半径</p>
+                        </div>
+                        <div class="knowledge-slide">
+                            <div class="knowledge-icon">💡</div>
+                            <h3 data-i18n="knowledge.tangentProperty">切线性质</h3>
+                            <p data-i18n="knowledge.tangentPropertyDesc">圆的切线垂直于经过切点的半径</p>
+                        </div>
+                    </div>
+                    <button class="slider-btn next-btn" id="knowledge-next">&#10095;</button>
+                    <div class="slider-dots">
+                        <span class="dot active" data-slide="0"></span>
+                        <span class="dot" data-slide="1"></span>
+                        <span class="dot" data-slide="2"></span>
+                        <span class="dot" data-slide="3"></span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 登录模块 -->
+        <section id="login" class="module">
+            <h2 data-i18n="login.title">用户登录</h2>
+            <form class="auth-form">
+                <input type="text" placeholder="用户名" required class="input-field" data-i18n-placeholder="login.username"/>
+                <input type="password" placeholder="密码" required class="input-field" data-i18n-placeholder="login.password"/>
+                <div class="privacy-policy">
+                    <input type="checkbox" id="privacy" required>
+                    <label for="privacy" data-i18n="login.privacy">我已阅读并同意<a href="#" onclick="alert('隐私政策：我们尊重您的隐私，不会收集任何个人信息。')">隐私政策</a></label>
+                </div>
+                <button type="submit" class="submit-btn" data-i18n="login.enter">进入</button>
+            </form>
+        </section>
+
+
+
+        <!-- 游戏模块 -->
+        <section id="game" class="module">
+            <h2 data-i18n="game.title">几何挑战游戏</h2>
+            <div class="game-canvas">
+                <!-- 这里通常放置Canvas或游戏组件 -->
+                <p data-i18n="game.loading">几何拼图游戏加载中...</p>
+                <button class="submit-btn" data-i18n="game.start">开始游戏</button>
+            </div>
+        </section>
+
+        <!-- 设置模块 -->
+        <section id="settings" class="module">
+            <h2 data-i18n="settings.title">设置</h2>
+            
+            <div class="settings-section">
+                <h3 data-i18n="settings.appearance">外观</h3>
+                <div class="settings-container">
+                    <div class="setting-item">
+                        <label data-i18n="settings.fontSize">字体大小</label>
+                        <select id="settings-font-size" class="input-field">
+                            <option value="small" data-i18n="settings.fontSizeSmall">小</option>
+                            <option value="medium" data-i18n="settings.fontSizeMedium" selected>中</option>
+                            <option value="large" data-i18n="settings.fontSizeLarge">大</option>
+                            <option value="xlarge" data-i18n="settings.fontSizeXLarge">特大</option>
+                        </select>
+                    </div>
+                    <div class="setting-item">
+                        <label data-i18n="settings.colorblindMode">色盲模式</label>
+                        <div class="toggle-switch">
+                            <input type="checkbox" id="settings-colorblind-mode">
+                            <label for="settings-colorblind-mode" class="toggle-label"></label>
+                        </div>
+                    </div>
+                    <div class="setting-item">
+                        <label data-i18n="settings.eyeProtectionMode">护眼模式</label>
+                        <div class="toggle-switch">
+                            <input type="checkbox" id="settings-eye-protection-mode">
+                            <label for="settings-eye-protection-mode" class="toggle-label"></label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="settings-section">
+                <h3 data-i18n="settings.language">语言</h3>
+                <div class="settings-container">
+                    <div class="setting-item">
+                        <label data-i18n="settings.displayLanguage">显示语言</label>
+                        <select id="settings-language" class="input-field">
+                            <option value="zh">中文</option>
+                            <option value="en">English</option>
+                        </select>
+                    </div>
+                    <div class="setting-item">
+                        <label data-i18n="settings.autoTranslate">自动翻译</label>
+                        <div class="toggle-switch">
+                            <input type="checkbox" id="settings-auto-translate">
+                            <label for="settings-auto-translate" class="toggle-label"></label>
+                        </div>
+                    </div>
+                    <div class="setting-item">
+                        <label data-i18n="settings.parentMode">家长模式</label>
+                        <div class="toggle-switch">
+                            <input type="checkbox" id="settings-parent-mode">
+                            <label for="settings-parent-mode" class="toggle-label"></label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="settings-section">
+                <h3 data-i18n="settings.account">账户</h3>
+                <div class="settings-container">
+                    <div class="setting-item">
+                        <label data-i18n="settings.username">用户名</label>
+                        <input type="text" id="settings-username" class="input-field" data-i18n-placeholder="settings.usernamePlaceholder">
+                    </div>
+                    <div class="setting-item">
+                        <label data-i18n="settings.email">邮箱</label>
+                        <input type="email" id="settings-email" class="input-field" data-i18n-placeholder="settings.emailPlaceholder">
+                    </div>
+                    <div class="setting-item">
+                        <label data-i18n="settings.volume">音量</label>
+                        <div class="slider-container">
+                            <input type="range" id="settings-volume" class="slider" min="0" max="100" value="80">
+                            <span class="slider-value">80%</span>
+                        </div>
+                    </div>
+                    <div class="setting-item">
+                        <button class="secondary-btn" data-i18n="settings.changePassword">修改密码</button>
+                        <button class="secondary-btn" data-i18n="settings.deleteAccount">删除账户</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="settings-section">
+                <h3 data-i18n="settings.learning">学习</h3>
+                <div class="settings-container">
+                    <div class="setting-item">
+                        <label data-i18n="settings.autoSave">自动保存学习进度</label>
+                        <div class="toggle-switch">
+                            <input type="checkbox" id="settings-auto-save" checked>
+                            <label for="settings-auto-save" class="toggle-label"></label>
+                        </div>
+                    </div>
+                    <div class="setting-item">
+                        <label data-i18n="settings.dailyGoal">每日学习目标（分钟）</label>
+                        <input type="number" id="settings-daily-goal" class="input-field" value="30" min="5" max="180" step="5">
+                    </div>
+                    <div class="setting-item">
+                        <label data-i18n="settings.studyReminder">学习提醒</label>
+                        <div class="toggle-switch">
+                            <input type="checkbox" id="settings-study-reminder">
+                            <label for="settings-study-reminder" class="toggle-label"></label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="settings-section">
+                <h3 data-i18n="settings.privacy">隐私和安全</h3>
+                <div class="settings-container">
+                    <div class="setting-item">
+                        <label data-i18n="settings.notifications">通知</label>
+                        <div class="toggle-switch">
+                            <input type="checkbox" id="settings-notifications" checked>
+                            <label for="settings-notifications" class="toggle-label"></label>
+                        </div>
+                    </div>
+                    <div class="setting-item">
+                        <label data-i18n="settings.dataCollection">数据收集</label>
+                        <div class="toggle-switch">
+                            <input type="checkbox" id="settings-data-collection">
+                            <label for="settings-data-collection" class="toggle-label"></label>
+                        </div>
+                    </div>
+                    <div class="setting-item">
+                        <label data-i18n="settings.cookies">Cookie</label>
+                        <div class="toggle-switch">
+                            <input type="checkbox" id="settings-cookies" checked>
+                            <label for="settings-cookies" class="toggle-label"></label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="settings-section">
+                <h3 data-i18n="settings.advanced">高级</h3>
+                <div class="settings-container">
+                    <div class="setting-item">
+                        <label data-i18n="settings.sound">音效</label>
+                        <div class="toggle-switch">
+                            <input type="checkbox" id="settings-sound" checked>
+                            <label for="settings-sound" class="toggle-label"></label>
+                        </div>
+                    </div>
+                    <div class="setting-item">
+                        <button class="secondary-btn" data-i18n="settings.clearCache">清除缓存</button>
+                        <button class="secondary-btn" data-i18n="settings.resetSettings">重置所有设置</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="settings-footer">
+                <button class="submit-btn" data-i18n="settings.save">应用设置</button>
+            </div>
+        </section>
+    </main>
+
+    <!-- 底部 -->
+    <footer class="main-footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4 data-i18n="footer.about">关于我们</h4>
+                <p data-i18n="footer.aboutDesc">专业的数学几何学习平台，致力于让几何学习变得简单有趣</p>
+            </div>
+            <div class="footer-section">
+                <h4 data-i18n="footer.links">快速链接</h4>
+                <ul>
+                    <li><a href="./quiz/quiz.html" data-i18n="nav.quiz">检测</a></li>
+                    <li><a href="./game/game_page.html" data-i18n="nav.game">游戏</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4 data-i18n="footer.contact">联系我们</h4>
+                <p data-i18n="footer.email">邮箱：contact@yuangeometry.com</p>
+                <p data-i18n="footer.phone">电话：400-123-4567</p>
+            </div>
+        </div>
+        <p class="copyright" data-i18n="footer.copyright">© 2026 圆数学教学平台. 万物皆数.</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
