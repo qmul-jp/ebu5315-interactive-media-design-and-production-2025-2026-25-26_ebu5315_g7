@@ -1,0 +1,229 @@
+html, body {
+  margin: 0;
+  min-height: 100%;
+}
+
+body {
+  min-height: 200vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 16px;
+  padding: 24px 0;
+  background: #e7ebf0;
+  font-family: Arial, sans-serif;
+}
+
+.hidden {
+  display: none !important;
+}
+
+#startBtn {
+  padding: 14px 34px;
+  font-size: 20px;
+  font-weight: 700;
+  border: 2px solid #222;
+  border-radius: 10px;
+  background: #fff;
+  cursor: pointer;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+#gameArea {
+  width: min(92vw, 1180px);
+  height: min(84vh, 1000px);
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  padding: 14px;
+  border: 2px solid #222;
+  border-radius: 12px;
+  background: #ffffff;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  gap: 12px;
+}
+
+.game-toolbar {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 12px;
+}
+
+.game-title {
+  justify-self: center;
+  font-size: 22px;
+  font-weight: 800;
+  color: #222;
+  line-height: 1;
+}
+
+#gameExitBtn {
+  justify-self: start;
+}
+
+.toolbar-right {
+  justify-self: end;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+#difficultySelect {
+  padding: 10px 12px;
+  border: 2px solid #222;
+  border-radius: 8px;
+  background: #fff;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  outline: none;
+}
+
+.canvas-wrap {
+  flex: 1;
+  min-height: 0;
+}
+
+canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+  border: 1px solid #666;
+  border-radius: 8px;
+  background: #f9fafb;
+  box-sizing: border-box;
+}
+
+#gameExitBtn,
+#resetBtn,
+.modal-actions button {
+  padding: 10px 18px;
+  border: 2px solid #222;
+  border-radius: 8px;
+  background: #fff;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.modal {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.45);
+  z-index: 1000;
+}
+
+.modal-content {
+  position: relative;
+  min-width: 280px;
+  padding: 24px;
+  background: #fff;
+  border: 2px solid #222;
+  border-radius: 12px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.2);
+  text-align: center;
+}
+
+.modal-close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 32px;
+  height: 32px;
+  border: 2px solid #222;
+  border-radius: 50%;
+  background: #fff;
+  cursor: pointer;
+  font-size: 20px;
+  line-height: 1;
+  font-weight: 700;
+  padding: 0;
+}
+
+.modal-content h2 {
+  margin: 0 0 8px;
+}
+
+.modal-content p {
+  margin: 0;
+}
+
+.modal-actions {
+  margin-top: 18px;
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+}
+
+/* --- 游戏介绍区域样式 --- */
+#gameIntro {
+  /* 布局与对齐 */
+  display: flex;
+  flex-direction: column;
+  align-items: center;      /* 水平居中 */
+  justify-content: center;   /* 垂直居中（在有高度的情况下生效） */
+  
+  /* 视觉样式 */
+  width: min(90vw, 600px);   /* 限制宽度，防止过宽 */
+  min-height: 400px;         /* 给予固定或最小高度以展现垂直居中效果 */
+  padding: 30px;
+  background: #ffffff;
+  border: 2px solid #222;    /* 外层容器边框 */
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+  gap: 20px;                 /* 内部元素间距 */
+  box-sizing: border-box;
+}
+
+/* 内部两个容器的通用边框样式 */
+#displayAre, #demoAre {
+  width: 100%;               /* 撑满父容器宽度 */
+  border: 1px dashed #666;   /* 内部容器边框（使用虚线以示区别，也可改为 solid） */
+  border-radius: 8px;
+  padding: 20px;
+  box-sizing: border-box;
+  background: #fcfcfc;
+  min-height: 80px;          /* 保证没有内容时也有一定高度 */
+  
+  /* 让容器内部的文字也居中 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 微调标题和文字 */
+#gameIntro .game-title {
+  margin-bottom: 10px;
+}
+
+#gameintro1 {
+  margin: 0;
+  color: #555;
+  font-size: 16px;
+}
+
+.toolbar-right {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.toggle-container {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+#markToggle {
+    cursor: pointer;
+    width: 16px;
+    height: 16px;
+}
