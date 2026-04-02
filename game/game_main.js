@@ -3,6 +3,7 @@
    ========================= */
 
 window.DEBUG_PATH = true;
+window.GAME_DIFFICULTY = 1;
 
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
@@ -27,6 +28,8 @@ let active = null;
 let offsetMX = 0, offsetMY = 0;
 let gameStarted = false;
 let isGameWon = false;
+let hoveredPoint = null; 
+let markedPoints = new Set();
 
 let mapPanelRect = null;
 let trayPanelRect = null;
@@ -70,14 +73,18 @@ function restartGame() {
 }
 
 function exitGame() {
-  const gameArea = document.getElementById("gameArea");
-
-  active = null;
   gameStarted = false;
-  isGameWon = false;
+  const gameArea = document.getElementById("gameArea");
+  const gameIntro = document.getElementById("gameIntro");
+  if (gameArea) gameArea.classList.add("hidden");
+  if (gameIntro) gameIntro.classList.remove("hidden");
+
   hideWinModal();
 
-  if (gameArea) gameArea.classList.add("hidden");
+  if (markedPoints) {
+    markedPoints.clear();
+  }
+  hoveredPoint = null;
 }
 
 window.startGame = startGame;
@@ -120,16 +127,16 @@ function computeLayout() {
 function computeGrid() {
   computeLayout();
 
-  // 不再为最大齿轮额外预留边距
+  const gridPadding = 35; // 四周留出 35px 的距离
+
   cell = Math.min(
-    mapPanelRect.w / CONFIG.cols,
-    mapPanelRect.h / CONFIG.rows
+    (mapPanelRect.w - gridPadding * 2) / CONFIG.cols,
+    (mapPanelRect.h - gridPadding * 2) / CONFIG.rows
   );
 
   const gridW = CONFIG.cols * cell;
   const gridH = CONFIG.rows * cell;
 
-  // 仍然在 mapPanelRect 内居中
   const gridX = mapPanelRect.x + (mapPanelRect.w - gridW) / 2;
   const gridY = mapPanelRect.y + (mapPanelRect.h - gridH) / 2;
 
@@ -180,126 +187,136 @@ function randomInt(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-function generatePath() {
+function generatePath(diffLevel = window.GAME_DIFFICULTY) {
   const nodes = [];
   const MAX_R = CONFIG.maxGearRadius;
   const MAX_N = 10;
   const MAX_LAST_R = 3;
   const MAX_ATTEMPTS = 1000;
   const EPS = 1e-6;
+  
+  // 难度 1 和 2 使用 'simple' 行走规则，难度 3 和 4 使用 'hard' 数学规则
+  const difficultyMode = (diffLevel >= 3) ? 'hard' : 'simple';
 
-  const startY = randomInt(2, CONFIG.rows - 3);
-  const start = new GearNode(2, 0, startY, "left");
-  nodes.push(start);
-
-  function getTangency(direction) {
-    if (direction === "up") return "down";
-    if (direction === "down") return "up";
-    if (direction === "right") return "left";
-    return null;
+  function generateRadiusText(rootSq, sign, intPart) {
+    if (rootSq === 0) return `${intPart}`; 
+    if (sign === 1) {
+      if (intPart === 0) return `√${rootSq}`;
+      if (intPart > 0) return `√${rootSq} + ${intPart}`;
+      return `√${rootSq} - ${Math.abs(intPart)}`;
+    } else {
+      if (intPart === 0) return `-√${rootSq}`; 
+      return `${intPart} - √${rootSq}`;
+    }
   }
 
-  function getDirection(tangency, currentX, currentY) {
-    let directions = [];
+  function generateNextStep(lastNode, mode) {
+    let allowedMoves = [];
+    let state = lastNode.rState;
 
-    if (currentY > 0) directions.push("up");
-    if (currentY < CONFIG.rows) directions.push("down");
-    if (currentX < CONFIG.cols) directions.push("right");
+    for (let dx = -MAX_R - 2; dx <= MAX_R + 2; dx++) { // 修正范围
+      for (let dy = -MAX_R; dy <= MAX_R; dy++) {
+        if (dx === 0 && dy === 0) continue;
 
-    directions = directions.filter(d => d !== tangency);
+        let distSq = dx * dx + dy * dy;
+        let dist = Math.sqrt(distSq);
+        let isOrtho = (dx === 0 || dy === 0); 
+        let isValidFormat = false;
 
-    if (directions.length > 0) {
-      return directions[randomInt(0, directions.length - 1)];
+        if (mode === 'simple') {
+          if (isOrtho) isValidFormat = true;
+        } else {
+          if (state.rootSq === 0) {
+            isValidFormat = true;
+          } else if (state.sign === 1) {
+            if (isOrtho || distSq === state.rootSq) isValidFormat = true;
+          } else if (state.sign === -1) {
+            if (isOrtho) isValidFormat = true;
+          }
+        }
+
+        if (isValidFormat) {
+          let currentR_val = dist - state.value;
+          if (currentR_val >= 0.8 && currentR_val <= MAX_R * 1.5) {
+            allowedMoves.push({ dx, dy, distSq, dist, isOrtho });
+          }
+        }
+      }
     }
-    return "right";
+
+    if (allowedMoves.length === 0) return null;
+
+    // 难度 4 特殊逻辑：减少整数
+    if (diffLevel === 4) {
+      let nonIntMoves = allowedMoves.filter(m => {
+        let nextIsInt = (state.rootSq === 0 && m.isOrtho) || (state.rootSq !== 0 && !m.isOrtho);
+        return !nextIsInt;
+      });
+      if (nonIntMoves.length > 0 && Math.random() < 0.85) {
+        allowedMoves = nonIntMoves;
+      }
+    }
+
+    let move = allowedMoves[randomInt(0, allowedMoves.length - 1)];
+    
+    // 计算新状态
+    let newState = { rootSq: 0, sign: 1, intPart: 0, value: move.dist - state.value, text: "" };
+    if (state.rootSq === 0) {
+      if (move.isOrtho) { newState.intPart = Math.round(move.dist - state.intPart); } 
+      else { newState.rootSq = move.distSq; newState.sign = 1; newState.intPart = -state.intPart; }
+    } else {
+      if (move.isOrtho) { newState.rootSq = state.rootSq; newState.sign = -state.sign; newState.intPart = Math.round(move.dist - state.intPart); } 
+      else { newState.rootSq = 0; newState.intPart = Math.round(move.dist - state.value); }
+    }
+    newState.text = generateRadiusText(newState.rootSq, newState.sign, newState.intPart);
+
+    return { 
+      x: lastNode.x + move.dx, 
+      y: lastNode.y + move.dy, 
+      rState: newState, 
+      r: newState.value,
+      rText: newState.text
+    };
   }
 
   function canPlaceNode(node, parentIndex) {
     if (node.r <= 0) return false;
-    if (node.x < 0 || node.x > CONFIG.cols) return false;
-    if (node.y < 0 || node.y > CONFIG.rows) return false;
-
+    if (node.x < 0 || node.x > CONFIG.cols || node.y < 0 || node.y > CONFIG.rows) return false;
     for (let i = 0; i < nodes.length; i++) {
       if (i === parentIndex) continue;
-
-      const dx = node.x - nodes[i].x;
-      const dy = node.y - nodes[i].y;
-      const dist = Math.sqrt(dx * dx + dy * dy);
-      const minDist = node.r + nodes[i].r;
-
-      if (dist <= minDist + EPS) {
-        return false;
-      }
+      const dx = node.x - nodes[i].x; const dy = node.y - nodes[i].y;
+      if (Math.sqrt(dx * dx + dy * dy) <= node.r + nodes[i].r + EPS) return false;
     }
-
     return true;
   }
 
-  function buildEndNode() {
-    const last = nodes[nodes.length - 1];
-    const endY = last.y;
-    const endR = CONFIG.cols - last.x - last.r;
-
-    if (endR < 1 || endR > MAX_LAST_R) return null;
-
-    const end = new GearNode(endR, CONFIG.cols, endY, "left");
-
-    if (!canPlaceNode(end, nodes.length - 1)) return null;
-
-    return end;
-  }
+  // 初始化起点
+  const startY = randomInt(2, CONFIG.rows - 3);
+  const startR = 2;
+  const start = { x: 0, y: startY, r: startR, rState: { rootSq: 0, sign: 1, intPart: startR, value: startR, text: "2" }, rText: "2" };
+  nodes.push(start);
 
   let attempts = 0;
-
   while (attempts < MAX_ATTEMPTS && nodes.length < MAX_N) {
     attempts++;
-
-    const endNode = buildEndNode();
-    if (endNode) {
-      nodes.push(endNode);
-      break;
-    }
-
     const last = nodes[nodes.length - 1];
+    const nextData = generateNextStep(last, difficultyMode); // 修正变量名
 
-    let currentR = randomInt(1, MAX_R);
-    let direct = getDirection(last.tangency, last.x, last.y);
-
-    let currentX = last.x;
-    let currentY = last.y;
-
-    if (direct === "up") {
-      currentY -= (last.r + currentR);
-    } else if (direct === "down") {
-      currentY += (last.r + currentR);
-    } else if (direct === "right") {
-      currentX += (last.r + currentR);
-    }
-
-    const node = new GearNode(
-      currentR,
-      currentX,
-      currentY,
-      getTangency(direct)
-    );
-
-    if (canPlaceNode(node, nodes.length - 1)) {
-      nodes.push(node);
+    if (nextData && canPlaceNode(nextData, nodes.length - 1)) {
+      nodes.push(nextData);
+      if (nextData.x >= CONFIG.cols - MAX_LAST_R) break; // 靠近边界则尝试结束
     }
   }
 
-  if (nodes[nodes.length - 1].x !== CONFIG.cols) {
-  const endNode = buildEndNode();
-    if (endNode) {
-      nodes.push(endNode);
-    }
+  const last = nodes[nodes.length - 1];
+  const endR_val = CONFIG.cols - last.x - last.r;
+  if (endR_val >= 1 && endR_val <= MAX_LAST_R) {
+    let endState = { rootSq: last.rState.rootSq, sign: -last.rState.sign, intPart: (CONFIG.cols - last.x) - last.rState.intPart, value: endR_val };
+    endState.text = generateRadiusText(endState.rootSq, endState.sign, endState.intPart);
+    nodes.push({ x: CONFIG.cols, y: last.y, r: endR_val, rState: endState, rText: endState.text });
   }
 
-  if (nodes[nodes.length - 1].x !== CONFIG.cols) {
-    return null;
-  }
-
-  return nodes;
+  return nodes[nodes.length - 1].x === CONFIG.cols ? nodes : null;
 }
 
 function drawPathDebug(nodes) {
@@ -373,6 +390,7 @@ class Piece {
     this.gx = node.x;
     this.gy = node.y;
     this.r = node.r;
+    this.rText = node.rText || this.r;
 
     const p = gridToPixel(this.gx, this.gy);
     this.x = p.x;
@@ -518,14 +536,11 @@ class Piece {
     ctx.moveTo(this.x + this.radius, this.y); ctx.lineTo(this.x + this.radius - tickLen, this.y);
     ctx.stroke();
 
-    // --- 3. 核心修复：半径文字位移逻辑 ---
+    // radius showcase
     // 默认向下平移一个单元格
     let textOffsetY = this.radius*0.4; 
 
-    // 修正后的判定条件：
-    // 只要在地图内 (inMap) 且 垂直网格坐标在最后一行 (gy === CONFIG.rows - 1 或 CONFIG.rows)
-    // 注意：由于 generatePath 可能会产生在 CONFIG.rows 上的节点，这里用 >= 涵盖边缘情况
-    if (!this.isDragging && this.inMap && this.gy >= (CONFIG.rows - this.radius*0.6/30)) {
+    if (!this.isDragging && this.inMap && this.gy >= (CONFIG.rows - 1)) {
       textOffsetY = -this.radius*0.5; // 向上平移
     }
 
@@ -540,8 +555,8 @@ class Piece {
 
     ctx.strokeStyle = "rgba(255,255,255,0.9)";
     ctx.lineWidth = Math.max(2, fontSize * 0.12);
-    ctx.strokeText(this.r, textX, textY);
-    ctx.fillText(this.r, textX, textY);
+    ctx.strokeText(this.rText, textX, textY);
+    ctx.fillText(this.rText, textX, textY);
 
     ctx.restore();
   }
@@ -676,11 +691,14 @@ function buildGame() {
   isGameWon = false;
   hideWinModal();
 
+  markedPoints.clear(); 
+  hoveredPoint = null;
+
   let nodes = null;
   const MAX_BUILD_RETRY = 200;
 
   for (let i = 0; i < MAX_BUILD_RETRY; i++) {
-    const candidate = generatePath();
+    const candidate = generatePath(window.GAME_DIFFICULTY);
     if (candidate && candidate.length > 0 && candidate[candidate.length - 1].x === CONFIG.cols) {
       nodes = candidate;
       break;
@@ -698,17 +716,29 @@ function buildGame() {
   nodes.map(n => makeNodeKey(n.x, n.y, n.r))
   );
 
+  // 1. 计算哪些齿轮需要固定在地图上
+  let fixedIndices = new Set([0, nodes.length - 1]);
+  let curr = 0;
+  
+  while (curr < nodes.length - 1) {
+    let skip = 1;
+    
+    curr += (skip + 1);
+    if (curr < nodes.length - 1) {
+      fixedIndices.add(curr);
+    }
+  }
+  // 双重保险：确保终点始终是固定的
+  fixedIndices.add(nodes.length - 1);
+
+  // 2. 将计算好的属性赋给实际齿轮
   nodes.forEach((n, i) => {
     let p = new Piece(n);
 
-    if (i === 0 || i === nodes.length - 1) {
+    if (fixedIndices.has(i)) {
       p.inMap = true;
       p.isFixed = true;
       p.isFixedGray = true;
-    } else if (i % 2 === 0) {
-      p.inMap = true;
-      p.isFixedGray = true;
-      p.isFixed = true;
     } else {
       p.inMap = false;
       p.isFixedGray = false;
@@ -888,6 +918,41 @@ function drawMapBase() {
     ctx.stroke();
   }
 
+  ctx.fillStyle = "#555";
+  ctx.font = "bold 12px Arial";
+  
+  // 顶部 X 轴刻度
+  ctx.textAlign = "center";
+  ctx.textBaseline = "bottom";
+  for (let i = 0; i <= CONFIG.cols; i++) {
+    const x = gridRect.x + i * cell;
+    // 绘制小短线刻度
+    ctx.beginPath();
+    ctx.moveTo(x, gridRect.y);
+    ctx.lineTo(x, gridRect.y - 6);
+    ctx.stroke();
+    // 每隔 5 个单位标注一次数字，防拥挤
+    if (i % 5 === 0) {
+      ctx.fillText(i, x, gridRect.y - 8);
+    }
+  }
+
+  // 左侧 Y 轴刻度
+  ctx.textAlign = "right";
+  ctx.textBaseline = "middle";
+  for (let j = 0; j <= CONFIG.rows; j++) {
+    const y = gridRect.y + j * cell;
+    // 绘制小短线刻度
+    ctx.beginPath();
+    ctx.moveTo(gridRect.x, y);
+    ctx.lineTo(gridRect.x - 6, y);
+    ctx.stroke();
+    // 每隔 5 个单位标注一次数字
+    if (j % 5 === 0) {
+      ctx.fillText(j, gridRect.x - 8, y);
+    }
+  }
+
   ctx.restore();
 }
 
@@ -971,13 +1036,93 @@ function draw() {
     .filter(p => !p.inMap && p !== active)
     .forEach(p => p.draw());
 
+  drawGridInteractions();
+
   // fifth layer: gears that are being dragged now
   if (active) {
     active.draw();
   }
 }
 
+/* ---------- Interactive Tools ---------- */
+function getNearestGridPoint(mx, my) {
+  if (!gridRect) return null;
+  let gx = Math.round((mx - offsetX) / cell);
+  let gy = Math.round((my - offsetY) / cell);
+  
+  if (gx >= 0 && gx <= CONFIG.cols && gy >= 0 && gy <= CONFIG.rows) {
+    const px = offsetX + gx * cell;
+    const py = offsetY + gy * cell;
+    // 当鼠标距离某个格点小于 40% 的格子宽度时，吸附到该格点
+    if (Math.hypot(mx - px, my - py) < cell * 0.4) {
+      return { gx, gy, px, py };
+    }
+  }
+  return null;
+}
+
+function drawGridInteractions() {
+  ctx.save();
+  
+  const mToggle = document.getElementById("markToggle");
+  const isMarkModeOn = mToggle && mToggle.checked;
+
+  // 1. 绘制玩家点击标记的鲜明圆点 (红色) - 只有开关开启时才绘制！
+  if (isMarkModeOn) {
+    ctx.fillStyle = "#ff0055"; 
+    markedPoints.forEach(key => {
+      const [gx, gy] = key.split(',').map(Number);
+      const p = gridToPixel(gx, gy);
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, 6, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.strokeStyle = "#fff";
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+    });
+  }
+
+  // 2. 绘制悬浮时的坐标提示框
+  if (hoveredPoint && !active && isMarkModeOn) {
+    const { gx, gy, px, py } = hoveredPoint;
+    
+    // 格点上的小黑点反馈
+    ctx.fillStyle = "rgba(0, 0, 0, 0.6)";
+    ctx.beginPath();
+    ctx.arc(px, py, 4, 0, Math.PI * 2);
+    ctx.fill();
+
+    const text = `(${gx}, ${gy})`;
+    ctx.font = "bold 13px Arial";
+    const metrics = ctx.measureText(text);
+    const paddingX = 6;
+    const paddingY = 4;
+    const boxW = metrics.width + paddingX * 2;
+    const boxH = 16 + paddingY * 2;
+
+    let tx = px + 12; // 提示框偏移量
+    let ty = py - 12 - boxH;
+
+    // 绘制提示框背景
+    ctx.fillStyle = "rgba(255, 255, 255, 0.95)";
+    ctx.strokeStyle = "#333";
+    ctx.lineWidth = 1;
+    ctx.fillRect(tx, ty, boxW, boxH);
+    ctx.strokeRect(tx, ty, boxW, boxH);
+
+    // 绘制文字
+    ctx.fillStyle = "#111";
+    ctx.textAlign = "left";
+    ctx.textBaseline = "top";
+    ctx.fillText(text, tx + paddingX, ty + paddingY);
+  }
+  ctx.restore();
+}
+
 /* ---------- Events ---------- */
+// 获取开关元素
+const markToggle = document.getElementById("markToggle");
+
 canvas.addEventListener("mousedown", e => {
   if (isGameWon) return;
 
@@ -985,25 +1130,64 @@ canvas.addEventListener("mousedown", e => {
   const mx = e.clientX - rect.left;
   const my = e.clientY - rect.top;
 
+  let clickedGear = false;
+  
+  // 1. 优先判定是否点中了齿轮（准备拖拽）
   for (let i = pieces.length - 1; i >= 0; i--) {
     if (pieces[i].contains(mx, my) && !pieces[i].isFixed) {
       active = pieces[i];
       active.isDragging = true;
       offsetMX = mx - active.x;
       offsetMY = my - active.y;
-      break;
+      clickedGear = true;
+      break; 
+    }
+  }
+
+  // 2. 如果没点中齿轮，且“标记开关”打开了，才进行标记逻辑
+  if (!clickedGear && markToggle && markToggle.checked) {
+    const nearest = getNearestGridPoint(mx, my);
+    if (nearest) {
+      const key = `${nearest.gx},${nearest.gy}`;
+      if (markedPoints.has(key)) {
+        markedPoints.delete(key);
+      } else {
+        markedPoints.add(key);
+      }
+      draw();
     }
   }
 });
 
 canvas.addEventListener("mousemove", e => {
-  if (!active) return;
+ const rect = canvas.getBoundingClientRect();
+  const mx = e.clientX - rect.left;
+  const my = e.clientY - rect.top;
 
-  const rect = canvas.getBoundingClientRect();
-  active.x = e.clientX - rect.left - offsetMX;
-  active.y = e.clientY - rect.top - offsetMY;
+  if (active) {
+    active.x = mx - offsetMX;
+    active.y = my - offsetMY;
+    draw();
+    return;
+  }
 
-  draw();
+  // --- 新增：悬浮格点坐标逻辑 ---
+  const nearest = getNearestGridPoint(mx, my);
+  let needsRedraw = false;
+  
+  if (nearest) {
+    if (!hoveredPoint || hoveredPoint.gx !== nearest.gx || hoveredPoint.gy !== nearest.gy) {
+      hoveredPoint = nearest;
+      needsRedraw = true;
+    }
+  } else {
+    if (hoveredPoint) {
+      hoveredPoint = null;
+      needsRedraw = true;
+    }
+  }
+
+  if (needsRedraw) draw();
 });
 
 function stopDrag() {
@@ -1054,6 +1238,28 @@ window.addEventListener('resize', () => {
 document.getElementById('resetBtn').addEventListener('click', () => {
     resetGame();
 });
+
+if (markToggle) {
+    markToggle.addEventListener('change', () => {
+        // 关闭开关时，如果有悬浮提示框也直接清掉
+        if (!markToggle.checked) {
+            hoveredPoint = null;
+        }
+        // 调用重绘函数，此时 drawGridInteractions 会根据开关状态决定是否画出红点
+        draw(); 
+    });
+}
+
+const difficultySelect = document.getElementById('difficultySelect');
+if (difficultySelect) {
+    difficultySelect.addEventListener('change', (e) => {
+        window.GAME_DIFFICULTY = parseInt(e.target.value, 10);
+        // 如果游戏已经开始了，切换难度自动重置当前棋盘
+        if (gameStarted) {
+            resetGame();
+        }
+    });
+}
 
 if (window.DEBUG_PATH && window.__DEBUG_PATH__) {
   drawPathDebug(window.__DEBUG_PATH__);
