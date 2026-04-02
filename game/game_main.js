@@ -1,387 +1,226 @@
-/* =========================
-   Gear Puzzle - v1.3
-   ========================= */
+const mapCanvas = document.getElementById("drawMap");
+const mapCtx = mapCanvas.getContext("2d");
 
-/* ---------- Canvas ---------- */
-const canvas = document.getElementById("drawCircles");
-const ctx = canvas.getContext("2d");
+const gearCanvas = document.getElementById("drawCircles");
+const gearCtx = gearCanvas.getContext("2d");
 
-function resizeCanvas() {
-  canvas.width = canvas.clientWidth;
-  canvas.height = canvas.clientHeight;
-}
-resizeCanvas();
-window.addEventListener("resize", () => {
-  resizeCanvas();
-  buildGame();
-});
-
-/* ---------- Config ---------- */
 const CONFIG = {
-  mapCols: 12,
-  mapRows: 8,
-  minStep: 2,
-  maxStep: 4,
-
-  mapArea: {
-    left: 60,
-    top: 60,
-    widthRatio: 0.75,
-    heightRatio: 0.6
-  },
-
-  trayArea: {
-    padding: 20,
-    yOffsetFromBottom: 90
-  },
-
-  minPixelRadius: 18,
-  radiusScale: 8
+  cols: 10,
+  rows: 6,
 };
 
-/* ---------- Utils ---------- */
-const rand = (a, b) => Math.floor(Math.random() * (b - a + 1)) + a;
+let cell, offsetX, offsetY;
 
-/* ---------- Map ---------- */
-class GearNode {
-  constructor(r, x, y) {
-    this.radius = r;
-    this.gridX = x;
-    this.gridY = y;
-  }
+let pieces = [];
+let dragging = null;
+
+/* ---------- resize ---------- */
+function resizeCanvas() {
+  mapCanvas.width = mapCanvas.clientWidth;
+  mapCanvas.height = mapCanvas.clientHeight;
+
+  gearCanvas.width = gearCanvas.clientWidth;
+  gearCanvas.height = gearCanvas.clientHeight;
 }
 
-class GearMap {
-  constructor(cols, rows) {
-    this.cols = cols;
-    this.rows = rows;
-    this.nodes = [];
-  }
+/* ---------- grid ---------- */
+function computeGrid() {
+  cell = Math.min(
+    mapCanvas.width / CONFIG.cols,
+    mapCanvas.height / CONFIG.rows
+  );
 
-  generatePath() {
-    this.nodes = [];
-
-    let x = 0;
-    let y = rand(0, this.rows);
-
-    let lastDir = "right";
-
-    this.nodes.push(new GearNode(2, x, y));
-
-    while (x < this.cols) {
-      let dirs = ["right"];
-
-      if (y > 1) dirs.push("up");
-      if (y < this.rows - 1) dirs.push("down");
-
-      // reduce jumping arround
-      if (lastDir !== "right") dirs = ["right"];
-
-      const dir = dirs[rand(0, dirs.length - 1)];
-
-      const step = rand(CONFIG.minStep, CONFIG.maxStep);
-
-      let nx = x;
-      let ny = y;
-
-      if (dir === "right") nx += step;
-      if (dir === "up") ny -= step;
-      if (dir === "down") ny += step;
-
-      nx = Math.min(this.cols, nx);
-      ny = Math.max(0, Math.min(this.rows, ny));
-
-      const r = Math.max(1, step);
-
-      this.nodes.push(new GearNode(r, nx, ny));
-
-      x = nx;
-      y = ny;
-      lastDir = dir;
-    }
-  }
+  offsetX = (mapCanvas.width - CONFIG.cols * cell) / 2;
+  offsetY = (mapCanvas.height - CONFIG.rows * cell) / 2;
 }
 
-/* ---------- Piece ---------- */
-class CirclePiece {
-  constructor({ x, y, r, color, label }) {
+function gridToPixel(gx, gy) {
+  return {
+    x: offsetX + gx * cell,
+    y: offsetY + gy * cell
+  };
+}
+
+/* ---------- piece ---------- */
+class Piece {
+  constructor(x, y, r, label, inMap) {
     this.x = x;
     this.y = y;
-
-    this.startX = x;
-    this.startY = y;
-
-    this.radius = r;
+    this.r = r;
     this.label = label;
-    this.color = color;
+    this.inMap = inMap;
 
-    this.gridX = null;
-    this.gridY = null;
-
-    this.inMap = false;
-    this.isDragging = false;
+    this.dragging = false;
   }
 
-  draw() {
+  draw(ctx) {
+    ctx.save();
+
+    if (this.dragging) {
+      ctx.shadowBlur = 15;
+    }
+
     ctx.beginPath();
-    ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-    ctx.fillStyle = this.color;
+    ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
+    ctx.fillStyle = "#6aa9ff";
     ctx.fill();
 
-    ctx.strokeStyle = "#333";
-    ctx.lineWidth = 2;
+    ctx.strokeStyle = this.dragging ? "#ff8800" : "#333";
+    ctx.lineWidth = this.dragging ? 4 : 2;
     ctx.stroke();
 
     ctx.fillStyle = "#000";
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
-    ctx.fillText(String(Math.round(this.label)), this.x, this.y);
+    ctx.fillText(this.label, this.x, this.y);
+
+    ctx.restore();
   }
 
   contains(mx, my) {
-    const dx = mx - this.x;
-    const dy = my - this.y;
-    return dx * dx + dy * dy <= this.radius * this.radius;
-  }
-
-  reset() {
-    this.x = this.startX;
-    this.y = this.startY;
-    this.inMap = false;
-    this.gridX = null;
-    this.gridY = null;
+    return (mx - this.x) ** 2 + (my - this.y) ** 2 <= this.r ** 2;
   }
 }
 
-/* ---------- State ---------- */
-let gearMap;
-let pieces = [];
-let active = null;
-let offX = 0;
-let offY = 0;
-
-/* ---------- Grid ---------- */
-function getRect() {
-  return {
-    left: CONFIG.mapArea.left,
-    top: CONFIG.mapArea.top,
-    width: canvas.width * CONFIG.mapArea.widthRatio,
-    height: canvas.height * CONFIG.mapArea.heightRatio
-  };
-}
-
-function gridToPixel(gx, gy) {
-  const r = getRect();
-  const cw = r.width / CONFIG.mapCols;
-  const ch = r.height / CONFIG.mapRows;
-
-  return {
-    x: r.left + gx * cw,
-    y: r.top + gy * ch
-  };
-}
-
-function nearestGrid(x, y) {
-  const r = getRect();
-  const cw = r.width / CONFIG.mapCols;
-  const ch = r.height / CONFIG.mapRows;
-
-  let gx = Math.round((x - r.left) / cw);
-  let gy = Math.round((y - r.top) / ch);
-
-  gx = Math.max(0, Math.min(CONFIG.mapCols, gx));
-  gy = Math.max(0, Math.min(CONFIG.mapRows, gy));
-
-  const p = gridToPixel(gx, gy);
-  return { gx, gy, x: p.x, y: p.y };
-}
-
-function occupied(gx, gy, ignore) {
-  return pieces.some(p =>
-    p !== ignore && p.inMap && p.gridX === gx && p.gridY === gy
-  );
-}
-
-/* ---------- Build ---------- */
+/* ---------- build ---------- */
 function buildGame() {
-  gearMap = new GearMap(CONFIG.mapCols, CONFIG.mapRows);
-  gearMap.generatePath();
+  computeGrid();
 
   pieces = [];
 
-  const tray = [];
+  // 固定几个 map 圆
+  for (let i = 0; i < 3; i++) {
+    let gx = 2 + i * 3;
+    let gy = Math.floor(CONFIG.rows / 2);
 
-  gearMap.nodes.forEach((n, i) => {
-    const pos = gridToPixel(n.gridX, n.gridY);
+    let r = (i % 2) + 1;
 
-    const p = new CirclePiece({
-      x: 0,
-      y: 0,
-      r: Math.max(CONFIG.minPixelRadius, n.radius * CONFIG.radiusScale),
-      label: n.radius,
-      color: `hsl(${rand(0,360)},70%,60%)`
-    });
+    let pos = gridToPixel(gx, gy);
 
-    p.target = pos;
+    pieces.push(new Piece(pos.x, pos.y, r * cell, r, true));
+  }
 
-    if (i === 0 || i === gearMap.nodes.length - 1 || i % 2 === 0) {
-      p.x = pos.x;
-      p.y = pos.y;
-      p.gridX = n.gridX;
-      p.gridY = n.gridY;
-      p.inMap = true;
-    } else {
-      tray.push(p);
-    }
+  // gearBar 圆（关键：限制大小）
+  const maxR = gearCanvas.height * 0.25;
 
-    pieces.push(p);
-  });
+  for (let i = 0; i < 5; i++) {
+    let r = (i % 3) + 1;
 
-  layoutTray(tray);
+    pieces.push(new Piece(0, 0, Math.min(r * cell, maxR), r, false));
+  }
+
+  layoutGear();
   draw();
 }
 
-/* ---------- Tray ---------- */
-function layoutTray(arr) {
-  let x = 20;
-  const y = canvas.height - 100;
+/* ---------- gear 横排 ---------- */
+function layoutGear() {
+  const list = pieces.filter(p => !p.inMap);
 
-  arr.forEach(p => {
-    x += p.radius;
-    p.x = x;
-    p.y = y;
-    p.startX = p.x;
-    p.startY = p.y;
-    x += p.radius + 10;
+  const gap = gearCanvas.width / (list.length + 1);
+
+  list.forEach((p, i) => {
+    p.x = gap * (i + 1);
+    p.y = gearCanvas.height / 2;
   });
 }
 
-function inTray(y) {
-  return y > canvas.height - 150;
-}
-
-/* ---------- Place ---------- */
-function place(piece) {
-  const n = nearestGrid(piece.x, piece.y);
-
-  if (occupied(n.gx, n.gy, piece)) return false;
-
-  piece.x = n.x;
-  piece.y = n.y;
-  piece.gridX = n.gx;
-  piece.gridY = n.gy;
-  piece.inMap = true;
-  return true;
-}
-
-/* ---------- WIN CHECK ---------- */
-function checkWin() {
-  const placed = pieces.filter(p => p.inMap);
-
-  if (placed.length !== gearMap.nodes.length) return false;
-
-  // 检查链条
-  for (let i = 0; i < gearMap.nodes.length - 1; i++) {
-    const a = gearMap.nodes[i];
-    const b = gearMap.nodes[i + 1];
-
-    const pa = pieces.find(p => p.gridX === a.gridX && p.gridY === a.gridY);
-    const pb = pieces.find(p => p.gridX === b.gridX && p.gridY === b.gridY);
-
-    if (!pa || !pb) return false;
-
-    const dx = pa.x - pb.x;
-    const dy = pa.y - pb.y;
-    const dist = Math.sqrt(dx * dx + dy * dy);
-
-    const target = pa.radius + pb.radius;
-
-    if (Math.abs(dist - target) > 2) return false;
-  }
-
-  return true;
-}
-
-/* ---------- Draw ---------- */
+/* ---------- draw ---------- */
 function drawGrid() {
-  const r = getRect();
+  mapCtx.clearRect(0, 0, mapCanvas.width, mapCanvas.height);
 
-  ctx.strokeRect(r.left, r.top, r.width, r.height);
+  mapCtx.strokeRect(offsetX, offsetY, CONFIG.cols * cell, CONFIG.rows * cell);
 
-  const cw = r.width / CONFIG.mapCols;
-  const ch = r.height / CONFIG.mapRows;
-
-  for (let i = 0; i <= CONFIG.mapCols; i++) {
-    const x = r.left + i * cw;
-    ctx.beginPath();
-    ctx.moveTo(x, r.top);
-    ctx.lineTo(x, r.top + r.height);
-    ctx.stroke();
+  for (let i = 0; i <= CONFIG.cols; i++) {
+    let x = offsetX + i * cell;
+    mapCtx.beginPath();
+    mapCtx.moveTo(x, offsetY);
+    mapCtx.lineTo(x, offsetY + CONFIG.rows * cell);
+    mapCtx.stroke();
   }
 
-  for (let j = 0; j <= CONFIG.mapRows; j++) {
-    const y = r.top + j * ch;
-    ctx.beginPath();
-    ctx.moveTo(r.left, y);
-    ctx.lineTo(r.left + r.width, y);
-    ctx.stroke();
+  for (let j = 0; j <= CONFIG.rows; j++) {
+    let y = offsetY + j * cell;
+    mapCtx.beginPath();
+    mapCtx.moveTo(offsetX, y);
+    mapCtx.lineTo(offsetX + CONFIG.cols * cell, y);
+    mapCtx.stroke();
   }
 }
 
 function draw() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-
   drawGrid();
 
-  pieces.forEach(p => p.draw());
+  mapCtx.save();
+  pieces.filter(p => p.inMap).forEach(p => p.draw(mapCtx));
+  mapCtx.restore();
 
-  if (checkWin()) {
-    ctx.fillStyle = "green";
-    ctx.font = "30px sans-serif";
-    ctx.fillText("✔ 通关!", 200, 40);
-  }
+  gearCtx.clearRect(0, 0, gearCanvas.width, gearCanvas.height);
+  pieces.filter(p => !p.inMap).forEach(p => p.draw(gearCtx));
 }
 
-/* ---------- Events ---------- */
-canvas.addEventListener("mousedown", e => {
-  const r = canvas.getBoundingClientRect();
-  const mx = e.clientX - r.left;
-  const my = e.clientY - r.top;
+/* ---------- events ---------- */
+function getMouse(canvas, e) {
+  const rect = canvas.getBoundingClientRect();
+  return {
+    x: e.clientX - rect.left,
+    y: e.clientY - rect.top
+  };
+}
 
-  for (let i = pieces.length - 1; i >= 0; i--) {
-    if (pieces[i].contains(mx, my)) {
-      active = pieces[i];
-      offX = mx - active.x;
-      offY = my - active.y;
-      break;
+gearCanvas.addEventListener("mousedown", e => {
+  const m = getMouse(gearCanvas, e);
+
+  pieces.forEach(p => {
+    if (!p.inMap && p.contains(m.x, m.y)) {
+      dragging = p;
+      p.dragging = true;
     }
-  }
+  });
 });
 
-canvas.addEventListener("mousemove", e => {
-  if (!active) return;
+mapCanvas.addEventListener("mousedown", e => {
+  const m = getMouse(mapCanvas, e);
 
-  const r = canvas.getBoundingClientRect();
-  active.x = e.clientX - r.left - offX;
-  active.y = e.clientY - r.top - offY;
+  pieces.forEach(p => {
+    if (p.inMap && p.contains(m.x, m.y)) {
+      dragging = p;
+      p.dragging = true;
+    }
+  });
+});
+
+window.addEventListener("mousemove", e => {
+  if (!dragging) return;
+
+  const rect = mapCanvas.getBoundingClientRect();
+
+  dragging.x = e.clientX - rect.left;
+  dragging.y = e.clientY - rect.top;
 
   draw();
 });
 
-canvas.addEventListener("mouseup", () => {
-  if (!active) return;
+window.addEventListener("mouseup", () => {
+  if (!dragging) return;
 
-  if (inTray(active.y)) {
-    active.reset();
+  dragging.dragging = false;
+
+  // 判断在哪个区域
+  if (dragging.y > mapCanvas.height) {
+    dragging.inMap = false;
+    layoutGear();
   } else {
-    if (!place(active)) {
-      active.reset();
-    }
+    dragging.inMap = true;
   }
 
-  active = null;
+  dragging = null;
   draw();
 });
 
-/* ---------- Start ---------- */
-buildGame();
+/* ---------- start ---------- */
+resizeCanvas();
+window.addEventListener("resize", () => {
+  resizeCanvas();
+  buildGame();
+});
