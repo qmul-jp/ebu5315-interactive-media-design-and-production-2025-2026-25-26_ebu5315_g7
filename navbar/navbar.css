@@ -1,0 +1,35 @@
+/* =========================================
+   TOP NAVBAR (Modular Component)
+   ========================================= */
+.top-navbar {
+    position: fixed; top: 0; left: 0; right: 0; height: 64px;
+    background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(24px) saturate(150%); -webkit-backdrop-filter: blur(24px) saturate(150%);
+    border-bottom: 1px solid var(--border-light, #e0e0e0);
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 0 5%; z-index: 1000; transition: background 0.3s, border-color 0.3s;
+}
+:root[data-theme="dark"] .top-navbar { background: rgba(28, 28, 30, 0.7); border-bottom-color: rgba(255, 255, 255, 0.1); }
+
+.breadcrumb { font-size: 0.9375rem; font-weight: 600; color: var(--text-primary, #333); display: flex; align-items: center; gap: 8px; cursor: pointer; }
+.bc-item { transition: opacity 0.2s; }
+.bc-item:hover { opacity: 0.6; }
+.bc-separator { color: var(--text-secondary, #86868B); font-weight: 400; user-select: none; }
+
+.nav-right { display: flex; align-items: center; gap: 1.5rem; }
+.nav-control { display: flex; align-items: center; gap: 8px; color: var(--text-secondary, #86868B); font-weight: 600; }
+
+.nav-slider { -webkit-appearance: none; appearance: none; -moz-appearance: none; width: 80px; height: 4px; background: var(--border-strong, #ccc); border-radius: 2px; outline: none; }
+.nav-slider::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 16px; height: 16px; border-radius: 50%; background: var(--text-primary, #333); cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
+
+.nav-icon-btn { background: transparent; border: none; font-size: 1.25rem; color: var(--text-primary, #333); cursor: pointer; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: background 0.2s; }
+.nav-icon-btn:hover { background: rgba(0,0,0,0.05); }
+:root[data-theme="dark"] .nav-icon-btn:hover { background: rgba(255,255,255,0.1); }
+
+/* 主色调适配，如果没有定义 accent-blue 就用 primary-color */
+.nav-lang-btn { background: var(--accent-blue, var(--primary-color, #3498db)); color: white; border: none; padding: 6px 12px; border-radius: 12px; font-size: 0.8125rem; font-weight: 700; cursor: pointer; transition: opacity 0.2s; font-family: inherit; }
+.nav-lang-btn:hover { opacity: 0.8; }
+
+@media (max-width: 768px) {
+    .font-control { display: none; } 
+    .top-navbar { padding: 0 1rem; }
+}
