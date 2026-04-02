@@ -10,23 +10,26 @@
 <button id="startBtn">Play</button>
 
 <div id="gameArea" class="hidden">
-    <div class="operateBar">
-        <canvas id="drawMap"></canvas>
-    </div>
+    <canvas id="canvas"></canvas>
+</div>
 
-    <div class="gearBar">
-        <canvas id="drawCircles"></canvas>
+<div id="winModal" class="modal hidden">
+    <div class="modal-content">
+        <h2>胜利！</h2>
+        <p>齿轮已经连通到最后一个。</p>
+        <div class="modal-actions">
+            <button id="exitBtn">退出</button>
+            <button id="retryBtn">重来</button>
+        </div>
     </div>
 </div>
 
 <script src="game_main.js"></script>
 
 <script>
-document.getElementById("startBtn").onclick = () => {
-    document.getElementById("gameArea").classList.remove("hidden");
-    resizeCanvas();
-    buildGame();
-};
+document.getElementById("startBtn").onclick = startGame;
+document.getElementById("exitBtn").onclick = exitGame;
+document.getElementById("retryBtn").onclick = restartGame;
 </script>
 
 </body>
