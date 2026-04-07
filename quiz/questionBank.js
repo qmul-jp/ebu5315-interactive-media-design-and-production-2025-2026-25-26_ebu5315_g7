@@ -1,7 +1,8 @@
 /**
  * questionBank.js
  * 核心几何知识点：圆的定理 (GCSE / Grade 9-10 Level)
- * 包含完整的双语数据支持
+ * 包含完整的双语数据支持与防重复随机抽题逻辑
+ * 将填空题全部改成选择性填空题
  */
 
 const circleQuestionsData = {
@@ -20,10 +21,16 @@ const circleQuestionsData = {
             },
             options: [
                 { id: "opt1", en: "Angles in same segment", zh: "同弧所对圆周角" },
-                { id: "opt2", en: "Angle at centre", zh: "同弧所对圆心角" },
+                { id: "opt2", en: "The central angle is twice the inscribed angle.", zh: "同弧所对圆心角是圆周角的两倍。" },
                 { id: "opt3", en: "Semicircle is 90°", zh: "半圆上的圆周角为90°" }
             ],
             answer: { "zone1": "opt1", "zone2": "opt2", "zone3": "opt3" },
+            // 🌟 新增这一段：为右侧的拖拽目标框指定图片
+            zoneImages: {
+                "zone1": "./images/theorem-same-segment.png",
+                "zone2": "./images/theorem-center-angle.png",
+                "zone3": "./images/theorem-semicircle.png"
+            },
             explanation: {
                 en: "These are the fundamental circle theorems regarding angles subtended by arcs.",
                 zh: "这些是关于弧所对角度的基础圆定理。"
@@ -46,6 +53,11 @@ const circleQuestionsData = {
                 { id: "opt3", en: "Tangent", zh: "切线" }
             ],
             answer: { "zone1": "opt1", "zone2": "opt2", "zone3": "opt3" },
+            zoneImages: {
+                "zone1": "./images/Radius.png",
+                "zone2": "./images/Chord.png",
+                "zone3": "./images/Tangent.png"
+            },
             explanation: {
                 en: "A radius goes from center to edge. A chord links two points on the edge. A tangent touches the circle at exactly one point.",
                 zh: "半径从圆心连接到边缘。弦连接圆上的两点。切线与圆仅有一个交点。"
@@ -54,6 +66,7 @@ const circleQuestionsData = {
         {
             id: "l1_mcq_1",
             type: "mcq",
+            imageSrc: "./images/theorem-semicircle.png",
             imageDesc: {
                 en: "[Diagram: A circle with diameter AB. Point C is on the circumference forming triangle ABC.]",
                 zh: "[图示：包含直径AB的圆。点C在圆周上，形成三角形ABC。]"
@@ -97,11 +110,12 @@ const circleQuestionsData = {
         }
     ],
 
-    // Level 2: 4题 (2 选择 + 2 填空)
+    // Level 2: 4题 (全部变为选择题，其中2道是选择式填空)
     level2: [
         {
             id: "l2_mcq_1",
             type: "mcq",
+            imageSrc: "./images/l2_mcq_1.png",
             imageDesc: {
                 en: "[Diagram: A cyclic quadrilateral ABCD inscribed in a circle. Angle DAB is 70°.]",
                 zh: "[图示：内接于圆的圆内接四边形ABCD。角DAB为70°。]"
@@ -144,8 +158,8 @@ const circleQuestionsData = {
             }
         },
         {
-            id: "l2_fib_1",
-            type: "fib",
+            id: "l2_fib_1", // ID保持不变，防冲突，只修改 type
+            type: "mcq",
             imageDesc: {
                 en: "[Diagram: A circle with a chord AB. A line from the center is perpendicular to AB, dividing it.]",
                 zh: "[图示：包含弦AB的圆。一条从圆心出发垂直于AB的线将弦分割。]"
@@ -154,7 +168,12 @@ const circleQuestionsData = {
                 en: "A perpendicular line drawn from the centre of a circle to a chord will ______ the chord.",
                 zh: "从圆心向弦作垂线，该垂线会 ______ 这条弦。"
             },
-            answer: { en: "bisect", zh: "平分" }, // Expected string input/selection
+            options: [
+                { id: "A", en: "bisect", zh: "平分" },
+                { id: "B", en: "double", zh: "加倍" },
+                { id: "C", en: "be parallel to", zh: "平行于" }
+            ],
+            answer: "A", 
             explanation: {
                 en: "The perpendicular from the centre to a chord bisects the chord (cuts it exactly in half).",
                 zh: "垂径定理：垂直于弦的直径（或从圆心作的垂线）平分这条弦。"
@@ -162,7 +181,7 @@ const circleQuestionsData = {
         },
         {
             id: "l2_fib_2",
-            type: "fib",
+            type: "mcq",
             imageDesc: {
                 en: "[Diagram: Two tangent lines drawn from an external point P, touching the circle at points A and B.]",
                 zh: "[图示：从外部点P画出的两条切线，分别与圆交于A、B两点。]"
@@ -171,7 +190,12 @@ const circleQuestionsData = {
                 en: "Two tangents drawn to a circle from the same external point are ______ in length.",
                 zh: "从圆外同一点向圆引出的两条切线，其长度 ______。"
             },
-            answer: { en: "equal", zh: "相等" },
+            options: [
+                { id: "A", en: "perpendicular", zh: "互相垂直" },
+                { id: "B", en: "equal", zh: "相等" },
+                { id: "C", en: "unequal", zh: "不相等" }
+            ],
+            answer: "B",
             explanation: {
                 en: "Tangents from a common external point to a circle are always equal in length.",
                 zh: "切线长定理：从圆外同一点引出的两条切线段长度相等。"
@@ -179,7 +203,7 @@ const circleQuestionsData = {
         }
     ],
 
-    // Level 3: 4题 (2 填空式证明 + 2 填空)
+    // Level 3: 4题 (2 填空式证明 + 2 选择式填空)
     level3: [
         {
             id: "l3_proof_1",
@@ -227,7 +251,8 @@ const circleQuestionsData = {
         },
         {
             id: "l3_fib_1",
-            type: "fib",
+            type: "mcq",
+            imageSrc: "./images/Intersecting chords.png",
             imageDesc: {
                 en: "[Diagram: Intersecting chords theorem. Chords AB and CD intersect at point P inside the circle.]",
                 zh: "[图示：相交弦定理。弦 AB 和 CD 在圆内点 P 处相交。]"
@@ -236,7 +261,12 @@ const circleQuestionsData = {
                 en: "If chords AB and CD intersect at point P, then AP × PB = CP × ______.",
                 zh: "如果弦 AB 和 CD 在点 P 处相交，根据相交弦定理，AP × PB = CP × ______。"
             },
-            answer: { en: "PD", zh: "PD" },
+            options: [
+                { id: "A", en: "CD", zh: "CD" },
+                { id: "B", en: "AB", zh: "AB" },
+                { id: "C", en: "PD", zh: "PD" }
+            ],
+            answer: "C",
             explanation: {
                 en: "The Intersecting Chords Theorem states that when two chords intersect, the products of the lengths of the line segments on each chord are equal.",
                 zh: "相交弦定理：圆内两条相交弦，被交点分成的两条线段长的乘积相等。"
@@ -244,7 +274,8 @@ const circleQuestionsData = {
         },
         {
             id: "l3_fib_2",
-            type: "fib",
+            type: "mcq",
+            imageSrc: "./images/Alternate Segment.png",
             imageDesc: {
                 en: "[Diagram: A tangent touches a circle at point X. A chord XY makes an angle of 40° with the tangent. Z is a point on the alternate segment.]",
                 zh: "[图示：切线与圆在点 X 相切。弦 XY 与切线的夹角为 40°。Z 是另一段圆弧上的点。]"
@@ -253,7 +284,12 @@ const circleQuestionsData = {
                 en: "A tangent makes an angle of 40° with a chord. What is the size of the angle in the alternate segment?",
                 zh: "一条切线与弦的夹角为 40°。另一段弧（交替线段）上的圆周角大小是多少度？"
             },
-            answer: { en: "40", zh: "40" },
+            options: [
+                { id: "A", en: "20°", zh: "20°" },
+                { id: "B", en: "40°", zh: "40°" },
+                { id: "C", en: "80°", zh: "80°" }
+            ],
+            answer: "B",
             explanation: {
                 en: "By the Alternate Segment Theorem, the angle in the alternate segment is exactly equal to the angle between the tangent and the chord (40°).",
                 zh: "根据弦切角定理，另一段弧上的圆周角大小正好等于切线与弦的夹角大小 (40°)。"
@@ -265,61 +301,66 @@ const circleQuestionsData = {
 
 /**
  * 题库管理器类
- * 题目按顺序依次返回。
+ * 用于随机抽取题目并保证在同一轮次中不重复。
  */
 class QuestionBankManager {
     constructor(data) {
         this.data = data;
-        this.indices = {
-            level1: 0,
-            level2: 0,
-            level3: 0
+        this.usedQuestions = {
+            level1: new Set(),
+            level2: new Set(),
+            level3: new Set()
         };
     }
 
     /**
-     * 按顺序获取下一道指定难度的题目
+     * 随机获取一道指定难度的题目
      * @param {string} level - 难度级别 ('level1', 'level2', 'level3')
-     * @returns {Object|null} 题目对象。如果该难度的题已全部显示完毕，返回 null
+     * @returns {Object|null} 题目对象。如果该难度的题抽完了，返回 null
      */
-    getNextQuestion(level) {
+    getRandomQuestion(level) {
         const questions = this.data[level];
         if (!questions || questions.length === 0) return null;
 
-        const index = this.indices[level];
-
-        // 所有题目已按顺序显示完毕
-        if (index >= questions.length) {
-            console.warn(`All questions in ${level} have been shown. Call resetLevel('${level}') to start over.`);
+        const used = this.usedQuestions[level];
+        
+        // 如果题目已经全部抽过一遍，可以选择自动重置（这里选择返回null，让外部控制是否重置）
+        if (used.size >= questions.length) {
+            console.warn(`All questions in ${level} have been used. Call resetLevel('${level}') to start over.`);
             return null;
         }
 
-        const selectedQuestion = questions[index];
+        // 筛选出还没有抽过的题目
+        const availableQuestions = questions.filter(q => !used.has(q.id));
 
-        // 推进索引到下一题
-        this.indices[level]++;
+        // 随机抽取一个
+        const randomIndex = Math.floor(Math.random() * availableQuestions.length);
+        const selectedQuestion = availableQuestions[randomIndex];
+
+        // 将抽到的题目ID记入“已使用”集合
+        used.add(selectedQuestion.id);
 
         // 返回前做一个深拷贝，防止外部代码意外修改题库数据
         return JSON.parse(JSON.stringify(selectedQuestion));
     }
 
     /**
-     * 重置某个难度的顺序（从第一题重新开始）
-     * @param {string} level
+     * 重置某个难度的抽题记录
+     * @param {string} level 
      */
     resetLevel(level) {
-        if (Object.prototype.hasOwnProperty.call(this.indices, level)) {
-            this.indices[level] = 0;
+        if (this.usedQuestions[level]) {
+            this.usedQuestions[level].clear();
         }
     }
 
     /**
-     * 重置所有难度的顺序
+     * 重置所有抽题记录
      */
     resetAll() {
-        this.indices.level1 = 0;
-        this.indices.level2 = 0;
-        this.indices.level3 = 0;
+        this.usedQuestions.level1.clear();
+        this.usedQuestions.level2.clear();
+        this.usedQuestions.level3.clear();
     }
 }
 

@@ -91,7 +91,7 @@ function openLevel(num) {
         return;
     }
 
-    currentQuestion = questionManager.getNextQuestion('level' + num);
+    currentQuestion = questionManager.getRandomQuestion('level' + num);
 
     if (!currentQuestion) {
         renderDoneScreen();
