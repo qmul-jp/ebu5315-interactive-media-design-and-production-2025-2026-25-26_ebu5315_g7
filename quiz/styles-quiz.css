@@ -1,32 +1,24 @@
 /* =========================================
-           1. GLOBAL VARIABLES & LIGHT MODE (DEFAULT)
+           1. GLOBAL VARIABLES & THEMES
            ========================================= */
 :root {
-    /* System Colors */
     --bg-color: #F2F2F7;
     --card-bg: #FFFFFF;
     --text-primary: #1C1C1E;
     --text-secondary: #8E8E93;
-
-    /* Accent Colors */
     --accent-blue: #007AFF;
     --accent-green: #34C759;
     --accent-orange: #FF9500;
     --accent-purple: #AF52DE;
     --accent-red: #FF3B30;
-
-    /* Status Backgrounds */
     --bg-green: rgba(52, 199, 89, 0.1);
     --bg-red: rgba(255, 59, 48, 0.1);
     --bg-blue: rgba(0, 122, 255, 0.08);
-
-    /* UI Elements */
     --border-light: rgba(60, 60, 67, 0.13);
     --shadow-soft: 0 8px 30px rgba(0, 0, 0, 0.04);
     --shadow-hover: 0 12px 40px rgba(0, 0, 0, 0.08);
     --font-stack: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter", sans-serif;
 
-    /* Correct/Incorrect Semantics (Mapped to green/red by default) */
     --color-correct: var(--accent-green);
     --color-incorrect: var(--accent-red);
     --bg-correct: var(--bg-green);
@@ -35,46 +27,33 @@
     --border-incorrect-style: solid;
 }
 
-/* =========================================
-           2. DARK MODE ADAPTATION
-           ========================================= */
 :root[data-theme="dark"] {
     --bg-color: #000000;
     --card-bg: #1C1C1E;
     --text-primary: #FFFFFF;
     --text-secondary: #EBEBF5;
-
     --border-light: rgba(255, 255, 255, 0.15);
     --shadow-soft: 0 8px 30px rgba(0, 0, 0, 0.4);
     --shadow-hover: 0 12px 40px rgba(0, 0, 0, 0.6);
-
     --bg-green: rgba(48, 209, 88, 0.15);
     --bg-red: rgba(255, 69, 58, 0.15);
     --bg-blue: rgba(10, 132, 255, 0.15);
 }
 
-/* =========================================
-           3. COLORBLIND MODE ADAPTATION
-           ========================================= */
 :root[data-colorblind] {
-    /* Map Correct to High-Contrast Blue, Incorrect to High-Contrast Orange */
     --color-correct: #007AFF;
     --color-incorrect: #FF9500;
     --bg-correct: rgba(0, 122, 255, 0.15);
     --bg-incorrect: rgba(255, 149, 0, 0.15);
-
-    /* Enhance structural feedback for Drag & Drop */
     --border-correct-style: solid;
     --border-incorrect-style: dashed;
 }
 
-/* Base Setup */
 html {
     font-size: 16px;
     transition: font-size 0.3s ease;
 }
 
-/* Parent controls this */
 * {
     box-sizing: border-box;
     margin: 0;
@@ -92,11 +71,9 @@ body {
     min-height: 100vh;
     padding: 100px 20px 80px;
     overflow-x: hidden;
-    user-select: none;
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* View Management */
 .view {
     width: 100%;
     max-width: 1100px;
@@ -142,7 +119,7 @@ body {
     animation: shake 0.4s cubic-bezier(.36, .07, .19, .97) both;
 }
 
-/* Typography scaled with rem */
+/* Generic Text */
 .page-header {
     text-align: center;
     margin-bottom: 3rem;
@@ -161,6 +138,7 @@ body {
     font-weight: 400;
 }
 
+/* Home Menu */
 .level-menu {
     display: flex;
     flex-direction: column;
@@ -183,10 +161,6 @@ body {
 .menu-card:hover {
     transform: scale(1.02);
     box-shadow: var(--shadow-hover);
-}
-
-.menu-card:active {
-    transform: scale(0.98);
 }
 
 .menu-icon {
@@ -232,13 +206,6 @@ body {
     color: var(--text-secondary);
 }
 
-.menu-chevron {
-    color: var(--border-light);
-    font-weight: bold;
-    font-size: 1.25rem;
-    margin-left: 0.75rem;
-}
-
 .level-status {
     font-size: 0.8125rem;
     font-weight: 500;
@@ -253,7 +220,7 @@ body {
     color: var(--color-correct);
 }
 
-/* Test View */
+/* Test UI Top Nav */
 .top-nav {
     display: flex;
     justify-content: space-between;
@@ -272,7 +239,6 @@ body {
     display: flex;
     align-items: center;
     gap: 4px;
-    transition: opacity 0.2s;
     font-family: var(--font-stack);
 }
 
@@ -325,18 +291,19 @@ body {
     transition: color 0.3s;
 }
 
+/* Generic Dynamic Container */
 .question-card {
     background: var(--card-bg);
     border-radius: 24px;
     padding: 2.5rem;
     box-shadow: var(--shadow-soft);
-    display: none;
     flex-direction: column;
     position: relative;
     max-width: 800px;
     margin: 0 auto;
     overflow: hidden;
     transition: background-color 0.3s;
+    display: none;
 }
 
 .question-card.active {
@@ -369,13 +336,21 @@ body {
     background: rgba(175, 82, 222, 0.1);
 }
 
-.card-title {
-    font-size: 1.5rem;
-    font-weight: 700;
-    margin-bottom: 2rem;
+/* Shared Question Elements */
+.image-container {
+    width: 100%;
+    height: 180px;
+    background: var(--bg-color);
+    border-radius: 16px;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+    border: 1px solid var(--border-light);
 }
 
-/* Components */
 .action-btn {
     background: var(--accent-blue);
     color: white;
@@ -408,7 +383,6 @@ body {
     padding: 1.25rem;
     margin-top: 1.5rem;
     display: none;
-    transition: background-color 0.3s;
 }
 
 .explanation-box.show {
@@ -421,7 +395,6 @@ body {
     font-weight: 700;
     margin-bottom: 0.5rem;
     color: var(--text-primary);
-    transition: color 0.3s;
 }
 
 .exp-text {
@@ -430,11 +403,70 @@ body {
     color: var(--text-secondary);
 }
 
-/* L1 Specifics */
+/* Dynamic Templates Styling */
+/* 1. MCQ */
+.options-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.option-btn {
+    background: var(--card-bg);
+    border: 1px solid var(--border-light);
+    border-radius: 14px;
+    padding: 1.125rem;
+    font-size: 1rem;
+    font-weight: 500;
+    text-align: left;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: var(--font-stack);
+    color: var(--text-primary);
+}
+
+.option-btn:hover:not(.selected):not(.correct):not(.incorrect) {
+    background: var(--bg-color);
+}
+
+.option-btn.selected {
+    border-color: var(--accent-blue);
+    background: var(--bg-blue);
+    color: var(--accent-blue);
+}
+
+.option-btn.correct {
+    background: var(--bg-correct);
+    border-color: var(--color-correct);
+    color: var(--color-correct);
+    display: flex;
+    justify-content: space-between;
+}
+
+.option-btn.correct::after {
+    content: "✓";
+    font-weight: bold;
+}
+
+.option-btn.incorrect {
+    background: var(--bg-incorrect);
+    border-color: var(--color-incorrect);
+    color: var(--color-incorrect);
+    display: flex;
+    justify-content: space-between;
+}
+
+.option-btn.incorrect::after {
+    content: "✕";
+    font-weight: bold;
+}
+
+/* 2. Drag & Drop */
 .match-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 1.5rem;
+    user-select: none;
 }
 
 .drag-col,
@@ -533,88 +565,31 @@ body {
     cursor: default;
 }
 
-.drop-zone.static-demo {
-    border: 2px solid var(--border-light);
-    background: var(--bg-color);
-}
-
-.drop-zone.static-demo .placed-item {
-    color: var(--text-secondary);
-    cursor: default;
-}
-
-/* L2 Specifics */
-.image-container {
-    width: 100%;
-    height: 180px;
-    background: var(--bg-color);
-    border-radius: 16px;
-    margin-bottom: 1.5rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--text-secondary);
-    font-size: 0.875rem;
-    border: 1px solid var(--border-light);
-}
-
-.options-list {
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-}
-
-.option-btn {
+/* 3. Fill in the Blank (FIB) */
+.fib-input {
     background: var(--card-bg);
     border: 1px solid var(--border-light);
-    border-radius: 14px;
-    padding: 1.125rem;
+    border-radius: 12px;
+    padding: 1rem;
     font-size: 1rem;
-    font-weight: 500;
-    text-align: left;
-    cursor: pointer;
-    transition: all 0.2s ease;
     font-family: var(--font-stack);
     color: var(--text-primary);
+    width: 100%;
+    outline: none;
+    transition: border-color 0.2s;
+    margin-top: 1rem;
 }
 
-.option-btn:hover:not(.selected):not(.correct):not(.incorrect) {
-    background: var(--bg-color);
-}
-
-.option-btn.selected {
+.fib-input:focus {
     border-color: var(--accent-blue);
-    background: var(--bg-blue);
-    color: var(--accent-blue);
 }
 
-.option-btn.correct {
-    background: var(--bg-correct);
-    border-color: var(--color-correct);
-    color: var(--color-correct);
-    display: flex;
-    justify-content: space-between;
+.fib-input:disabled {
+    opacity: 0.8;
+    cursor: not-allowed;
 }
 
-.option-btn.correct::after {
-    content: "✓";
-    font-weight: bold;
-}
-
-.option-btn.incorrect {
-    background: var(--bg-incorrect);
-    border-color: var(--color-incorrect);
-    color: var(--color-incorrect);
-    display: flex;
-    justify-content: space-between;
-}
-
-.option-btn.incorrect::after {
-    content: "✕";
-    font-weight: bold;
-}
-
-/* L3 Specifics */
+/* 4. Proof (Bottom Sheet) */
 .proof-box {
     background: var(--bg-color);
     border: 1px solid var(--border-light);
@@ -672,7 +647,6 @@ body {
     z-index: 10;
 }
 
-/* Glass effect disabled in dark mode for better contrast, replaced by solid color */
 :root[data-theme="dark"] .bottom-sheet {
     background: #2C2C2E;
 }
@@ -714,10 +688,6 @@ body {
     cursor: pointer;
     font-family: var(--font-stack);
     transition: opacity 0.2s;
-}
-
-.sheet-opt-btn:hover {
-    opacity: 0.8;
 }
 
 @media (max-width: 768px) {

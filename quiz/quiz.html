@@ -1,10 +1,7 @@
 <!--
-    add a check button for answers; add a done or not start label; add the solution for each question; 
-    fixed the layout issues; fixed the bug for progress and score monitoring
--->
-<!--
-    Add lots of inclusive design elements like LIGHT MODE, DARK MODE, COLORBLIND MODE and text resizing functionality; 
-    Add the Bilingual Support; Add a control panel to test these features
+    add a new questionBank.js file in order to separate the question bank data from the page rendering logic and manage questions more efficiently;
+    QuestionBankManager class to handle loading, retrieving, and updating question data;
+    add 24 bilingual questions in total; 
 -->
 <!DOCTYPE html>
 <html lang="en">
@@ -12,7 +9,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Circle Theorems Practice - Integration Version</title>
+    <title>Circle Theorems Practice - Dynamic Engine</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles-quiz.css">
     <link rel="stylesheet" href="../navbar/navbar.css">
@@ -24,7 +21,7 @@
     <div id="home-view" class="view active">
         <header class="page-header">
             <h1 class="page-title" data-i18n="appTitle">Circle Theorems</h1>
-            <p class="page-subtitle" data-i18n="appSubtitle">Select a difficulty level to begin your practice</p>
+            <p class="page-subtitle" data-i18n="appSubtitle">Select a difficulty level to begin</p>
         </header>
 
         <div class="level-menu">
@@ -33,7 +30,7 @@
                 <div class="menu-text">
                     <div class="menu-title"><span data-i18n="l1Title">Level 1 • Easy</span> <span id="status-l1"
                             class="level-status" data-i18n="statusNotStarted">Not Started</span></div>
-                    <div class="menu-desc" data-i18n="l1Desc">Drag & Drop visual matching</div>
+                    <div class="menu-desc" data-i18n="l1Desc">Foundational concepts & matching</div>
                 </div>
                 <div class="menu-chevron">›</div>
             </div>
@@ -42,7 +39,7 @@
                 <div class="menu-text">
                     <div class="menu-title"><span data-i18n="l2Title">Level 2 • Medium</span> <span id="status-l2"
                             class="level-status" data-i18n="statusNotStarted">Not Started</span></div>
-                    <div class="menu-desc" data-i18n="l2Desc">Calculate missing angles</div>
+                    <div class="menu-desc" data-i18n="l2Desc">Calculate missing angles & properties</div>
                 </div>
                 <div class="menu-chevron">›</div>
             </div>
@@ -51,7 +48,7 @@
                 <div class="menu-text">
                     <div class="menu-title"><span data-i18n="l3Title">Level 3 • Advanced</span> <span id="status-l3"
                             class="level-status" data-i18n="statusNotStarted">Not Started</span></div>
-                    <div class="menu-desc" data-i18n="l3Desc">Fill in the blank proofs</div>
+                    <div class="menu-desc" data-i18n="l3Desc">Proofs & complex theorem combinations</div>
                 </div>
                 <div class="menu-chevron">›</div>
             </div>
@@ -70,114 +67,11 @@
             <div class="score-badge" id="score-display">Score: 0/0</div>
         </div>
 
-        <div id="level-1-content" class="question-card" data-level="1">
-            <span class="level-badge badge-1" data-i18n="l1Title">Level 1 • Easy</span>
-            <h2 class="card-title" data-i18n="l1Heading">Match the Theorems</h2>
-            <div class="match-grid">
-                <div class="drag-col">
-                    <div class="drag-item" draggable="true" id="drag-same-seg" data-id="same-seg">
-                        <div class="drag-handle"></div><span data-i18n="l1DragSameSeg">Angles in same segment</span>
-                    </div>
-                    <div class="drag-item" draggable="true" id="drag-centre" data-id="centre">
-                        <div class="drag-handle"></div><span data-i18n="l1DragCentre">Angle at centre</span>
-                    </div>
-                    <div class="drag-item" draggable="true" id="drag-semi" data-id="semi">
-                        <div class="drag-handle"></div><span data-i18n="l1DragSemi">Semicircle is 90°</span>
-                    </div>
-                </div>
-                <div class="drop-col">
-                    <div class="drop-zone" data-target="same-seg">
-                        <div class="diagram-placeholder" data-i18n="l1DropSameSeg">[Diagram: Angles in same segment]
-                        </div>
-                    </div>
-                    <div class="drop-zone" data-target="centre">
-                        <div class="diagram-placeholder" data-i18n="l1DropCentre">[Diagram: Angle at centre]</div>
-                    </div>
-                    <div class="drop-zone" data-target="semi">
-                        <div class="diagram-placeholder" data-i18n="l1DropSemi">[Diagram: Angle in semicircle]</div>
-                    </div>
-                    <div class="drop-zone static-demo">
-                        <div class="placed-item" data-i18n="l1Demo">Radius ⊥ to tangent</div>
-                    </div>
-                </div>
-            </div>
-            <button class="action-btn" id="btn-l1" onclick="submitL1()" disabled data-i18n="btnCheck">Check
-                Answer</button>
-            <div class="explanation-box" id="exp-l1">
-                <div class="exp-title" data-i18n="expTitle">Explanation</div>
-                <div class="exp-text" data-i18n="l1ExpText">
-                    <strong>Angles in same segment:</strong> Angles subtended by the same arc at the circumference are
-                    equal.<br>
-                    <strong>Angle at centre:</strong> The angle subtended by an arc at the centre is double the angle
-                    subtended by it at any remaining part of the circle.<br>
-                    <strong>Semicircle is 90°:</strong> The angle subtended by a diameter at the circumference is a
-                    right angle.
-                </div>
-            </div>
-        </div>
-
-        <div id="level-2-content" class="question-card" data-level="2">
-            <span class="level-badge badge-2" data-i18n="l2Title">Level 2 • Medium</span>
-            <h2 class="card-title" data-i18n="l2Heading">Calculate the Angle</h2>
-            <p style="font-size: 1.0625rem; font-weight: 500; margin-bottom: 1.5rem;" data-i18n="l2Question">In the
-                circle, if angle ABC = 30°, what is angle AOC?</p>
-            <div class="image-container" data-i18n="l2Diagram">[Diagram: Angle ABC at circumference and AOC at centre]
-            </div>
-            <div class="options-list" id="l2-options">
-                <button class="option-btn" data-correct="false" onclick="selectL2(this)">A) 15°</button>
-                <button class="option-btn" data-correct="false" onclick="selectL2(this)">B) 30°</button>
-                <button class="option-btn" data-correct="true" onclick="selectL2(this)">C) 60°</button>
-            </div>
-            <button class="action-btn" id="btn-l2" onclick="submitL2()" disabled data-i18n="btnCheck">Check
-                Answer</button>
-            <div class="explanation-box" id="exp-l2">
-                <div class="exp-title" id="exp-title-l2" data-i18n="expTitle">Explanation</div>
-                <div class="exp-text" data-i18n="l2ExpText">The angle at the centre (AOC) is twice the angle at the
-                    circumference (ABC) when both are subtended by the same arc. Therefore, 2 × 30° = 60°.</div>
-            </div>
-        </div>
-
-        <div id="level-3-content" class="question-card" data-level="3">
-            <span class="level-badge badge-3" data-i18n="l3Title">Level 3 • Advanced</span>
-            <h2 class="card-title" data-i18n="l3Heading">Complete the Proof</h2>
-            <div class="image-container" style="height: 140px;" data-i18n="l3Diagram">[Diagram: Alternate segment
-                theorem proof diagram]</div>
-            <div class="proof-box">
-                <p data-i18n="l3Given"><strong>Given:</strong> AT is a tangent to the circle at A.</p>
-                <p style="margin-top: 0.75rem;">
-                    <span data-i18n="l3Statement"><strong>Statement:</strong> ∠BAT = ∠BCA</span> <br>
-                    <span data-i18n="l3ReasonPrefix"><strong>Reason:</strong></span>
-                    <button class="blank-btn" id="l3-blank" onclick="toggleSheet(event)" data-i18n="l3Blank">Tap to
-                        select reason</button>
-                </p>
-            </div>
-            <button class="action-btn" id="btn-l3" onclick="submitL3()" disabled data-i18n="btnCheck">Check
-                Answer</button>
-            <div class="explanation-box" id="exp-l3">
-                <div class="exp-title" id="exp-title-l3" data-i18n="expTitle">Explanation</div>
-                <div class="exp-text" data-i18n="l3ExpText">The <strong>Alternate Segment Theorem</strong> states that
-                    the angle between a tangent and a chord through the point of contact is equal to the angle in the
-                    alternate segment.</div>
-            </div>
-
-            <div class="bottom-sheet" id="bottom-sheet">
-                <div class="sheet-handle"></div>
-                <h3 class="sheet-title" data-i18n="l3SheetTitle">Select a Reason</h3>
-                <div class="sheet-options">
-                    <button class="sheet-opt-btn" onclick="selectL3(true, 'opt1')" data-i18n="l3Opt1">Alternate Segment
-                        Theorem</button>
-                    <button class="sheet-opt-btn" onclick="selectL3(false, 'opt2')" data-i18n="l3Opt2">Corresponding
-                        Angles</button>
-                    <button class="sheet-opt-btn" onclick="selectL3(false, 'opt3')" data-i18n="l3Opt3">Angles in Same
-                        Segment</button>
-                    <button class="sheet-opt-btn" onclick="toggleSheet()" style="color: var(--color-incorrect);"
-                        data-i18n="l3Cancel">Cancel</button>
-                </div>
-            </div>
-        </div>
+        <div id="dynamic-content" class="question-card active"></div>
     </div>
 
 
+    <script src="questionBank.js"></script>
     <script src="script-quiz.js"></script>
 
 </body>
