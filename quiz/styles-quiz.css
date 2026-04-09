@@ -707,3 +707,32 @@ body {
         order: 3;
     }
 }
+
+/* Review Mode Styling */
+.review-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    width: 100%;
+    text-align: left;
+    margin-top: 1.5rem;
+}
+
+.review-card {
+    background: rgba(0, 0, 0, 0.015);
+    border-radius: 20px;
+    padding: 1.75rem;
+    border: 1px solid var(--border-light);
+}
+
+:root[data-theme="dark"] .review-card {
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.review-header {
+    display: flex;
+    justify-content: space-between;
+    font-weight: 700;
+    margin-bottom: 1.25rem;
+    font-size: 1.125rem;
+}
