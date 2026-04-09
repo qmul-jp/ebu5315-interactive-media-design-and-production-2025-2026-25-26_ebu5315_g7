@@ -70,6 +70,17 @@
     <div class="canvas-wrap">
         <canvas id="canvas2"></canvas>
     </div>
+    
+    <div class="radar-controls">
+        <div class="control-group">
+            <label for="angleSlider">旋转角度 (Angle)</label>
+            <input type="range" id="angleSlider" min="0" max="360" step="1" value="0">
+        </div>
+        <div class="control-group">
+            <label for="radiusSlider">圆盘半径 (Radius)</label>
+            <input type="range" id="radiusSlider" min="0" max="100" step="0.5" value="100">
+        </div>
+    </div>
 </div>
 
 <div id="winModal" class="modal hidden">
@@ -96,14 +107,35 @@
 </div>
 
 <script src="game_main.js"></script>
+<script src="game_main2.js"></script>
 
 <script>
+// --- Game 1 绑定 ---
 document.getElementById("startBtn").onclick = startGame;
 document.getElementById("gameExitBtn").onclick = exitGame;
-document.getElementById("exitBtn").onclick = exitGame;
-document.getElementById("retryBtn").onclick = restartGame;
-document.getElementById("modalCloseBtn").onclick = hideWinModal;
-</script>
 
+// --- Game 2 绑定 (已修正函数名) ---
+document.getElementById("startBtn2").onclick = startGame2;
+document.getElementById("gameExitBtn2").onclick = exitGame2;
+document.getElementById("resetBtn2").onclick = restartGame2;
+
+// --- 弹窗逻辑绑定 ---
+document.getElementById("modalCloseBtn").onclick = hideWinModal;
+
+// 根据当前打开的游戏面板决定点击弹窗按钮的行为
+document.getElementById("exitBtn").onclick = function() {
+    const area1 = document.getElementById("gameArea");
+    const area2 = document.getElementById("gameArea2");
+    if (!area1.classList.contains("hidden")) exitGame();
+    if (!area2.classList.contains("hidden")) exitGame2();
+};
+
+document.getElementById("retryBtn").onclick = function() {
+    const area1 = document.getElementById("gameArea");
+    const area2 = document.getElementById("gameArea2");
+    if (!area1.classList.contains("hidden")) restartGame();
+    if (!area2.classList.contains("hidden")) restartGame2();
+};
+</script>
 </body>
 </html>

@@ -359,3 +359,35 @@ body {
 .confetti:nth-child(3) { left: 50%; background: #10b981; animation-delay: 1.2s; }
 .confetti:nth-child(4) { left: 70%; background: #3b82f6; animation-delay: 0.8s; }
 .confetti:nth-child(5) { left: 90%; background: #a855f7; animation-delay: 1.5s; }
+
+/* --- Game 2 控制滑块区域 --- */
+.radar-controls {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    padding: 10px 20px;
+    background: var(--card-bg);
+    border-radius: 12px;
+    border: 1px solid rgba(0,0,0,0.1);
+}
+
+.control-group {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex: 1;
+    max-width: 300px;
+}
+
+.control-group label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #475569;
+    white-space: nowrap;
+}
+
+.control-group input[type="range"] {
+    flex: 1;
+    cursor: pointer;
+    accent-color: var(--primary); /* 让滑块主题色自动适配靛蓝色 */
+}
