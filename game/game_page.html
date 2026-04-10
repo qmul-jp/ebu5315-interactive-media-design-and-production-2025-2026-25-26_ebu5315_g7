@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Gear Puzzle</title>
+<link rel="stylesheet" href="game_styles.css">
+<link rel="stylesheet" href="../navbar/navbar.css">
+<script src="../navbar/navbar.js"></script>
+</head>
+<body>
+<top-navbar page-type="game" home-link="../index.html"></top-navbar>
+
+<div id = "gameIntro">
+    <div class="game-title">圆神启动</div>
+    <div id="displayAre"></div>
+    <div id="demoAre">
+        <p id="gameintro1">这个游戏是为了考察有关圆的位置关系的知识。</p>
+    </div>
+    <button id="startBtn">Play</button>   
+</div>
+
+
+<div id="gameArea" class="hidden">
+    <div class="game-toolbar">
+        <button id="gameExitBtn">退出</button>
+        <div class="game-title">Game1</div>
+        <div class="toolbar-right">
+            <select id="difficultySelect">
+                <option value="1">难度一 (简单)</option>
+                <option value="3">难度二 (困难)</option>
+                <option value="4">难度三 (地狱)</option>
+            </select>
+            
+            <div class="toggle-container">
+                <input type="checkbox" id="markToggle">
+                <label for="markToggle">标记模式</label>
+            </div>
+            
+            <button id="resetBtn">重置</button>
+        </div>
+    </div>
+
+    <div class="canvas-wrap">
+        <canvas id="canvas"></canvas>
+    </div>
+</div>
+
+<div id="winModal" class="modal hidden">
+    <div class="modal-content">
+        <button id="modalCloseBtn" class="modal-close" aria-label="关闭">×</button>
+
+        <h2>胜利！</h2>
+        <p>齿轮已经连通到最后一个。</p>
+
+        <div class="modal-actions">
+            <button id="exitBtn">退出</button>
+            <button id="retryBtn">重来</button>
+        </div>
+    </div>
+</div>
+
+<script src="game_main.js"></script>
+
+<script>
+document.getElementById("startBtn").onclick = startGame;
+document.getElementById("gameExitBtn").onclick = exitGame;
+document.getElementById("exitBtn").onclick = exitGame;
+document.getElementById("retryBtn").onclick = restartGame;
+document.getElementById("modalCloseBtn").onclick = hideWinModal;
+</script>
+
+</body>
+</html>
