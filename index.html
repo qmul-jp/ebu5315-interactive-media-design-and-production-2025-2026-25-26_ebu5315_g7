@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,8 +9,9 @@
     <link rel="stylesheet" href="./navbar/navbar.css">
     <script src="./navbar/navbar.js"></script>
 </head>
+
 <body>
-    <!-- 顶部导航栏，由Web Component接管 -->
+    <!-- 顶部导航栏 -->
     <top-navbar page-type="index" i18n-nav-home="nav.home"></top-navbar>
 
     <!-- 主要内容区 -->
@@ -19,48 +21,97 @@
             <div class="hero-section">
                 <h1 data-i18n="hero.title">探索几何的无限魅力</h1>
                 <p class="subtitle" data-i18n="hero.subtitle">专业的数学几何学习平台，让抽象的几何概念变得直观易懂</p>
-                
+
                 <!-- 首页顶部搜索框 -->
                 <div class="hero-search-box">
-                    <input type="text" class="hero-search-input" placeholder="搜索知识点，如：垂径定理、圆周角..." data-i18n-placeholder="hero.searchPlaceholder"/>
+                    <input type="text" class="hero-search-input" placeholder="搜索知识点，如：垂径定理、圆周角..."
+                        data-i18n-placeholder="hero.searchPlaceholder" />
                     <button class="hero-search-btn">
                         <span class="search-icon">🔍</span>
                     </button>
                 </div>
-                
+
                 <div class="hero-buttons">
                     <a href="./quiz/quiz.html" class="cta-button" data-i18n="hero.startLearning">开始学习</a>
                     <a href="./game/game_page.html" class="cta-button secondary" data-i18n="hero.geometryGames">几何游戏</a>
                 </div>
             </div>
-            
+
             <!-- 特色功能 -->
-            <div class="features-section">
-                <h2 data-i18n="features.title">平台特色</h2>
-                <div class="features-grid">
-                    <div class="feature-card">
-                        <div class="feature-icon">📚</div>
-                        <h3 data-i18n="features.systematic">系统教学</h3>
-                        <p data-i18n="features.systematicDesc">从基础到进阶，系统化学习几何知识</p>
+            <section class="ag_service-area">
+                <div class="container">
+                    <div class="section-title text-center">
+                        <h4 data-aos="zoom-in-left">Features</h4>
+                        <h2 data-i18n="features.title">平台特色</h2>
+                        <p data-i18n="features.subtitle">专业的数学几何学习平台，让抽象的几何概念变得直观易懂</p>
                     </div>
-                    <div class="feature-card">
-                        <div class="feature-icon">🔍</div>
-                        <h3 data-i18n="features.intelligent">智能搜索</h3>
-                        <p data-i18n="features.intelligentDesc">快速找到你需要的几何知识点</p>
-                    </div>
-                    <div class="feature-card">
-                        <div class="feature-icon">✏️</div>
-                        <h3 data-i18n="features.quiz">随堂检测</h3>
-                        <p data-i18n="features.quizDesc">实时检验学习成果，巩固知识点</p>
-                    </div>
-                    <div class="feature-card">
-                        <div class="feature-icon">🎮</div>
-                        <h3 data-i18n="features.games">几何游戏</h3>
-                        <p data-i18n="features.gamesDesc">通过游戏化方式加深几何概念理解</p>
+
+                    <div class="row mt-50">
+                        <div class="col-lg-3 col-md-6 col-sm-12 text-center">
+                            <div class="service-item mt-30" data-aos="flip-left">
+                                <div class="item_icon item_icon1 m-auto">
+                                    <i class="feature-icon">📚</i>
+                                </div>
+                                <div class="item_content content_active">
+                                    <h3 data-i18n="features.systematic">系统教学</h3>
+                                    <p data-i18n="features.systematicDesc">从基础到进阶，系统化学习几何知识</p>
+                                </div>
+                                <div class="service_item-btn">
+                                    <a href="#" class="btn btn-secondary">了解更多</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-3 col-md-6 col-sm-12 text-center">
+                            <div class="service-item mt-30" data-aos="flip-left">
+                                <div class="item_icon item_icon2 m-auto">
+                                    <i class="feature-icon">🔍</i>
+                                </div>
+                                <div class="item_content">
+                                    <h3 data-i18n="features.intelligent">智能搜索</h3>
+                                    <p data-i18n="features.intelligentDesc">快速找到你需要的几何知识点</p>
+                                </div>
+                                <div class="service_item-btn">
+                                    <a href="#" class="btn btn-secondary">了解更多</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-3 col-md-6 col-sm-12 text-center">
+                            <div class="service-item mt-30" data-aos="flip-right">
+                                <div class="item_icon item_icon3 m-auto">
+                                    <i class="feature-icon">✏️</i>
+                                </div>
+                                <div class="item_content">
+                                    <h3 data-i18n="features.quiz">随堂检测</h3>
+                                    <p data-i18n="features.quizDesc">实时检验学习成果，巩固知识点</p>
+                                </div>
+                                <div class="service_item-btn">
+                                    <a href="#" class="btn btn-secondary">了解更多</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-3 col-md-6 col-sm-12 text-center">
+                            <div class="service-item mt-30" data-aos="flip-right">
+                                <div class="item_icon item_icon4 m-auto">
+                                    <i class="feature-icon">🎮</i>
+                                </div>
+                                <div class="item_content">
+                                    <h3 data-i18n="features.games">几何游戏</h3>
+                                    <p data-i18n="features.gamesDesc">通过游戏化方式加深几何概念理解</p>
+                                </div>
+                                <div class="service_item-btn">
+                                    <a href="#" class="btn btn-secondary">了解更多</a>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
-            </div>
-            
+
+            </section>
+
             <!-- 圆的重要知识点 - 幻灯片展示 -->
             <div class="knowledge-section">
                 <h2 data-i18n="knowledge.title">圆的重要知识点</h2>
@@ -97,23 +148,85 @@
                     </div>
                 </div>
             </div>
-        </section>
 
-        <!-- 登录模块 -->
-        <section id="login" class="module">
-            <h2 data-i18n="login.title">用户登录</h2>
-            <form class="auth-form">
-                <input type="text" placeholder="用户名" required class="input-field" data-i18n-placeholder="login.username"/>
-                <input type="password" placeholder="密码" required class="input-field" data-i18n-placeholder="login.password"/>
-                <div class="privacy-policy">
-                    <input type="checkbox" id="privacy" required>
-                    <label for="privacy" data-i18n="login.privacy">我已阅读并同意<a href="#" onclick="alert('隐私政策：我们尊重您的隐私，不会收集任何个人信息。')">隐私政策</a></label>
+            <!-- 检测介绍 - 幻灯片展示 -->
+            <div class="quiz-intro-section">
+                <h2 data-i18n="quizIntro.title">检测功能介绍</h2>
+                <div class="quiz-intro-slider">
+                    <button class="slider-btn prev-btn" id="quiz-intro-prev">&#10094;</button>
+                    <div class="quiz-intro-slides">
+                        <div class="quiz-intro-slide active">
+                            <div class="quiz-intro-icon">📝</div>
+                            <h3 data-i18n="quizIntro.RealTimeFeedback">实时反馈</h3>
+                            <p data-i18n="quizIntro.RealTimeFeedbackDesc">提交答案后立即获得反馈，了解自己的学习情况</p>
+                        </div>
+                        <div class="quiz-intro-slide">
+                            <div class="quiz-intro-icon">📊</div>
+                            <h3 data-i18n="quizIntro.ProgressTracking">进度追踪</h3>
+                            <p data-i18n="quizIntro.ProgressTrackingDesc">记录学习进度，帮助你了解自己的薄弱环节</p>
+                        </div>
+                        <div class="quiz-intro-slide">
+                            <div class="quiz-intro-icon">🎯</div>
+                            <h3 data-i18n="quizIntro.TargetedPractice">针对性练习</h3>
+                            <p data-i18n="quizIntro.TargetedPracticeDesc">根据你的学习情况，提供个性化的练习题目</p>
+                        </div>
+                        <div class="quiz-intro-slide">
+                            <div class="quiz-intro-icon">🏆</div>
+                            <h3 data-i18n="quizIntro.AchievementSystem">成就系统</h3>
+                            <p data-i18n="quizIntro.AchievementSystemDesc">通过完成检测获得成就，激发学习动力</p>
+                        </div>
+                    </div>
+                    <button class="slider-btn next-btn" id="quiz-intro-next">&#10095;</button>
+                    <div class="slider-dots">
+                        <span class="dot active" data-slide="0"></span>
+                        <span class="dot" data-slide="1"></span>
+                        <span class="dot" data-slide="2"></span>
+                        <span class="dot" data-slide="3"></span>
+                    </div>
                 </div>
-                <button type="submit" class="submit-btn" data-i18n="login.enter">进入</button>
-            </form>
+            </div>
+
+            <!-- 网页数据库介绍 - 卡片展示 -->
+            <div class="database-section">
+                <h2 data-i18n="database.title">网页数据库介绍</h2>
+                <div class="database-cards">
+                    <div class="database-card">
+                        <div class="database-card-icon">💾</div>
+                        <h3 data-i18n="database.dataStorage">数据存储</h3>
+                        <p data-i18n="database.dataStorageDesc">安全存储用户学习数据和检测结果，确保数据不丢失</p>
+                    </div>
+                    <div class="database-card">
+                        <div class="database-card-icon">🔒</div>
+                        <h3 data-i18n="database.dataSecurity">数据安全</h3>
+                        <p data-i18n="database.dataSecurityDesc">采用加密技术保护用户数据，确保隐私安全</p>
+                    </div>
+                    <div class="database-card">
+                        <div class="database-card-icon">📈</div>
+                        <h3 data-i18n="database.dataAnalysis">数据分析</h3>
+                        <p data-i18n="database.dataAnalysisDesc">通过数据分析为用户提供个性化学习建议</p>
+                    </div>
+                    <div class="database-card">
+                        <div class="database-card-icon">🔄</div>
+                        <h3 data-i18n="database.dataSync">数据同步</h3>
+                        <p data-i18n="database.dataSyncDesc">多设备数据同步，随时随地继续学习</p>
+                    </div>
+                </div>
+            </div>
         </section>
 
-
+        <!-- 检测模块 -->
+        <section id="quiz" class="module">
+            <h2 data-i18n="quiz.title">随堂检测</h2>
+            <div class="quiz-item">
+                <p data-i18n="quiz.question1">1. 垂径定理的内容是？</p>
+                <textarea placeholder="请输入您的答案..." data-i18n-placeholder="quiz.answer"></textarea>
+            </div>
+            <div class="quiz-item">
+                <p data-i18n="quiz.question2">2. 圆的标准方程是什么？</p>
+                <textarea placeholder="请输入您的答案..." data-i18n-placeholder="quiz.answer"></textarea>
+            </div>
+            <button class="submit-btn" data-i18n="quiz.submit">提交答卷</button>
+        </section>
 
         <!-- 游戏模块 -->
         <section id="game" class="module">
@@ -128,7 +241,7 @@
         <!-- 设置模块 -->
         <section id="settings" class="module">
             <h2 data-i18n="settings.title">设置</h2>
-            
+
             <div class="settings-section">
                 <h3 data-i18n="settings.appearance">外观</h3>
                 <div class="settings-container">
@@ -157,7 +270,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <div class="settings-section">
                 <h3 data-i18n="settings.language">语言</h3>
                 <div class="settings-container">
@@ -184,32 +297,36 @@
                     </div>
                 </div>
             </div>
-            
+
             <div class="settings-section">
                 <h3 data-i18n="settings.account">账户</h3>
                 <div class="settings-container">
-                    <div class="setting-item">
-                        <label data-i18n="settings.username">用户名</label>
-                        <input type="text" id="settings-username" class="input-field" data-i18n-placeholder="settings.usernamePlaceholder">
-                    </div>
-                    <div class="setting-item">
-                        <label data-i18n="settings.email">邮箱</label>
-                        <input type="email" id="settings-email" class="input-field" data-i18n-placeholder="settings.emailPlaceholder">
-                    </div>
-                    <div class="setting-item">
-                        <label data-i18n="settings.volume">音量</label>
-                        <div class="slider-container">
-                            <input type="range" id="settings-volume" class="slider" min="0" max="100" value="80">
-                            <span class="slider-value">80%</span>
-                        </div>
-                    </div>
-                    <div class="setting-item">
-                        <button class="secondary-btn" data-i18n="settings.changePassword">修改密码</button>
-                        <button class="secondary-btn" data-i18n="settings.deleteAccount">删除账户</button>
+                    <div class="login-form">
+                        <h4 data-i18n="login.title">用户登录</h4>
+                        <form class="auth-form">
+                            <div class="setting-item">
+                                <label data-i18n="login.username">用户名</label>
+                                <input type="text" placeholder="用户名" required class="input-field"
+                                    data-i18n-placeholder="login.username" />
+                            </div>
+                            <div class="setting-item">
+                                <label data-i18n="login.password">密码</label>
+                                <input type="password" placeholder="密码" required class="input-field"
+                                    data-i18n-placeholder="login.password" />
+                            </div>
+                            <div class="setting-item privacy-policy">
+                                <input type="checkbox" id="privacy" required>
+                                <label for="privacy" data-i18n="login.privacy">我已阅读并同意<a href="#"
+                                        onclick="alert('隐私政策：我们尊重您的隐私，不会收集任何个人信息。')">隐私政策</a></label>
+                            </div>
+                            <div class="setting-item">
+                                <button type="submit" class="submit-btn" data-i18n="login.enter">进入</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
-            
+
             <div class="settings-section">
                 <h3 data-i18n="settings.learning">学习</h3>
                 <div class="settings-container">
@@ -222,7 +339,8 @@
                     </div>
                     <div class="setting-item">
                         <label data-i18n="settings.dailyGoal">每日学习目标（分钟）</label>
-                        <input type="number" id="settings-daily-goal" class="input-field" value="30" min="5" max="180" step="5">
+                        <input type="number" id="settings-daily-goal" class="input-field" value="30" min="5" max="180"
+                            step="5">
                     </div>
                     <div class="setting-item">
                         <label data-i18n="settings.studyReminder">学习提醒</label>
@@ -233,7 +351,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <div class="settings-section">
                 <h3 data-i18n="settings.privacy">隐私和安全</h3>
                 <div class="settings-container">
@@ -260,7 +378,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <div class="settings-section">
                 <h3 data-i18n="settings.advanced">高级</h3>
                 <div class="settings-container">
@@ -277,7 +395,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <div class="settings-footer">
                 <button class="submit-btn" data-i18n="settings.save">应用设置</button>
             </div>
@@ -309,4 +427,5 @@
 
     <script src="script.js"></script>
 </body>
+
 </html>
