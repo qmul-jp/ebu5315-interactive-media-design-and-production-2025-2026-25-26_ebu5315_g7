@@ -13,11 +13,16 @@ const translations = {
         'nav.game': '游戏',
         'nav.settings': '设置',
         'nav.login': '登录',
+        'nav.font': '字体',
+        'nav.language': '中文',
+        'breadcrumb.home': '首页',
+        'breadcrumb.geometry': '几何学习',
         'hero.title': '探索几何的无限魅力',
         'hero.subtitle': '专业的数学几何学习平台，让抽象的几何概念变得直观易懂',
-        'hero.startLearning': '检测',
-        'hero.geometryGames': '游戏',
+        'hero.startLearning': '开始学习',
+        'hero.geometryGames': '几何游戏',
         'features.title': '平台特色',
+        'features.subtitle': '专业的数学几何学习平台，让抽象的几何概念变得直观易懂',
         'features.systematic': '系统教学',
         'features.systematicDesc': '从基础到进阶，系统化学习几何知识',
         'features.intelligent': '智能搜索',
@@ -26,6 +31,7 @@ const translations = {
         'features.quizDesc': '实时检验学习成果，巩固知识点',
         'features.games': '几何游戏',
         'features.gamesDesc': '通过游戏化方式加深几何概念理解',
+        'features.learnMore': '了解更多',
         'login.title': '用户登录',
         'login.username': '用户名',
         'login.password': '密码',
@@ -49,6 +55,24 @@ const translations = {
         'knowledge.standardEquationDesc': '(x-a)² + (y-b)² = r²，其中(a,b)为圆心坐标，r为半径',
         'knowledge.tangentProperty': '切线性质',
         'knowledge.tangentPropertyDesc': '圆的切线垂直于经过切点的半径',
+        'quizIntro.title': '检测功能介绍',
+        'quizIntro.RealTimeFeedback': '实时反馈',
+        'quizIntro.RealTimeFeedbackDesc': '提交答案后立即获得反馈，了解自己的学习情况',
+        'quizIntro.ProgressTracking': '进度追踪',
+        'quizIntro.ProgressTrackingDesc': '记录学习进度，帮助你了解自己的薄弱环节',
+        'quizIntro.TargetedPractice': '针对性练习',
+        'quizIntro.TargetedPracticeDesc': '根据你的学习情况，提供个性化的练习题目',
+        'quizIntro.AchievementSystem': '成就系统',
+        'quizIntro.AchievementSystemDesc': '通过完成检测获得成就，激发学习动力',
+        'database.title': '网页数据库介绍',
+        'database.dataStorage': '数据存储',
+        'database.dataStorageDesc': '安全存储用户学习数据和检测结果，确保数据不丢失',
+        'database.dataSecurity': '数据安全',
+        'database.dataSecurityDesc': '采用加密技术保护用户数据，确保隐私安全',
+        'database.dataAnalysis': '数据分析',
+        'database.dataAnalysisDesc': '通过数据分析为用户提供个性化学习建议',
+        'database.dataSync': '数据同步',
+        'database.dataSyncDesc': '多设备数据同步，随时随地继续学习',
         'settings.title': '设置',
         'settings.appearance': '外观',
         'settings.language': '语言',
@@ -97,14 +121,19 @@ const translations = {
         'nav.teach': 'Teaching',
         'nav.search': 'Search',
         'nav.quiz': 'Quiz',
-        'nav.game': 'Game',
+        'nav.game': 'Games',
         'nav.settings': 'Settings',
         'nav.login': 'Login',
+        'nav.font': 'Font',
+        'nav.language': 'English',
+        'breadcrumb.home': 'Home',
+        'breadcrumb.geometry': 'Geometry Learning',
         'hero.title': 'Explore the Infinite Charm of Geometry',
         'hero.subtitle': 'A professional mathematics geometry learning platform that makes abstract geometric concepts intuitive and easy to understand',
-        'hero.startLearning': 'Quiz',
-        'hero.geometryGames': 'Game',
+        'hero.startLearning': 'Start Learning',
+        'hero.geometryGames': 'Geometry Games',
         'features.title': 'Platform Features',
+        'features.subtitle': 'Professional mathematics geometry learning platform, making abstract geometric concepts intuitive and easy to understand',
         'features.systematic': 'Systematic Teaching',
         'features.systematicDesc': 'From basic to advanced, systematically learn geometry knowledge',
         'features.intelligent': 'Intelligent Search',
@@ -113,6 +142,7 @@ const translations = {
         'features.quizDesc': 'Real-time inspection of learning outcomes, consolidate knowledge points',
         'features.games': 'Geometry Games',
         'features.gamesDesc': 'Deepen geometric concept understanding through gamification',
+        'features.learnMore': 'Learn More',
         'login.title': 'User Login',
         'login.username': 'Username',
         'login.password': 'Password',
@@ -136,6 +166,24 @@ const translations = {
         'knowledge.standardEquationDesc': '(x-a)² + (y-b)² = r², where (a,b) is center and r is radius',
         'knowledge.tangentProperty': 'Tangent Property',
         'knowledge.tangentPropertyDesc': 'The tangent to a circle is perpendicular to the radius at the point of contact',
+        'quizIntro.title': 'Quiz Feature Introduction',
+        'quizIntro.RealTimeFeedback': 'Real-time Feedback',
+        'quizIntro.RealTimeFeedbackDesc': 'Get immediate feedback after submitting answers to understand your learning status',
+        'quizIntro.ProgressTracking': 'Progress Tracking',
+        'quizIntro.ProgressTrackingDesc': 'Record learning progress to help you understand your weak areas',
+        'quizIntro.TargetedPractice': 'Targeted Practice',
+        'quizIntro.TargetedPracticeDesc': 'Provide personalized practice questions based on your learning situation',
+        'quizIntro.AchievementSystem': 'Achievement System',
+        'quizIntro.AchievementSystemDesc': 'Earn achievements by completing quizzes to motivate learning',
+        'database.title': 'Web Database Introduction',
+        'database.dataStorage': 'Data Storage',
+        'database.dataStorageDesc': 'Securely store user learning data and quiz results to ensure data is not lost',
+        'database.dataSecurity': 'Data Security',
+        'database.dataSecurityDesc': 'Use encryption technology to protect user data and ensure privacy security',
+        'database.dataAnalysis': 'Data Analysis',
+        'database.dataAnalysisDesc': 'Provide personalized learning recommendations through data analysis',
+        'database.dataSync': 'Data Synchronization',
+        'database.dataSyncDesc': 'Multi-device data synchronization, continue learning anytime, anywhere',
         'settings.title': 'Settings',
         'settings.appearance': 'Appearance',
         'settings.language': 'Language',
@@ -181,7 +229,7 @@ const translations = {
 };
 
 // 当前语言
-let currentLang = 'en';
+let currentLang = 'zh';
 
 // 设置元素变量（全局）
 let settingsLanguage, settingsFontSize, settingsColorblindMode, settingsEyeProtectionMode,
@@ -211,12 +259,6 @@ function updateLanguage(lang) {
 
     // 更新游戏模块文本
     updateGameLanguage();
-
-    // Update breadcrumbs based on active module
-    const activeModule = document.querySelector('.module.active');
-    if (activeModule && typeof updateIndexBreadcrumbs === 'function') {
-        updateIndexBreadcrumbs(activeModule.id);
-    }
 }
 
 // 游戏状态标记
@@ -278,7 +320,7 @@ let slideInterval;
 
 function initKnowledgeSlider() {
     slides = document.querySelectorAll('.knowledge-slide');
-    dots = document.querySelectorAll('.slider-dots .dot');
+    dots = document.querySelectorAll('.knowledge-section .slider-dots .dot');
     const prevBtn = document.getElementById('knowledge-prev');
     const nextBtn = document.getElementById('knowledge-next');
 
@@ -287,38 +329,38 @@ function initKnowledgeSlider() {
     // 绑定按钮事件
     if (prevBtn) {
         prevBtn.addEventListener('click', () => {
-            changeSlide(currentSlide - 1);
-            resetAutoPlay();
+            changeKnowledgeSlide(currentSlide - 1);
+            resetKnowledgeAutoPlay();
         });
     }
 
     if (nextBtn) {
         nextBtn.addEventListener('click', () => {
-            changeSlide(currentSlide + 1);
-            resetAutoPlay();
+            changeKnowledgeSlide(currentSlide + 1);
+            resetKnowledgeAutoPlay();
         });
     }
 
     // 绑定指示点事件
     dots.forEach((dot, index) => {
         dot.addEventListener('click', () => {
-            changeSlide(index);
-            resetAutoPlay();
+            changeKnowledgeSlide(index);
+            resetKnowledgeAutoPlay();
         });
     });
 
     // 自动播放
-    startAutoPlay();
+    startKnowledgeAutoPlay();
 
     // 鼠标悬停时暂停自动播放
     const slider = document.querySelector('.knowledge-slider');
     if (slider) {
-        slider.addEventListener('mouseenter', stopAutoPlay);
-        slider.addEventListener('mouseleave', startAutoPlay);
+        slider.addEventListener('mouseenter', stopKnowledgeAutoPlay);
+        slider.addEventListener('mouseleave', startKnowledgeAutoPlay);
     }
 }
 
-function changeSlide(index) {
+function changeKnowledgeSlide(index) {
     // 处理循环
     if (index < 0) {
         index = slides.length - 1;
@@ -336,23 +378,110 @@ function changeSlide(index) {
     dots[currentSlide].classList.add('active');
 }
 
-function startAutoPlay() {
-    stopAutoPlay();
+function startKnowledgeAutoPlay() {
+    stopKnowledgeAutoPlay();
     slideInterval = setInterval(() => {
-        changeSlide(currentSlide + 1);
+        changeKnowledgeSlide(currentSlide + 1);
     }, 5000); // 每5秒自动切换
 }
 
-function stopAutoPlay() {
+function stopKnowledgeAutoPlay() {
     if (slideInterval) {
         clearInterval(slideInterval);
         slideInterval = null;
     }
 }
 
-function resetAutoPlay() {
-    stopAutoPlay();
-    startAutoPlay();
+function resetKnowledgeAutoPlay() {
+    stopKnowledgeAutoPlay();
+    startKnowledgeAutoPlay();
+}
+
+
+
+// 检测介绍幻灯片功能
+let currentQuizIntroSlide = 0;
+let quizIntroSlides = [];
+let quizIntroDots = [];
+let quizIntroSlideInterval;
+
+function initQuizIntroSlider() {
+    quizIntroSlides = document.querySelectorAll('.quiz-intro-slide');
+    quizIntroDots = document.querySelectorAll('.quiz-intro-section .slider-dots .dot');
+    const prevBtn = document.getElementById('quiz-intro-prev');
+    const nextBtn = document.getElementById('quiz-intro-next');
+
+    if (quizIntroSlides.length === 0) return;
+
+    // 绑定按钮事件
+    if (prevBtn) {
+        prevBtn.addEventListener('click', () => {
+            changeQuizIntroSlide(currentQuizIntroSlide - 1);
+            resetQuizIntroAutoPlay();
+        });
+    }
+
+    if (nextBtn) {
+        nextBtn.addEventListener('click', () => {
+            changeQuizIntroSlide(currentQuizIntroSlide + 1);
+            resetQuizIntroAutoPlay();
+        });
+    }
+
+    // 绑定指示点事件
+    quizIntroDots.forEach((dot, index) => {
+        dot.addEventListener('click', () => {
+            changeQuizIntroSlide(index);
+            resetQuizIntroAutoPlay();
+        });
+    });
+
+    // 自动播放
+    startQuizIntroAutoPlay();
+
+    // 鼠标悬停时暂停自动播放
+    const slider = document.querySelector('.quiz-intro-slider');
+    if (slider) {
+        slider.addEventListener('mouseenter', stopQuizIntroAutoPlay);
+        slider.addEventListener('mouseleave', startQuizIntroAutoPlay);
+    }
+}
+
+function changeQuizIntroSlide(index) {
+    // 处理循环
+    if (index < 0) {
+        index = quizIntroSlides.length - 1;
+    } else if (index >= quizIntroSlides.length) {
+        index = 0;
+    }
+
+    // 移除当前激活状态
+    quizIntroSlides[currentQuizIntroSlide].classList.remove('active');
+    quizIntroDots[currentQuizIntroSlide].classList.remove('active');
+
+    // 添加新的激活状态
+    currentQuizIntroSlide = index;
+    quizIntroSlides[currentQuizIntroSlide].classList.add('active');
+    quizIntroDots[currentQuizIntroSlide].classList.add('active');
+}
+
+function startQuizIntroAutoPlay() {
+    stopQuizIntroAutoPlay();
+    quizIntroSlideInterval = setInterval(() => {
+        changeQuizIntroSlide(currentQuizIntroSlide + 1);
+    }, 5000); // 每5秒自动切换
+}
+
+function stopQuizIntroAutoPlay() {
+    if (quizIntroSlideInterval) {
+        clearInterval(quizIntroSlideInterval);
+        quizIntroSlideInterval = null;
+    }
+}
+
+function resetQuizIntroAutoPlay() {
+    stopQuizIntroAutoPlay();
+    startQuizIntroAutoPlay();
 }
 
 // 应用字体大小
@@ -479,6 +608,18 @@ document.addEventListener('DOMContentLoaded', function () {
         updateIndexBreadcrumbs('home');
     }
 
+    // 绑定导航链接事件适配新的 changeModule
+    const navLinks = document.querySelectorAll('.nav-link');
+    navLinks.forEach(link => {
+        link.addEventListener('click', function (e) {
+            e.preventDefault();
+            const targetId = this.getAttribute('href').substring(1);
+            if (window.changeModule) {
+                window.changeModule(targetId);
+            }
+        });
+    });
+
     // 表单提交处理
     const forms = document.querySelectorAll('form');
     forms.forEach(form => {
@@ -498,6 +639,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // 初始化知识点幻灯片
     initKnowledgeSlider();
+
+    // 初始化检测介绍幻灯片
+    initQuizIntroSlider();
 
     // 设置功能
     settingsLanguage = document.getElementById('settings-language');
@@ -686,10 +830,83 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // 初始化语言
     updateLanguage(currentLang);
+
+    // 实现h2标题背景随滚动变化的效果
+    function updateH2Backgrounds() {
+        const h2Elements = document.querySelectorAll('h2');
+        const scrollY = window.scrollY;
+
+        h2Elements.forEach((h2, index) => {
+            // 计算每个h2元素的滚动位置
+            const h2Rect = h2.getBoundingClientRect();
+            const h2Top = h2Rect.top + scrollY;
+            const h2Center = h2Top + h2Rect.height / 2;
+
+            // 计算视口中心
+            const viewportCenter = scrollY + window.innerHeight / 2;
+
+            // 计算滚动偏移量
+            const offset = (viewportCenter - h2Center) / window.innerHeight;
+
+            // 更新背景位置
+            const bgPositionX = 50 + offset * 20;
+            h2.style.backgroundPosition = `${bgPositionX}% 50%`;
+
+            // 根据滚动位置调整透明度
+            const distance = Math.abs(viewportCenter - h2Center);
+            const maxDistance = window.innerHeight * 1.5;
+            const opacity = Math.max(0.8, 1 - distance / maxDistance);
+            h2.style.opacity = opacity;
+
+            // 根据滚动位置调整缩放
+            const scale = Math.max(0.9, 1 - Math.abs(offset) * 0.1);
+            h2.style.transform = `scale(${scale})`;
+        });
+    }
+
+    // 初始调用一次
+    updateH2Backgrounds();
+
+    // 添加滚动事件监听器
+    window.addEventListener('scroll', updateH2Backgrounds);
 });
+
+// 滚动时背景花纹变化效果
+function initParallaxBackgrounds() {
+    const sections = [
+        '.knowledge-section',
+        '.quiz-intro-section',
+        '.database-section'
+    ];
+
+    window.addEventListener('scroll', () => {
+        const scrollY = window.scrollY;
+
+        sections.forEach(selector => {
+            const section = document.querySelector(selector);
+            if (section) {
+                const speed = 0.5;
+                const yPos = -(scrollY * speed);
+                section.style.backgroundPosition = `0 ${yPos}px, 40px ${60 + yPos * 0.8}px, 130px ${270 + yPos * 0.6}px, 70px ${100 + yPos * 0.4}px`;
+            }
+        });
+    });
+}
+
+// 页面加载完成后初始化背景滚动效果
+window.addEventListener('DOMContentLoaded', initParallaxBackgrounds);
 
 // 全局导航功能与面包屑更新
 window.changeModule = function (targetId) {
+    if (targetId === 'quiz') {
+        window.location.href = './quiz/quiz.html';
+        return;
+    }
+    if (targetId === 'game') {
+        window.location.href = './game/game_page.html';
+        return;
+    }
+
     const modules = document.querySelectorAll('.module');
     modules.forEach(module => {
         module.classList.remove('active');
@@ -701,6 +918,15 @@ window.changeModule = function (targetId) {
 
     // 更新面包屑
     updateIndexBreadcrumbs(targetId);
+
+    // 更新导航链接状态
+    const navLinks = document.querySelectorAll('.nav-link');
+    navLinks.forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === '#' + targetId) {
+            link.classList.add('active');
+        }
+    });
 };
 
 window.updateIndexBreadcrumbs = function (targetId) {
@@ -708,7 +934,7 @@ window.updateIndexBreadcrumbs = function (targetId) {
     if (!bc) return;
 
     const homeText = translations[currentLang]['nav.home'] || '首页';
-    const homeLink = `<span class="bc-item" onclick="changeModule('home')">${homeText}</span>`;
+    const homeLink = `<span class="bc-item" onclick="changeModule('home')" style="cursor:pointer;">${homeText}</span>`;
 
     if (targetId === 'home') {
         bc.innerHTML = `<span class="bc-item" style="cursor:default; opacity:1;">${homeText}</span>`;
@@ -718,6 +944,8 @@ window.updateIndexBreadcrumbs = function (targetId) {
             pageText = translations[currentLang]['nav.settings'] || '设置';
         } else if (targetId === 'game') {
             pageText = translations[currentLang]['nav.game'] || '游戏';
+        } else if (targetId === 'quiz') {
+            pageText = translations[currentLang]['nav.quiz'] || '检测';
         } else if (targetId === 'login') {
             pageText = translations[currentLang]['nav.login'] || '登录';
         }
