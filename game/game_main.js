@@ -8,6 +8,40 @@ window.GAME_DIFFICULTY = 1;
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 
+/* ---------- 齿轮图片资源加载 ---------- */
+const gearAssets = {
+    red: new Image(),    // 重叠 (Overlapping)
+    yellow: new Image(), // 接触 (Touching)
+    green: new Image(),  // 连通 (Connected)
+    blue: new Image(),   // 普通/移动 (Movable)
+    grey: new Image()    // 固定 (Fixed)
+};
+
+
+// 请在此处替换为你实际的文件路径
+gearAssets.red.src    = 'source/images/gear_red.png';
+gearAssets.yellow.src = 'source/images/gear_yellow.png';
+gearAssets.green.src  = 'source/images/gear_green.png';
+gearAssets.blue.src   = 'source/images/gear_blue.png';
+gearAssets.grey.src   = 'source/images/gear_grey.png';
+
+// --- 加载背景图片 ---
+const bgAssets = {
+    ez: new Image(),
+    medium: new Image(),
+    hard: new Image()
+};
+
+bgAssets.ez.src = 'source/images/bg_ez.png'; 
+bgAssets.medium.src = 'source/images/bg_medium.png'; 
+bgAssets.hard.src = 'source/images/bg_hard.png'; 
+
+Object.values(bgAssets).forEach(img => {
+    img.onload = () => { 
+        if (typeof draw === 'function' && gameStarted) draw(); 
+    };
+});
+
 /* ---------- Config ---------- */
 const CONFIG = {
   cols: 40,
@@ -497,64 +531,84 @@ class Piece {
   draw() {
     ctx.save();
 
-    // 阴影效果
+    // 1. 阴影效果：增强悬浮感
     ctx.shadowColor = "rgba(0,0,0,0.25)";
     ctx.shadowBlur = this.isDragging ? 18 : 8;
 
-    // --- 1. 绘制半透明齿轮主体 ---
-    ctx.beginPath();
-    ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+    // --- 2. 状态判定逻辑 ---
+    let stateImg = gearAssets.blue; // 默认为蓝色（普通可移动）
 
-    // 颜色判定逻辑
     if (this.isOverlappingAny()) {
-      ctx.fillStyle = "rgba(255, 77, 77, 0.7)";   // 重叠
+        stateImg = gearAssets.red;    // 重叠状态 -> 红色
     } else if (typeof isCorrectlyConnectedToHead === "function" && isCorrectlyConnectedToHead(this)) {
-      ctx.fillStyle = "rgba(77, 255, 136, 0.7)";  // 连通
+        stateImg = gearAssets.green;  // 正确连通 -> 绿色
     } else if (this.isTouchingAny()) {
-      ctx.fillStyle = "rgba(255, 216, 77, 0.7)";  // 接触
-    } else {
-      ctx.fillStyle = this.isFixed ? "rgba(153, 153, 153, 0.7)" : "rgba(106, 169, 255, 0.7)";
+        stateImg = gearAssets.yellow; // 仅接触 -> 黄色
+    } else if (this.isFixed) {
+        stateImg = gearAssets.grey;   // 固定齿轮 -> 灰色
     }
-    ctx.fill();
 
-    // 轮廓
-    ctx.lineWidth = this.isDragging ? 4 : 2;
-    ctx.strokeStyle = "#333";
-    ctx.stroke();
+    // --- 3. 绘制齿轮图片 ---
+    // 齿轮大小与圆盘一致，即宽度和高度均为 radius * 2
+    if (stateImg.complete && stateImg.naturalWidth !== 0) {
+        ctx.drawImage(
+            stateImg,
+            this.x - this.radius,
+            this.y - this.radius,
+            this.radius * 2,
+            this.radius * 2
+        );
+    } else {
+        // 后备方案：如果图片未加载，绘制带颜色的圆盘
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        const colors = { red: "#ff4d4d", yellow: "#ffd84d", green: "#4dff88", blue: "#6aa9ff", grey: "#999" };
+        // 简单映射图片对象到颜色
+        let fallbackColor = colors.blue;
+        if (stateImg === gearAssets.red) fallbackColor = colors.red;
+        if (stateImg === gearAssets.yellow) fallbackColor = colors.yellow;
+        if (stateImg === gearAssets.green) fallbackColor = colors.green;
+        if (stateImg === gearAssets.grey) fallbackColor = colors.grey;
+        
+        ctx.fillStyle = fallbackColor;
+        ctx.fill();
+        ctx.lineWidth = 2;
+        ctx.strokeStyle = "#333";
+        ctx.stroke();
+    }
 
-    // --- 2. 辅助定位线 (中心十字 + 四向刻度) ---
+    // 绘制完图片后去掉阴影，防止文字产生重影
+    ctx.shadowBlur = 0;
+
+    // --- 4. 辅助定位线 (十字准星，可选，如果不想要可以删掉) ---
     ctx.beginPath();
-    ctx.strokeStyle = "rgba(0, 0, 0, 0.6)"; 
-    ctx.lineWidth = 1.5;
-    const tickLen = Math.min(this.radius * 0.2, 10);
+    ctx.strokeStyle = "rgba(0, 0, 0, 0.3)"; 
+    ctx.lineWidth = 1;
     const crossHalf = 6;
     ctx.moveTo(this.x - crossHalf, this.y); ctx.lineTo(this.x + crossHalf, this.y);
     ctx.moveTo(this.x, this.y - crossHalf); ctx.lineTo(this.x, this.y + crossHalf);
-    ctx.moveTo(this.x, this.y - this.radius); ctx.lineTo(this.x, this.y - this.radius + tickLen);
-    ctx.moveTo(this.x, this.y + this.radius); ctx.lineTo(this.x, this.y + this.radius - tickLen);
-    ctx.moveTo(this.x - this.radius, this.y); ctx.lineTo(this.x - this.radius + tickLen, this.y);
-    ctx.moveTo(this.x + this.radius, this.y); ctx.lineTo(this.x + this.radius - tickLen, this.y);
     ctx.stroke();
 
-    // radius showcase
-    // 默认向下平移一个单元格
-    let textOffsetY = this.radius*0.4; 
-
+    // --- 5. 绘制半径文字 (rText) ---
+    // 动态调整文字偏移量，防止在边缘处被切断
+    let textOffsetY = this.radius * 0.4; 
     if (!this.isDragging && this.inMap && this.gy >= (CONFIG.rows - 1)) {
-      textOffsetY = -this.radius*0.5; // 向上平移
+        textOffsetY = -this.radius * 0.5; 
     }
 
     const textX = this.x;
     const textY = this.y + textOffsetY;
 
+    // 字体大小随半径缩放
     const fontSize = Math.max(12, Math.min(this.radius * 0.7, 42));
     ctx.fillStyle = "#222";
     ctx.font = `bold ${fontSize}px sans-serif`;
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
 
-    ctx.strokeStyle = "rgba(255,255,255,0.9)";
-    ctx.lineWidth = Math.max(2, fontSize * 0.12);
+    // 文字外描边，确保在彩色图片上依然清晰
+    ctx.strokeStyle = "rgba(255,255,255,0.8)";
+    ctx.lineWidth = Math.max(2, fontSize * 0.15);
     ctx.strokeText(this.rText, textX, textY);
     ctx.fillText(this.rText, textX, textY);
 
@@ -636,10 +690,6 @@ function makeNodeKey(x, y, r) {
   return new Set([...validNodeKeys, ...alternativeNodes()]);
 }
 
-function isPieceOnComputedNode(piece) {
-  if (!piece.inMap) return false;
-  return getAllComputedNodeKeys().has(makeNodeKey(piece.gx, piece.gy, piece.r));
-}
 
 function isCorrectlyConnectedToHead(piece) {
   if (!piece || !piece.inMap) return false;
@@ -764,15 +814,6 @@ function alternativeNodes() {
 
   if (nodes.length < 3) return result;
 
-  const opposite = {
-    left: "right",
-    right: "left",
-    up: "down",
-    down: "up"
-  };
-
-  const isHorizontal = t => t === "left" || t === "right";
-
   function overlapsOtherNodes(ax, ay, ar, skipA, skipB, skipC) {
     for (let j = 0; j < nodes.length; j++) {
       if (j === skipA || j === skipB || j === skipC) continue;
@@ -780,6 +821,7 @@ function alternativeNodes() {
       const other = nodes[j];
       const dist = Math.hypot(ax - other.x, ay - other.y);
 
+      // 检查与其他路径节点是否重叠
       if (dist < ar + other.r - EPS) {
         return true;
       }
@@ -787,6 +829,7 @@ function alternativeNodes() {
     return false;
   }
 
+  // 遍历中间的非固定节点，寻找其数学上的备用位置
   for (let i = 1; i < nodes.length - 1; i++) {
     const prev = nodes[i - 1];
     const cur = nodes[i];
@@ -794,37 +837,35 @@ function alternativeNodes() {
 
     if (pieces[i] && pieces[i].isFixed) continue;
 
-    // the tangency information records current node's tengency point with previous node
-    const inTan = cur.tangency;
+    // 目标距离：必须正好相切
+    const targetDist1 = prev.r + cur.r;
+    const targetDist2 = next.r + cur.r;
+    const searchRadius = Math.ceil(targetDist1);
 
-    // current node's tangency direction need to be opposite
-    const outTan = opposite[next.tangency];
+    // 在 prev 节点周围的矩形区域内进行坐标爆破搜索
+    const minX = Math.max(0, prev.x - searchRadius);
+    const maxX = Math.min(CONFIG.cols, prev.x + searchRadius);
+    const minY = Math.max(0, prev.y - searchRadius);
+    const maxY = Math.min(CONFIG.rows, prev.y + searchRadius);
 
-    if (!inTan || !outTan) continue;
+    for (let altX = minX; altX <= maxX; altX++) {
+      for (let altY = minY; altY <= maxY; altY++) {
+        // 排除它本身的原始位置
+        if (altX === cur.x && altY === cur.y) continue;
 
-    // is turn?
-    const isTurn = isHorizontal(inTan) !== isHorizontal(outTan);
-    if (!isTurn) continue;
+        const d1 = Math.hypot(altX - prev.x, altY - prev.y);
+        const d2 = Math.hypot(altX - next.x, altY - next.y);
 
-    // only when previous and next one are having same radius
-    if (prev.r !== next.r) continue;
+        // 验证距离是否符合相切条件
+        if (Math.abs(d1 - targetDist1) > EPS) continue;
+        if (Math.abs(d2 - targetDist2) > EPS) continue;
 
-    const altX = prev.x + next.x - cur.x;
-    const altY = prev.y + next.y - cur.y;
+        // 验证备选位置是否挤压或覆盖了其他齿轮
+        if (overlapsOtherNodes(altX, altY, cur.r, i - 1, i, i + 1)) continue;
 
-    if (altX < 0 || altX > CONFIG.cols || altY < 0 || altY > CONFIG.rows) {
-      continue;
+        result.add(makeNodeKey(altX, altY, cur.r));
+      }
     }
-
-    const d1 = Math.hypot(altX - prev.x, altY - prev.y);
-    const d2 = Math.hypot(altX - next.x, altY - next.y);
-
-    if (Math.abs(d1 - (prev.r + cur.r)) > EPS) continue;
-    if (Math.abs(d2 - (next.r + cur.r)) > EPS) continue;
-
-    if (overlapsOtherNodes(altX, altY, cur.r, i - 1, i, i + 1)) continue;
-
-    result.add(makeNodeKey(altX, altY, cur.r));
   }
 
   return result;
@@ -893,12 +934,29 @@ function snap(p) {
 function drawMapBase() {
   ctx.save();
 
-  // 地图区底色
-  ctx.fillStyle = "#eef6ff";
-  ctx.fillRect(mapPanelRect.x, mapPanelRect.y, mapPanelRect.w, mapPanelRect.h);
+  // 根据难度选择已经加载好的图片对象
+  let currentBg;
+  if (window.GAME_DIFFICULTY === 1) {
+    currentBg = bgAssets.ez;
+  } else if (window.GAME_DIFFICULTY === 3) {
+    currentBg = bgAssets.medium;
+  } else {
+    // 难度 4 (或者其他情况)
+    currentBg = bgAssets.hard;
+  }
 
-  // 网格
-  ctx.strokeStyle = "#8da0b8";
+  // --- 1. 绘制背景图片 ---
+  if (currentBg.complete && currentBg.naturalWidth !== 0) {
+    // 成功加载时绘制对应难度的图片
+    ctx.drawImage(currentBg, mapPanelRect.x, mapPanelRect.y, mapPanelRect.w, mapPanelRect.h);
+  } else {
+    // 兜底底色
+    ctx.fillStyle = "#eef6ff"; 
+    ctx.fillRect(mapPanelRect.x, mapPanelRect.y, mapPanelRect.w, mapPanelRect.h);
+  }
+
+  // --- 2. 绘制网格线 ---
+  ctx.strokeStyle = "rgba(0, 0, 0, 0.2)"; // 半透明黑色网格线
   ctx.lineWidth = 1;
   ctx.strokeRect(gridRect.x, gridRect.y, gridRect.w, gridRect.h);
 
@@ -918,7 +976,8 @@ function drawMapBase() {
     ctx.stroke();
   }
 
-  ctx.fillStyle = "#555";
+  // --- 3. 绘制坐标轴刻度数字 ---
+  ctx.fillStyle = "#333"; 
   ctx.font = "bold 12px Arial";
   
   // 顶部 X 轴刻度
@@ -926,12 +985,10 @@ function drawMapBase() {
   ctx.textBaseline = "bottom";
   for (let i = 0; i <= CONFIG.cols; i++) {
     const x = gridRect.x + i * cell;
-    // 绘制小短线刻度
     ctx.beginPath();
     ctx.moveTo(x, gridRect.y);
     ctx.lineTo(x, gridRect.y - 6);
     ctx.stroke();
-    // 每隔 5 个单位标注一次数字，防拥挤
     if (i % 5 === 0) {
       ctx.fillText(i, x, gridRect.y - 8);
     }
@@ -942,12 +999,10 @@ function drawMapBase() {
   ctx.textBaseline = "middle";
   for (let j = 0; j <= CONFIG.rows; j++) {
     const y = gridRect.y + j * cell;
-    // 绘制小短线刻度
     ctx.beginPath();
     ctx.moveTo(gridRect.x, y);
     ctx.lineTo(gridRect.x - 6, y);
     ctx.stroke();
-    // 每隔 5 个单位标注一次数字
     if (j % 5 === 0) {
       ctx.fillText(j, gridRect.x - 8, y);
     }

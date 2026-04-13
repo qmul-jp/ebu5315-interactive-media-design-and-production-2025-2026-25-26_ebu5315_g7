@@ -3,6 +3,7 @@ html, body {
   min-height: 100%;
 }
 
+
 body {
   min-height: 200vh;
   display: flex;
@@ -19,7 +20,7 @@ body {
   display: none !important;
 }
 
-#startBtn {
+#startBtn, #startBtn2 {
   padding: 14px 34px;
   font-size: 20px;
   font-weight: 700;
@@ -28,9 +29,10 @@ body {
   background: #fff;
   cursor: pointer;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  margin-top: auto; /* 让按钮沉底对齐 */
 }
 
-#gameArea {
+#gameArea, #gameArea2 {
   width: min(92vw, 1180px);
   height: min(84vh, 1000px);
   display: flex;
@@ -96,8 +98,8 @@ canvas {
   box-sizing: border-box;
 }
 
-#gameExitBtn,
-#resetBtn,
+#gameExitBtn, #gameExitBtn2,
+#resetBtn, #resetBtn2,
 .modal-actions button {
   padding: 10px 18px;
   border: 2px solid #222;
@@ -161,36 +163,34 @@ canvas {
 }
 
 /* --- 游戏介绍区域样式 --- */
-#gameIntro {
-  /* 布局与对齐 */
+.game-intro-card {
   display: flex;
   flex-direction: column;
-  align-items: center;      /* 水平居中 */
-  justify-content: center;   /* 垂直居中（在有高度的情况下生效） */
+  align-items: center;
+  justify-content: center;
   
-  /* 视觉样式 */
-  width: min(90vw, 600px);   /* 限制宽度，防止过宽 */
-  min-height: 400px;         /* 给予固定或最小高度以展现垂直居中效果 */
+  /* 调整宽度，使得并排时不会超出屏幕 */
+  width: min(45vw, 500px);   
+  min-height: 400px;         
   padding: 30px;
   background: #ffffff;
-  border: 2px solid #222;    /* 外层容器边框 */
+  border: 2px solid #222;    
   border-radius: 12px;
   box-shadow: 0 10px 25px rgba(0,0,0,0.05);
-  gap: 20px;                 /* 内部元素间距 */
+  gap: 20px;                 
   box-sizing: border-box;
 }
 
 /* 内部两个容器的通用边框样式 */
-#displayAre, #demoAre {
-  width: 100%;               /* 撑满父容器宽度 */
-  border: 1px dashed #666;   /* 内部容器边框（使用虚线以示区别，也可改为 solid） */
+#displayAre, #demoAre,
+#displayAre2, #demoAre2 {
+  width: 100%;               
+  border: 1px dashed #666;   
   border-radius: 8px;
   padding: 20px;
   box-sizing: border-box;
   background: #fcfcfc;
-  min-height: 80px;          /* 保证没有内容时也有一定高度 */
-  
-  /* 让容器内部的文字也居中 */
+  min-height: 80px;          
   display: flex;
   align-items: center;
   justify-content: center;
@@ -226,4 +226,168 @@ canvas {
     cursor: pointer;
     width: 16px;
     height: 16px;
+}
+
+.intro-container {
+  display: flex;
+  flex-direction: row;       /* 水平并排 */
+  justify-content: center;   /* 居中对齐 */
+  align-items: stretch;      /* 让两个卡片高度一致 */
+  gap: 40px;                 /* 两个游戏介绍之间的间距 */
+  width: 100%;
+  flex-wrap: wrap;           /* 屏幕较小时自动换行，防止挤压 */
+}
+
+:root {
+  --primary: #4f46e5;      /* 现代靛蓝色 */
+  --accent: #10b981;       /* 成功绿色 */
+  --bg-gradient: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+  --card-bg: rgba(255, 255, 255, 0.9);
+  --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+body {
+  background: var(--bg-gradient);
+  color: #1e293b;
+  min-height: 100vh;
+  margin: 0;
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  padding-top: 60px;
+}
+
+/* 并排布局容器 */
+.intro-container {
+  display: flex;
+  gap: 30px;
+  justify-content: center;
+  align-items: stretch;
+  padding: 40px 20px;
+  max-width: 1200px;
+  width: 100%;
+}
+
+/* 游戏介绍卡片美化 */
+.game-intro-card {
+  background: var(--card-bg);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 24px;
+  padding: 40px;
+  width: 400px;
+  text-align: center;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: var(--shadow-sm);
+}
+
+.game-intro-card:hover {
+  transform: translateY(-8px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--primary);
+}
+
+.game-title {
+  font-size: 28px;
+  background: linear-gradient(to right, #1e293b, #4f46e5);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 20px;
+}
+
+/* 按钮美化 */
+#startBtn, #startBtn2, #resetBtn, #gameExitBtn {
+  background: var(--primary);
+  color: white;
+  border: none;
+  padding: 12px 28px;
+  border-radius: 12px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition: filter 0.2s, transform 0.1s;
+  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+}
+
+#startBtn:hover, #startBtn2:hover {
+  filter: brightness(1.1);
+  transform: scale(1.05);
+}
+
+/* 游戏区域美化 */
+#gameArea, #gameArea2 {
+  background: white;
+  border-radius: 20px;
+  padding: 20px;
+  border: none;
+  box-shadow: var(--shadow-lg);
+}
+
+/* --- 胜利对话框与彩带效果 --- */
+.modal-content {
+  background: white;
+  border: none;
+  border-radius: 30px;
+  padding: 40px;
+  overflow: hidden; /* 用于剪裁彩带 */
+}
+
+/* 彩带动画 */
+.confetti-wrapper {
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  pointer-events: none;
+}
+
+.confetti {
+  position: absolute;
+  width: 10px;
+  height: 20px;
+  background: var(--primary);
+  top: -20px;
+  opacity: 0.8;
+  animation: fall 3s infinite ease-in-out;
+}
+
+@keyframes fall {
+  0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(400px) rotate(720deg); opacity: 0; }
+}
+
+/* 为不同彩带设置颜色和延迟 */
+.confetti:nth-child(1) { left: 10%; background: #fbbf24; animation-delay: 0s; }
+.confetti:nth-child(2) { left: 30%; background: #ef4444; animation-delay: 0.5s; }
+.confetti:nth-child(3) { left: 50%; background: #10b981; animation-delay: 1.2s; }
+.confetti:nth-child(4) { left: 70%; background: #3b82f6; animation-delay: 0.8s; }
+.confetti:nth-child(5) { left: 90%; background: #a855f7; animation-delay: 1.5s; }
+
+/* --- Game 2 控制滑块区域 --- */
+.radar-controls {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    padding: 10px 20px;
+    background: var(--card-bg);
+    border-radius: 12px;
+    border: 1px solid rgba(0,0,0,0.1);
+}
+
+.control-group {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex: 1;
+    max-width: 300px;
+}
+
+.control-group label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #475569;
+    white-space: nowrap;
+}
+
+.control-group input[type="range"] {
+    flex: 1;
+    cursor: pointer;
+    accent-color: var(--primary); /* 让滑块主题色自动适配靛蓝色 */
 }

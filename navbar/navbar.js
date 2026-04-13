@@ -22,17 +22,26 @@ class TopNavbar extends HTMLElement {
             </div>
         `;
 
+        let navMenuHtml = '';
+
         // 首页专属的控制栏配置
         if (pageType === 'index') {
+            navMenuHtml = `
+                <div class="nav-menu">
+                    <a href="#home" class="nav-link active" data-i18n="nav.home">首页</a>
+                    <a href="#quiz" class="nav-link" data-i18n="nav.quiz">检测</a>
+                    <a href="#game" class="nav-link" data-i18n="nav.game">游戏</a>
+                    <a href="#settings" class="nav-link" data-i18n="nav.settings">设置</a>
+                </div>
+            `;
             rightControls = `
                 <div class="nav-control">
-                    <button class="nav-icon-btn" onclick="if(typeof changeModule === 'function') changeModule('settings')" title="Settings">⚙️</button>
                     <button class="nav-lang-btn" onclick="triggerLanguageToggle()" id="lang-toggle-btn">🌐 EN/中</button>
                 </div>
             `;
         }
 
-        let breadcrumbHtml = `<span class="bc-item" data-i18n="${i18nNavHome}" onclick="if(typeof changeModule === 'function') changeModule('home'); else window.location.href='${homeLink}'" style="cursor:pointer;">Home</span>`;
+        let breadcrumbHtml = `<span class="bc-item" data-i18n="${i18nNavHome}" onclick="if(typeof changeModule === 'function') changeModule('home'); else if(document.querySelector('a[href=\\'#home\\']')) document.querySelector('a[href=\\'#home\\']').click(); else window.location.href='${homeLink}'" style="cursor:pointer;">Home</span>`;
         if (pageType === 'quiz') {
             breadcrumbHtml += ` <span class="bc-separator">/</span> <span class="bc-item" style="cursor:default; opacity:1;" data-i18n="nav.quiz">Quiz</span>`;
         } else if (pageType === 'game') {
@@ -47,6 +56,7 @@ class TopNavbar extends HTMLElement {
                         ${breadcrumbHtml}
                     </span>
                 </div>
+                ${navMenuHtml}
                 <div class="nav-right">
                     ${rightControls}
                 </div>
@@ -59,15 +69,15 @@ class TopNavbar extends HTMLElement {
 customElements.define('top-navbar', TopNavbar);
 
 // 将导航栏相关的通用UI控制函数暴露到全局
-window.changeFontSize = function(value) {
+window.changeFontSize = function (value) {
     document.documentElement.style.fontSize = value + 'px';
 };
 
-window.toggleColorblindMode = function() {
+window.toggleColorblindMode = function () {
     document.documentElement.toggleAttribute('data-colorblind');
 };
 
-window.toggleThemeMode = function() {
+window.toggleThemeMode = function () {
     if (typeof toggleTheme === 'function') {
         toggleTheme(); // quiz里可能已经覆盖的功能
     } else {
@@ -79,7 +89,7 @@ window.toggleThemeMode = function() {
     }
 };
 
-window.triggerLanguageToggle = function() {
+window.triggerLanguageToggle = function () {
     // 兼容多种业务逻辑文件对语言切换的挂载情况
     if (typeof toggleLanguage === 'function') {
         toggleLanguage(); // quiz里可能已经覆盖的功能
