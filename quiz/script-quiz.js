@@ -164,12 +164,34 @@ function renderQuestion() {
     const dict = i18nData[currentLang];
     selectedAnswerId = null;
 
+    // 判断当前题目是否包含了真实图片路径
+    const hasImage = q.imageSrc && q.imageSrc.trim() !== "";
+
+    // 渲染头部标签和题目文本
     let html = `
                 <span class="level-badge badge-${currentLevelNum}">${dict['l' + currentLevelNum + 'Title']}</span>
-                <div class="image-container">${q.imageDesc[currentLang]}</div>
                 <p style="font-size: 1.125rem; font-weight: 600; margin-bottom: 1.75rem; line-height: 1.5; color: var(--text-primary);">${q.question[currentLang]}</p>
             `;
 
+    // 🌟 核心判断：根据有无图片决定布局结构
+    if (hasImage) {
+        // 有图片：使用左右双栏布局
+        html += `
+                    <div class="question-layout-grid">
+                        <div class="question-left">
+                            <div class="image-container" style="background:transparent; border:none; padding:0;">
+                                <img src="${q.imageSrc}" alt="${q.imageDesc ? q.imageDesc[currentLang] : 'Question Image'}" 
+                                     style="width: 100%; height: 100%; object-fit: contain; border-radius: 16px; border: 1px solid var(--border-light); background: var(--card-bg);">
+                            </div>
+                        </div>
+                        <div class="question-right">
+                `;
+    } else {
+        // 无图片：使用单栏垂直布局
+        html += `<div style="display:flex; flex-direction:column; width:100%;">`;
+    }
+
+    // --- 渲染交互组件（选择、填空、拖拽等，这部分保持不变）---
     if (q.type === 'mcq') {
         html += `<div class="options-list" id="mcq-options">`;
         q.options.forEach(opt => {
@@ -178,7 +200,7 @@ function renderQuestion() {
         html += `</div>`;
     }
     else if (q.type === 'fib') {
-        html += `<input type="text" id="fib-input" class="fib-input" placeholder="${dict.fibPlaceholder}" oninput="checkSubmitReady()">`;
+        html += `<input type="text" id="fib-input" class="fib-input" placeholder="${dict.fibPlaceholder}" oninput="checkSubmitReady()" style="margin-top: 0;">`;
     }
     else if (q.type === 'drag') {
         html += `<div class="match-grid"><div class="drag-col">`;
@@ -195,8 +217,21 @@ function renderQuestion() {
     else if (q.type === 'proof') {
         html += `
                     <div class="proof-box">
-                        <p style="margin-bottom:0.5rem;"><strong>Reason:</strong> <button class="blank-btn" id="l3-blank" onclick="toggleSheet(event)">${dict.l3Blank}</button></p>
+                        <p style="margin-bottom:0;"><strong>Reason:</strong> <button class="blank-btn" id="l3-blank" onclick="toggleSheet(event)">${dict.l3Blank}</button></p>
                     </div>
+                `;
+    }
+
+    // 🌟 闭合之前的布局
+    if (hasImage) {
+        html += `</div></div>`; // 闭合 question-right 和 question-layout-grid
+    } else {
+        html += `</div>`; // 闭合单栏 div
+    }
+
+    // --- 处理 Bottom Sheet、提交按钮和解析（这部分保持不变）---
+    if (q.type === 'proof') {
+        html += `
                     <div class="bottom-sheet" id="bottom-sheet">
                         <div class="sheet-handle"></div>
                         <h3 class="sheet-title">${dict.l3SheetTitle}</h3>
@@ -214,7 +249,7 @@ function renderQuestion() {
 
     html += `
                 <button class="action-btn" id="btn-submit" onclick="submitAnswer()" disabled>${dict.btnCheck}</button>
-                <button class="action-btn" id="btn-next" onclick="nextQuestion()" style="display:none; background:var(--bg-color); color:var(--text-primary); border:1px solid var(--border-light); box-shadow:none;">${dict.btnNext}</button>
+                <button class="action-btn" id="btn-next" onclick="nextQuestion()" style="display:none; background:var(--bg-color); color:var(--text-primary); border:1px solid var(--border-strong); box-shadow:none;">${dict.btnNext}</button>
                 
                 <div class="explanation-box" id="exp-box">
                     <div class="exp-title" id="exp-title">${dict.expTitle}</div>

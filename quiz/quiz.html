@@ -1,7 +1,6 @@
 <!--
-    Improve the details of UI, including button styles, card shadows, and overall layout;
-    Fixed the bug that the asynchronous operation between the question selection logic and the answer counting logic;
-    Added a new state which is "In progress".
+   Achieving a side-by-side responsive layout with "image on the left and title on the right";
+   Considered the UX for different screen sizes and orientations.
 -->
 <!DOCTYPE html>
 <html lang="en">
@@ -68,6 +67,23 @@
         </div>
 
         <div id="dynamic-content" class="question-card active"></div>
+    </div>
+
+    <div class="debug-panel">
+        <h4 style="margin:0; color: var(--text-primary);">Global Context</h4>
+        <div class="debug-row">Language: <div><button class="debug-btn" onclick="setLanguage('en')">EN</button> <button
+                    class="debug-btn" onclick="setLanguage('zh')">ZH</button></div>
+        </div>
+        <div class="debug-row">Theme: <div><button class="debug-btn"
+                    onclick="document.documentElement.removeAttribute('data-theme')">Light</button> <button
+                    class="debug-btn"
+                    onclick="document.documentElement.setAttribute('data-theme', 'dark')">Dark</button></div>
+        </div>
+        <div class="debug-row">Colorblind: <div><button class="debug-btn"
+                    onclick="document.documentElement.toggleAttribute('data-colorblind')">Toggle</button></div>
+        </div>
+        <div class="debug-row">Scale: <input type="range" min="12" max="24" value="16"
+                oninput="document.documentElement.style.fontSize = this.value + 'px'"></div>
     </div>
 
     <script src="questionBank.js"></script>
