@@ -71,16 +71,6 @@
         <canvas id="canvas2"></canvas>
     </div>
     
-    <div class="radar-controls">
-        <div class="control-group">
-            <label for="angleSlider">旋转角度 (Angle)</label>
-            <input type="range" id="angleSlider" min="0" max="360" step="1" value="0">
-        </div>
-        <div class="control-group">
-            <label for="radiusSlider">圆盘半径 (Radius)</label>
-            <input type="range" id="radiusSlider" min="0" max="100" step="0.5" value="100">
-        </div>
-    </div>
 </div>
 
 <div id="winModal" class="modal hidden">
@@ -114,10 +104,19 @@
 document.getElementById("startBtn").onclick = startGame;
 document.getElementById("gameExitBtn").onclick = exitGame;
 
-// --- Game 2 绑定 (已修正函数名) ---
+// --- Game 2 绑定 ---
 document.getElementById("startBtn2").onclick = startGame2;
 document.getElementById("gameExitBtn2").onclick = exitGame2;
 document.getElementById("resetBtn2").onclick = restartGame2;
+
+// 监听 Game 2 的难度下拉框切换
+document.getElementById("difficultySelect2").addEventListener("change", function(e) {
+    if (e.target.value === "1") {
+        setDifficulty2('easy');
+    } else if (e.target.value === "2") {
+        setDifficulty2('hard');
+    }
+});
 
 // --- 弹窗逻辑绑定 ---
 document.getElementById("modalCloseBtn").onclick = hideWinModal;
