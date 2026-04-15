@@ -1,7 +1,7 @@
 // --- 1. i18n Data ---
 const i18nData = {
     en: {
-        appTitle: "Circle Theorems", appSubtitle: "Select a difficulty level to begin",
+        appTitle: "Test yourself!", appSubtitle: "Select a difficulty level to begin",
         l1Title: "Level 1 • Easy", l1Desc: "Foundational concepts & matching",
         l2Title: "Level 2 • Medium", l2Desc: "Calculate missing angles & properties",
         l3Title: "Level 3 • Advanced", l3Desc: "Proofs & complex theorem combinations",
@@ -16,7 +16,7 @@ const i18nData = {
         fibPlaceholder: "Type your answer here..."
     },
     zh: {
-        appTitle: "圆的定理练习", appSubtitle: "选择难度级别开始练习",
+        appTitle: "试试看！", appSubtitle: "选择难度级别开始练习",
         l1Title: "第一关 • 简单", l1Desc: "基础概念与视觉匹配",
         l2Title: "第二关 • 中等", l2Desc: "计算未知角度及定理应用",
         l3Title: "第三关 • 进阶", l3Desc: "完成几何证明及复杂组合",
@@ -209,8 +209,16 @@ function renderQuestion() {
         });
         html += `</div><div class="drop-col">`;
         const dropLabels = [dict.diagramA, dict.diagramB, dict.diagramC];
+
         Object.keys(q.answer).forEach((zoneKey, idx) => {
-            html += `<div class="drop-zone" data-target="${zoneKey}"><div class="diagram-placeholder">${dropLabels[idx]}</div></div>`;
+            // 🌟 根据是否有 zoneImages 决定渲染图片还是占位文字
+            let innerHtml = '';
+            if (q.zoneImages && q.zoneImages[zoneKey]) {
+                innerHtml = `<img src="${q.zoneImages[zoneKey]}" alt="Diagram" style="width:100%; height:100%; object-fit:contain; border-radius:8px; pointer-events:none; opacity:0.9;">`;
+            } else {
+                innerHtml = `<div class="diagram-placeholder">${dropLabels[idx]}</div>`;
+            }
+            html += `<div class="drop-zone" data-target="${zoneKey}">${innerHtml}</div>`;
         });
         html += `</div></div>`;
     }
@@ -385,7 +393,7 @@ function attachDragEvents() {
 
             this.dataset.placedId = droppedId;
             this.dataset.placedTarget = targetId;
-            this.innerHTML = `<div class="placed-item" onclick="returnItemL1(this.parentElement)">${draggedItem.innerText}</div>`;
+            this.insertAdjacentHTML('beforeend', `<div class="placed-item" onclick="returnItemL1(this.parentElement, this)">${draggedItem.innerText}</div>`);
             this.classList.add('filled-temp');
 
             draggedItem.classList.add('hidden');
@@ -394,18 +402,18 @@ function attachDragEvents() {
     });
 }
 
-window.returnItemL1 = function (zone) {
+// 🌟 接收 overlayEl 参数
+window.returnItemL1 = function (zone, overlayEl) {
     if (isAnswered) return;
     document.getElementById(zone.dataset.placedId).classList.remove('hidden');
 
     delete zone.dataset.placedId;
     delete zone.dataset.placedTarget;
-    const target = zone.dataset.target;
-    const dict = i18nData[currentLang];
 
-    const labelMap = { 'zone1': dict.diagramA, 'zone2': dict.diagramB, 'zone3': dict.diagramC };
-    zone.innerHTML = `<div class="diagram-placeholder">${labelMap[target]}</div>`;
     zone.classList.remove('filled-temp');
+    // 🌟 仅移除半透明文字层，底层的真实图片完好保留
+    overlayEl.remove();
+
     checkSubmitReady();
 };
 
