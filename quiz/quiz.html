@@ -1,9 +1,8 @@
 <!--
-   Updated the layout for "Drag and Drop" questions
+   Added a shuffle function for randomizing question order in future iterations.
 -->
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,11 +11,8 @@
     <link rel="stylesheet" href="styles-quiz.css">
     <link rel="stylesheet" href="../navbar/navbar.css">
     <script src="../navbar/navbar.js"></script>
-    <style>
-
-    </style>
+   
 </head>
-
 <body>
     <top-navbar page-type="quiz" home-link="../index.html"></top-navbar>
     <div id="home-view" class="view active">
@@ -29,8 +25,7 @@
             <div class="menu-card" onclick="openLevel(1)">
                 <div class="menu-icon icon-easy">1</div>
                 <div class="menu-text">
-                    <div class="menu-title"><span data-i18n="l1Title">Level 1 • Easy</span> <span id="status-l1"
-                            class="level-status" data-i18n="statusNotStarted">Not Started</span></div>
+                    <div class="menu-title"><span data-i18n="l1Title">Level 1 • Easy</span> <span id="status-l1" class="level-status" data-i18n="statusNotStarted">Not Started</span></div>
                     <div class="menu-desc" data-i18n="l1Desc">Foundational concepts & matching</div>
                 </div>
                 <div class="menu-chevron">›</div>
@@ -38,8 +33,7 @@
             <div class="menu-card" onclick="openLevel(2)">
                 <div class="menu-icon icon-medium">2</div>
                 <div class="menu-text">
-                    <div class="menu-title"><span data-i18n="l2Title">Level 2 • Medium</span> <span id="status-l2"
-                            class="level-status" data-i18n="statusNotStarted">Not Started</span></div>
+                    <div class="menu-title"><span data-i18n="l2Title">Level 2 • Medium</span> <span id="status-l2" class="level-status" data-i18n="statusNotStarted">Not Started</span></div>
                     <div class="menu-desc" data-i18n="l2Desc">Calculate missing angles & properties</div>
                 </div>
                 <div class="menu-chevron">›</div>
@@ -47,8 +41,7 @@
             <div class="menu-card" onclick="openLevel(3)">
                 <div class="menu-icon icon-hard">3</div>
                 <div class="menu-text">
-                    <div class="menu-title"><span data-i18n="l3Title">Level 3 • Advanced</span> <span id="status-l3"
-                            class="level-status" data-i18n="statusNotStarted">Not Started</span></div>
+                    <div class="menu-title"><span data-i18n="l3Title">Level 3 • Advanced</span> <span id="status-l3" class="level-status" data-i18n="statusNotStarted">Not Started</span></div>
                     <div class="menu-desc" data-i18n="l3Desc">Proofs & complex theorem combinations</div>
                 </div>
                 <div class="menu-chevron">›</div>
@@ -61,9 +54,7 @@
             <button class="back-btn" onclick="goHome()" data-i18n="btnBack">Back</button>
             <div class="progress-container">
                 <div class="progress-label" data-i18n="progressLabel">Level Progress</div>
-                <div class="progress-bar-bg">
-                    <div class="progress-bar-fill" id="progress-bar"></div>
-                </div>
+                <div class="progress-bar-bg"><div class="progress-bar-fill" id="progress-bar"></div></div>
             </div>
             <div class="score-badge" id="score-display">Score: 0/0</div>
         </div>
@@ -76,5 +67,4 @@
     <script src="script-quiz.js"></script>
 
 </body>
-
 </html>
