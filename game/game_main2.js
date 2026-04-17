@@ -277,8 +277,6 @@ function getConstrainedPos(rawAngle, rawRadius, currentAngle, currentRadius) {
     let currentRing = Math.floor(currentRadius / ringWidth);
     currentRing = Math.max(0, Math.min(currentRingCount - 1, currentRing));
 
-    // 【核心修改】：碰撞判定不再计算小球的物理体积 (dotSize)，仅算中心点。
-    // 保留 2 像素的极小空气墙，防止圆心正好压在墙壁线上引发逻辑抖动
     let airWallPadding = 2; 
     let stopDist = airWallPadding / currentRadius; 
 
@@ -301,7 +299,7 @@ function getConstrainedPos(rawAngle, rawRadius, currentAngle, currentRadius) {
         finalAngle = clampAngleToArc(intendedAngle, bounds.min, bounds.max);
     }
 
-    // --- 3. 径向数据跳跃 ---
+    // --- 3. 径向数据跳跃（修复穿墙 Bug：强制视觉对齐） ---
     let targetRing = Math.floor(rawRadius / ringWidth);
     targetRing = Math.max(0, Math.min(currentRingCount - 1, targetRing));
     
@@ -311,13 +309,29 @@ function getConstrainedPos(rawAngle, rawRadius, currentAngle, currentRadius) {
     let finalRing = currentRing;
     let step = targetRing > currentRing ? 1 : -1;
     
-    // 跳跃判定的逻辑本来就是只看实际所在的扇区(actualSector)，现在配合质点碰撞，可以丝滑过门
     while (finalRing !== targetRing) {
         let nextR = finalRing + step;
         let wallToCheck = (step === 1) ? nextR : finalRing;
+        
+        // 【防穿墙判断 A】：逻辑上这个扇区有没有打通？
         if (currentMaze.ringWalls[wallToCheck][actualSector]) {
-            break; 
+            break; // 逻辑实心墙，直接阻断
         }
+
+        // 【防穿墙判断 B】：小球是否精确对准了视觉上的“门缝”？
+        let radiusAtWall = wallToCheck * ringWidth;
+        // 这里的 35 像素必须和 drawMazeWalls 里的视觉开口宽度保持绝对一致
+        let minGapPx = Math.max(35, playerDisk.dotSize * 3.5); 
+        let doorHalfAngle = (minGapPx / 2) / radiusAtWall;
+
+        let midAngle = (actualSector + 0.5) * SECTOR_ANGLE;
+        let distToMid = angleDist(finalAngle, midAngle);
+        
+        // 如果小球偏离了门的中心，试图从视觉残留的实体墙壁上挤过去，则强制阻断跨层
+        if (distToMid > doorHalfAngle) {
+            break;
+        }
+
         finalRing = nextR;
     }
 
@@ -348,6 +362,9 @@ function processInputs(mx, my) {
     
     playerDisk.angle = constrained.angle;
     playerDisk.radius = constrained.radius;
+
+    // 【关键修改】：消除“蓄力跳跃”。如果跨层被墙壁阻断，UI 滑块的意图立刻失效，强行与小球的实际物理层级对齐
+    uiState.intendedRing = Math.floor(playerDisk.radius / ringWidth);
 
     draw2();
     checkWin2();
@@ -392,6 +409,43 @@ window.addEventListener("mouseleave", () => {
     uiState.isDraggingRadius = false; 
     draw2(); 
 });
+
+canvas2.addEventListener("wheel", (e) => {
+    if (!gameStarted2 || isGameWon2) return;
+    e.preventDefault(); // 防止网页跟着滚动
+
+    const ringWidth = maxRadius / currentRingCount;
+    
+    // 基于小球真实的物理位置计算当前层
+    const currentPhysicalRing = Math.floor(playerDisk.radius / ringWidth);
+    let targetRing = currentPhysicalRing;
+
+    // 滑轮判定：向下滚去内层，向上滚去外层
+    if (e.deltaY > 0 && currentPhysicalRing > 0) {
+        targetRing = currentPhysicalRing - 1; 
+    } else if (e.deltaY < 0 && currentPhysicalRing < currentRingCount - 1) {
+        targetRing = currentPhysicalRing + 1; 
+    }
+
+    let targetRawRadius = (targetRing + 0.5) * ringWidth;
+    
+    // 放入物理引擎判定（只有当前扇区有门，constrained 的 radius 才会发生改变）
+    const constrained = getConstrainedPos(
+        uiState.intendedAngle, 
+        targetRawRadius, 
+        playerDisk.angle, 
+        playerDisk.radius
+    );
+    
+    playerDisk.angle = constrained.angle;
+    playerDisk.radius = constrained.radius;
+
+    // 【关键修改】：操作结束后，必须把 UI 层级意图重置为小球实际所在层级
+    uiState.intendedRing = Math.floor(playerDisk.radius / ringWidth);
+
+    draw2();
+    checkWin2();
+}, { passive: false });
 
 /* ---------- 绘图与碰撞判定 ---------- */
 function checkWin2() {
