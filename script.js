@@ -13,6 +13,10 @@ const translations = {
         'nav.game': '游戏',
         'nav.settings': '设置',
         'nav.login': '登录',
+        'nav.font': '字体',
+        'nav.language': '中文',
+        'breadcrumb.home': '首页',
+        'breadcrumb.geometry': '几何学习',
         'hero.title': '探索几何的无限魅力',
         'hero.subtitle': '专业的数学几何学习平台，让抽象的几何概念变得直观易懂',
         'hero.startLearning': '开始学习',
@@ -27,6 +31,7 @@ const translations = {
         'features.quizDesc': '实时检验学习成果，巩固知识点',
         'features.games': '几何游戏',
         'features.gamesDesc': '通过游戏化方式加深几何概念理解',
+        'features.learnMore': '了解更多',
         'login.title': '用户登录',
         'login.username': '用户名',
         'login.password': '密码',
@@ -50,6 +55,14 @@ const translations = {
         'knowledge.standardEquationDesc': '(x-a)² + (y-b)² = r²，其中(a,b)为圆心坐标，r为半径',
         'knowledge.tangentProperty': '切线性质',
         'knowledge.tangentPropertyDesc': '圆的切线垂直于经过切点的半径',
+        'knowledge.centralAngle': '圆心角定理',
+        'knowledge.centralAngleDesc': '圆心角的度数等于它所对的弧的度数',
+        'knowledge.cyclicQuadrilateral': '圆内接四边形性质',
+        'knowledge.cyclicQuadrilateralDesc': '圆内接四边形的对角互补，外角等于内对角',
+        'knowledge.generalEquation': '圆的一般方程',
+        'knowledge.generalEquationDesc': 'x² + y² + Dx + Ey + F = 0，其中D² + E² - 4F > 0',
+        'knowledge.circleRelations': '两圆位置关系',
+        'knowledge.circleRelationsDesc': '外离、外切、相交、内切、内含五种位置关系，由圆心距与两圆半径决定',
         'quizIntro.title': '检测功能介绍',
         'quizIntro.RealTimeFeedback': '实时反馈',
         'quizIntro.RealTimeFeedbackDesc': '提交答案后立即获得反馈，了解自己的学习情况',
@@ -119,6 +132,10 @@ const translations = {
         'nav.game': 'Games',
         'nav.settings': 'Settings',
         'nav.login': 'Login',
+        'nav.font': 'Font',
+        'nav.language': 'English',
+        'breadcrumb.home': 'Home',
+        'breadcrumb.geometry': 'Geometry Learning',
         'hero.title': 'Explore the Infinite Charm of Geometry',
         'hero.subtitle': 'A professional mathematics geometry learning platform that makes abstract geometric concepts intuitive and easy to understand',
         'hero.startLearning': 'Start Learning',
@@ -133,6 +150,7 @@ const translations = {
         'features.quizDesc': 'Real-time inspection of learning outcomes, consolidate knowledge points',
         'features.games': 'Geometry Games',
         'features.gamesDesc': 'Deepen geometric concept understanding through gamification',
+        'features.learnMore': 'Learn More',
         'login.title': 'User Login',
         'login.username': 'Username',
         'login.password': 'Password',
@@ -156,6 +174,14 @@ const translations = {
         'knowledge.standardEquationDesc': '(x-a)² + (y-b)² = r², where (a,b) is center and r is radius',
         'knowledge.tangentProperty': 'Tangent Property',
         'knowledge.tangentPropertyDesc': 'The tangent to a circle is perpendicular to the radius at the point of contact',
+        'knowledge.centralAngle': 'Central Angle Theorem',
+        'knowledge.centralAngleDesc': 'The measure of a central angle equals the measure of its intercepted arc',
+        'knowledge.cyclicQuadrilateral': 'Cyclic Quadrilateral Properties',
+        'knowledge.cyclicQuadrilateralDesc': 'Opposite angles of a cyclic quadrilateral are supplementary, exterior angle equals interior opposite angle',
+        'knowledge.generalEquation': 'General Equation of a Circle',
+        'knowledge.generalEquationDesc': 'x² + y² + Dx + Ey + F = 0, where D² + E² - 4F > 0',
+        'knowledge.circleRelations': 'Positional Relationships of Two Circles',
+        'knowledge.circleRelationsDesc': 'Five positional relationships: separate, externally tangent, intersecting, internally tangent, and nested, determined by distance between centers and radii',
         'quizIntro.title': 'Quiz Feature Introduction',
         'quizIntro.RealTimeFeedback': 'Real-time Feedback',
         'quizIntro.RealTimeFeedbackDesc': 'Get immediate feedback after submitting answers to understand your learning status',
@@ -591,22 +617,34 @@ function resetAllSettings() {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-    // 导航切换功能已重构为全局的 changeModule
-
-    // 默认执行一下面包屑更新
-    if (typeof updateIndexBreadcrumbs === 'function') {
-        updateIndexBreadcrumbs('home');
-    }
-
-    // 绑定导航链接事件适配新的 changeModule
+    // 导航切换功能
     const navLinks = document.querySelectorAll('.nav-link');
+    const modules = document.querySelectorAll('.module');
+    
+    // 导航链接点击事件
     navLinks.forEach(link => {
         link.addEventListener('click', function(e) {
             e.preventDefault();
+            
+            // 获取目标模块ID
             const targetId = this.getAttribute('href').substring(1);
-            if (window.changeModule) {
-                window.changeModule(targetId);
+            
+            // 隐藏所有模块
+            modules.forEach(module => {
+                module.classList.remove('active');
+            });
+            
+            // 显示目标模块
+            const targetModule = document.getElementById(targetId);
+            if (targetModule) {
+                targetModule.classList.add('active');
             }
+            
+            // 更新导航链接激活状态
+            navLinks.forEach(navLink => {
+                navLink.classList.remove('active');
+            });
+            this.classList.add('active');
         });
     });
     
@@ -624,6 +662,74 @@ document.addEventListener('DOMContentLoaded', function() {
     if (gameButton) {
         gameButton.addEventListener('click', function() {
             startGame();
+        });
+    }
+    
+    // 导航栏字体滑块功能
+    const navFontSlider = document.querySelector('.nav-slider');
+    let originalFontSizes = new Map();
+    
+    function saveOriginalFontSizes() {
+        document.querySelectorAll('p, span, a, li, td, th, label, h1, h2, h3, h4, h5, h6').forEach(el => {
+            originalFontSizes.set(el, parseFloat(getComputedStyle(el).fontSize));
+        });
+    }
+    
+    function applyFontSize(fontSize) {
+        const scale = fontSize / 16;
+        originalFontSizes.forEach((originalSize, el) => {
+            if (el.isConnected) {
+                el.style.fontSize = (originalSize * scale) + 'px';
+            }
+        });
+    }
+    
+    if (navFontSlider) {
+        saveOriginalFontSizes();
+        navFontSlider.addEventListener('input', function() {
+            const fontSize = this.value;
+            applyFontSize(fontSize);
+        });
+    }
+    
+    // 导航栏按钮功能
+    const navIconBtns = document.querySelectorAll('.nav-icon-btn');
+    navIconBtns.forEach((btn, index) => {
+        btn.addEventListener('click', function() {
+            const emoji = this.textContent.trim();
+            if (emoji === '🌙' || emoji === '☀️') {
+                const isEyeProtection = document.body.classList.toggle('eye-protection-mode');
+                this.textContent = isEyeProtection ? '☀️' : '🌙';
+            } else if (emoji === '🔔') {
+                alert(currentLang === 'zh' ? '暂无新通知' : 'No new notifications');
+            } else if (emoji === '👤') {
+                const settingsModule = document.getElementById('settings');
+                const modules = document.querySelectorAll('.module');
+                const navLinks = document.querySelectorAll('.nav-link');
+                
+                modules.forEach(m => m.classList.remove('active'));
+                navLinks.forEach(n => n.classList.remove('active'));
+                
+                if (settingsModule) settingsModule.classList.add('active');
+                document.querySelector('[href="#settings"]').classList.add('active');
+                
+                setTimeout(() => {
+                    const loginForm = settingsModule.querySelector('.login-form');
+                    if (loginForm) {
+                        loginForm.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }
+                }, 100);
+            }
+        });
+    });
+    
+    // 语言切换按钮功能
+    const langBtn = document.querySelector('.nav-lang-btn');
+    if (langBtn) {
+        langBtn.addEventListener('click', function() {
+            const newLang = currentLang === 'zh' ? 'en' : 'zh';
+            updateLanguage(newLang);
+            this.textContent = newLang === 'zh' ? '中文' : 'English';
         });
     }
     
@@ -885,64 +991,3 @@ function initParallaxBackgrounds() {
 
 // 页面加载完成后初始化背景滚动效果
 window.addEventListener('DOMContentLoaded', initParallaxBackgrounds);
-
-// 全局导航功能与面包屑更新
-window.changeModule = function (targetId) {
-    if (targetId === 'quiz') {
-        window.location.href = './quiz/quiz.html';
-        return;
-    }
-    if (targetId === 'game') {
-        window.location.href = './game/game_page.html';
-        return;
-    }
-
-    const modules = document.querySelectorAll('.module');
-    modules.forEach(module => {
-        module.classList.remove('active');
-    });
-    const targetModule = document.getElementById(targetId);
-    if (targetModule) {
-        targetModule.classList.add('active');
-    }
-
-    // 更新面包屑
-    updateIndexBreadcrumbs(targetId);
-    
-    // 更新导航链接状态
-    const navLinks = document.querySelectorAll('.nav-link');
-    navLinks.forEach(link => {
-        link.classList.remove('active');
-        if (link.getAttribute('href') === '#' + targetId) {
-            link.classList.add('active');
-        }
-    });
-};
-
-window.updateIndexBreadcrumbs = function (targetId) {
-    const bc = document.getElementById('breadcrumb');
-    if (!bc) return;
-
-    const homeText = translations[currentLang]['nav.home'] || '首页';
-    const homeLink = `<span class="bc-item" onclick="changeModule('home')" style="cursor:pointer;">${homeText}</span>`;
-
-    if (targetId === 'home') {
-        bc.innerHTML = `<span class="bc-item" style="cursor:default; opacity:1;">${homeText}</span>`;
-    } else {
-        let pageText = '';
-        if (targetId === 'settings') {
-            pageText = translations[currentLang]['nav.settings'] || '设置';
-        } else if (targetId === 'game') {
-            pageText = translations[currentLang]['nav.game'] || '游戏';
-        } else if (targetId === 'quiz') {
-            pageText = translations[currentLang]['nav.quiz'] || '检测';
-        } else if (targetId === 'login') {
-            pageText = translations[currentLang]['nav.login'] || '登录';
-        }
-        bc.innerHTML = `${homeLink} <span class="bc-separator">/</span> <span class="bc-item" style="cursor:default; opacity:1;">${pageText}</span>`;
-    }
-};
-
-window.toggleLanguageBtn = function () {
-    updateLanguage(currentLang === 'en' ? 'zh' : 'en');
-};
