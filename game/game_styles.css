@@ -1,67 +1,226 @@
-html, body {
-  margin: 0;
-  min-height: 100%;
+/* =========================
+   1. 全局变量与基础设置
+   ========================= */
+:root {
+  --primary: #4f46e5;      /* 现代靛蓝色 */
+  --accent: #10b981;       /* 成功绿色 */
+  --bg-gradient: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+  --card-bg: rgba(255, 255, 255, 0.9);
+  --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
 }
 
+html, body {
+  margin: 0;
+  min-height: 100vh;
+}
 
 body {
-  min-height: 200vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
   gap: 16px;
   padding: 80px 24px 0;
-  background: #e7ebf0;
-  font-family: Arial, sans-serif;
+  background: var(--bg-gradient);
+  color: #1e293b;
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
 }
 
 .hidden {
   display: none !important;
 }
 
-#startBtn, #startBtn2 {
-  padding: 14px 34px;
-  font-size: 20px;
-  font-weight: 700;
-  border: 2px solid #222;
-  border-radius: 10px;
-  background: #fff;
-  cursor: pointer;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
-  margin-top: auto; /* 让按钮沉底对齐 */
+/* =========================
+   2. 游戏介绍页 (主页布局)
+   ========================= */
+.intro-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: stretch;
+  gap: 40px;
+  width: 100%;
+  max-width: 1200px;
+  padding: 40px 20px;
+  flex-wrap: wrap;
 }
 
+.game-intro-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: min(45vw, 500px);
+  min-height: 400px;
+  padding: 40px;
+  background: var(--card-bg);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 24px;
+  box-shadow: var(--shadow-sm);
+  gap: 20px;
+  box-sizing: border-box;
+  text-align: center;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.game-intro-card:hover {
+  transform: translateY(-8px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--primary);
+}
+
+.game-title {
+  font-size: 28px;
+  font-weight: 800;
+  line-height: 1;
+  background: linear-gradient(to right, #1e293b, #4f46e5);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 10px;
+}
+
+#displayAre, #demoAre,
+#displayAre2, #demoAre2 {
+  width: 100%;
+  border: 1px dashed #a0aec0;
+  border-radius: 8px;
+  padding: 20px;
+  box-sizing: border-box;
+  background: #fcfcfc;
+  min-height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#gameintro1, #gameintro2 {
+  margin: 0;
+  color: #555;
+  font-size: 16px;
+}
+
+/* =========================
+   3. 统一全局按钮样式
+   ========================= */
+#startBtn, #startBtn2, 
+#resetBtn, #resetBtn2, 
+#gameExitBtn, #gameExitBtn2,
+#retryBtn {
+  background: var(--primary);
+  color: white;
+  border: none;
+  padding: 12px 28px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition: filter 0.2s, transform 0.1s;
+  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+}
+
+#startBtn, #startBtn2 {
+  font-size: 20px;
+  padding: 14px 34px;
+  margin-top: auto;
+}
+
+#startBtn:hover, #startBtn2:hover, 
+#resetBtn:hover, #resetBtn2:hover, 
+#gameExitBtn:hover, #gameExitBtn2:hover,
+#retryBtn:hover {
+  filter: brightness(1.1);
+  transform: scale(1.05);
+}
+
+#exitBtn {
+  padding: 12px 28px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  background: #f1f5f9;
+  color: #475569;
+  transition: filter 0.2s;
+}
+#exitBtn:hover { filter: brightness(0.95); }
+
+/* =========================
+   4. 游戏区域主容器 (修复高度)
+   ========================= */
 #gameArea, #gameArea2 {
   width: min(92vw, 1180px);
-  height: min(84vh, 1000px);
+  /* 强制设定高度，防止游戏区域缩成一条 */
+  height: min(85vh, 1000px); 
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
-  padding: 14px;
-  border: 2px solid #222;
-  border-radius: 12px;
-  background: #ffffff;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-  gap: 12px;
+  padding: 20px;
+  border: none;
+  border-radius: 20px;
+  background: white;
+  box-shadow: var(--shadow-lg);
+  gap: 16px;
 }
 
+#gameArea2 {
+  align-items: center; /* 游戏二居中展示 */
+}
+
+/* 画布包裹容器：必须能够充满剩余高度 */
+.canvas-wrap {
+  flex: 1;
+  width: 100%;
+  min-height: 0; /* 关键：防止 flex 子元素溢出 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* 针对游戏二画布的额外尺寸控制 */
+#gameArea2 .canvas-wrap {
+  max-width: 900px;
+}
+
+canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+  border-radius: 8px;
+  background: #f9fafb;
+  box-sizing: border-box;
+  border: 1px solid #cbd5e1;
+}
+
+#canvas2 {
+  box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+  border-radius: 16px;
+  border: none; /* 迷宫通常自带边界感，去掉外框更清爽 */
+}
+
+/* =========================
+   5. 游戏内顶部工具栏
+   ========================= */
 .game-toolbar {
   display: grid;
   grid-template-columns: 1fr auto 1fr;
   align-items: center;
   gap: 12px;
+  width: 100%;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #f1f5f9;
 }
 
-.game-title {
+.game-toolbar .game-title {
   justify-self: center;
+  margin-bottom: 0;
   font-size: 22px;
-  font-weight: 800;
-  color: #222;
-  line-height: 1;
 }
 
-#gameExitBtn {
+#gameExitBtn, #gameExitBtn2 {
   justify-self: start;
 }
 
@@ -69,47 +228,36 @@ body {
   justify-self: end;
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 15px;
 }
 
-#difficultySelect {
+#difficultySelect, #difficultySelect2 {
   padding: 10px 12px;
-  border: 2px solid #222;
+  border: 2px solid #e2e8f0;
   border-radius: 8px;
   background: #fff;
+  color: #1e293b;
   cursor: pointer;
   font-size: 14px;
   font-weight: 600;
   outline: none;
 }
 
-.canvas-wrap {
-  flex: 1;
-  min-height: 0;
+#difficultySelect:focus, #difficultySelect2:focus {
+  border-color: var(--primary);
 }
 
-canvas {
-  width: 100%;
-  height: 100%;
-  display: block;
-  border: 1px solid #666;
-  border-radius: 8px;
-  background: #f9fafb;
-  box-sizing: border-box;
-}
-
-#gameExitBtn, #gameExitBtn2,
-#resetBtn, #resetBtn2,
-.modal-actions button {
-  padding: 10px 18px;
-  border: 2px solid #222;
-  border-radius: 8px;
-  background: #fff;
-  cursor: pointer;
+.toggle-container {
+  display: flex;
+  align-items: center;
+  gap: 5px;
   font-size: 14px;
-  font-weight: 600;
+  font-weight: bold;
 }
 
+/* =========================
+   6. 胜利弹窗与彩带
+   ========================= */
 .modal {
   position: fixed;
   inset: 0;
@@ -122,216 +270,37 @@ canvas {
 
 .modal-content {
   position: relative;
-  min-width: 280px;
-  padding: 24px;
-  background: #fff;
-  border: 2px solid #222;
-  border-radius: 12px;
+  min-width: 320px;
+  padding: 40px;
+  background: white;
+  border-radius: 30px;
   box-shadow: 0 12px 32px rgba(0, 0, 0, 0.2);
   text-align: center;
+  overflow: hidden;
 }
 
 .modal-close {
   position: absolute;
-  top: 10px;
-  right: 10px;
+  top: 16px;
+  right: 16px;
   width: 32px;
   height: 32px;
-  border: 2px solid #222;
+  border: 2px solid #e2e8f0;
   border-radius: 50%;
   background: #fff;
+  color: #64748b;
   cursor: pointer;
   font-size: 20px;
-  line-height: 1;
-  font-weight: 700;
-  padding: 0;
-}
-
-.modal-content h2 {
-  margin: 0 0 8px;
-}
-
-.modal-content p {
-  margin: 0;
 }
 
 .modal-actions {
-  margin-top: 18px;
+  margin-top: 24px;
   display: flex;
   justify-content: center;
   gap: 12px;
 }
 
-/* --- 游戏介绍区域样式 --- */
-.game-intro-card {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  
-  /* 调整宽度，使得并排时不会超出屏幕 */
-  width: min(45vw, 500px);   
-  min-height: 400px;         
-  padding: 30px;
-  background: #ffffff;
-  border: 2px solid #222;    
-  border-radius: 12px;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.05);
-  gap: 20px;                 
-  box-sizing: border-box;
-}
-
-/* 内部两个容器的通用边框样式 */
-#displayAre, #demoAre,
-#displayAre2, #demoAre2 {
-  width: 100%;               
-  border: 1px dashed #666;   
-  border-radius: 8px;
-  padding: 20px;
-  box-sizing: border-box;
-  background: #fcfcfc;
-  min-height: 80px;          
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* 微调标题和文字 */
-#gameIntro .game-title {
-  margin-bottom: 10px;
-}
-
-#gameintro1 {
-  margin: 0;
-  color: #555;
-  font-size: 16px;
-}
-
-.toolbar-right {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-}
-
-.toggle-container {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    font-size: 14px;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-#markToggle {
-    cursor: pointer;
-    width: 16px;
-    height: 16px;
-}
-
-.intro-container {
-  display: flex;
-  flex-direction: row;       /* 水平并排 */
-  justify-content: center;   /* 居中对齐 */
-  align-items: stretch;      /* 让两个卡片高度一致 */
-  gap: 40px;                 /* 两个游戏介绍之间的间距 */
-  width: 100%;
-  flex-wrap: wrap;           /* 屏幕较小时自动换行，防止挤压 */
-}
-
-:root {
-  --primary: #4f46e5;      /* 现代靛蓝色 */
-  --accent: #10b981;       /* 成功绿色 */
-  --bg-gradient: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
-  --card-bg: rgba(255, 255, 255, 0.9);
-  --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-  --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-}
-
-body {
-  background: var(--bg-gradient);
-  color: #1e293b;
-  min-height: 100vh;
-  margin: 0;
-  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-  padding-top: 60px;
-}
-
-/* 并排布局容器 */
-.intro-container {
-  display: flex;
-  gap: 30px;
-  justify-content: center;
-  align-items: stretch;
-  padding: 40px 20px;
-  max-width: 1200px;
-  width: 100%;
-}
-
-/* 游戏介绍卡片美化 */
-.game-intro-card {
-  background: var(--card-bg);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.5);
-  border-radius: 24px;
-  padding: 40px;
-  width: 400px;
-  text-align: center;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: var(--shadow-sm);
-}
-
-.game-intro-card:hover {
-  transform: translateY(-8px);
-  box-shadow: var(--shadow-lg);
-  border-color: var(--primary);
-}
-
-.game-title {
-  font-size: 28px;
-  background: linear-gradient(to right, #1e293b, #4f46e5);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  margin-bottom: 20px;
-}
-
-/* 按钮美化 */
-#startBtn, #startBtn2, #resetBtn, #gameExitBtn {
-  background: var(--primary);
-  color: white;
-  border: none;
-  padding: 12px 28px;
-  border-radius: 12px;
-  font-weight: 600;
-  letter-spacing: 0.5px;
-  cursor: pointer;
-  transition: filter 0.2s, transform 0.1s;
-  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
-}
-
-#startBtn:hover, #startBtn2:hover {
-  filter: brightness(1.1);
-  transform: scale(1.05);
-}
-
-/* 游戏区域美化 */
-#gameArea, #gameArea2 {
-  background: white;
-  border-radius: 20px;
-  padding: 20px;
-  border: none;
-  box-shadow: var(--shadow-lg);
-}
-
-/* --- 胜利对话框与彩带效果 --- */
-.modal-content {
-  background: white;
-  border: none;
-  border-radius: 30px;
-  padding: 40px;
-  overflow: hidden; /* 用于剪裁彩带 */
-}
-
-/* 彩带动画 */
+/* 彩带 */
 .confetti-wrapper {
   position: absolute;
   top: 0; left: 0; width: 100%; height: 100%;
@@ -342,9 +311,7 @@ body {
   position: absolute;
   width: 10px;
   height: 20px;
-  background: var(--primary);
   top: -20px;
-  opacity: 0.8;
   animation: fall 3s infinite ease-in-out;
 }
 
@@ -353,41 +320,8 @@ body {
   100% { transform: translateY(400px) rotate(720deg); opacity: 0; }
 }
 
-/* 为不同彩带设置颜色和延迟 */
 .confetti:nth-child(1) { left: 10%; background: #fbbf24; animation-delay: 0s; }
 .confetti:nth-child(2) { left: 30%; background: #ef4444; animation-delay: 0.5s; }
 .confetti:nth-child(3) { left: 50%; background: #10b981; animation-delay: 1.2s; }
 .confetti:nth-child(4) { left: 70%; background: #3b82f6; animation-delay: 0.8s; }
 .confetti:nth-child(5) { left: 90%; background: #a855f7; animation-delay: 1.5s; }
-
-/* --- Game 2 控制滑块区域 --- */
-.radar-controls {
-    display: flex;
-    justify-content: center;
-    gap: 40px;
-    padding: 10px 20px;
-    background: var(--card-bg);
-    border-radius: 12px;
-    border: 1px solid rgba(0,0,0,0.1);
-}
-
-.control-group {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    flex: 1;
-    max-width: 300px;
-}
-
-.control-group label {
-    font-size: 14px;
-    font-weight: 600;
-    color: #475569;
-    white-space: nowrap;
-}
-
-.control-group input[type="range"] {
-    flex: 1;
-    cursor: pointer;
-    accent-color: var(--primary); /* 让滑块主题色自动适配靛蓝色 */
-}

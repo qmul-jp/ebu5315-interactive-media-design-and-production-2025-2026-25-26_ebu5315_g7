@@ -580,10 +580,10 @@ class Piece {
     // 绘制完图片后去掉阴影，防止文字产生重影
     ctx.shadowBlur = 0;
 
-    // --- 4. 辅助定位线 (十字准星，可选，如果不想要可以删掉) ---
+    // --- 4. 辅助定位线 ---
     ctx.beginPath();
-    ctx.strokeStyle = "rgba(0, 0, 0, 0.3)"; 
-    ctx.lineWidth = 1;
+    ctx.strokeStyle = "rgba(0, 0, 0, 0.8)"; 
+    ctx.lineWidth = 3;
     const crossHalf = 6;
     ctx.moveTo(this.x - crossHalf, this.y); ctx.lineTo(this.x + crossHalf, this.y);
     ctx.moveTo(this.x, this.y - crossHalf); ctx.lineTo(this.x, this.y + crossHalf);
@@ -956,8 +956,8 @@ function drawMapBase() {
   }
 
   // --- 2. 绘制网格线 ---
-  ctx.strokeStyle = "rgba(0, 0, 0, 0.2)"; // 半透明黑色网格线
-  ctx.lineWidth = 1;
+  ctx.strokeStyle = "rgba(255, 255, 255, 0.7)"; // 半透明黑色网格线
+  ctx.lineWidth = 3;
   ctx.strokeRect(gridRect.x, gridRect.y, gridRect.w, gridRect.h);
 
   for (let i = 0; i <= CONFIG.cols; i++) {
@@ -977,8 +977,8 @@ function drawMapBase() {
   }
 
   // --- 3. 绘制坐标轴刻度数字 ---
-  ctx.fillStyle = "#333"; 
-  ctx.font = "bold 12px Arial";
+  ctx.fillStyle = "#ffffffff"; 
+  ctx.font = "bold 18px Arial";
   
   // 顶部 X 轴刻度
   ctx.textAlign = "center";
