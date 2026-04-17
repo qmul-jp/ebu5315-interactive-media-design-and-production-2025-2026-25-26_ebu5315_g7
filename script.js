@@ -1,4 +1,4 @@
- // script.js
+// script.js
 // 导航切换功能
 // 多语言支持
 
@@ -248,15 +248,15 @@ const translations = {
 let currentLang = 'zh';
 
 // 设置元素变量（全局）
-let settingsLanguage, settingsFontSize, settingsColorblindMode, settingsEyeProtectionMode, 
-    settingsParentMode, settingsAutoTranslate, settingsAutoSave, settingsDailyGoal, 
-    settingsStudyReminder, settingsNotifications, settingsDataCollection, settingsCookies, 
+let settingsLanguage, settingsFontSize, settingsColorblindMode, settingsEyeProtectionMode,
+    settingsParentMode, settingsAutoTranslate, settingsAutoSave, settingsDailyGoal,
+    settingsStudyReminder, settingsNotifications, settingsDataCollection, settingsCookies,
     settingsSound, settingsVolume, settingsUsername, settingsEmail;
 
 // 更新页面语言
 function updateLanguage(lang) {
     currentLang = lang;
-    
+
     // 更新所有带有data-i18n属性的元素
     document.querySelectorAll('[data-i18n]').forEach(element => {
         const key = element.getAttribute('data-i18n');
@@ -264,7 +264,7 @@ function updateLanguage(lang) {
             element.innerHTML = translations[lang][key];
         }
     });
-    
+
     // 更新所有带有data-i18n-placeholder属性的元素
     document.querySelectorAll('[data-i18n-placeholder]').forEach(element => {
         const key = element.getAttribute('data-i18n-placeholder');
@@ -272,7 +272,7 @@ function updateLanguage(lang) {
             element.placeholder = translations[lang][key];
         }
     });
-    
+
     // 更新游戏模块文本
     updateGameLanguage();
 }
@@ -284,7 +284,7 @@ let gameStarted = false;
 function updateGameLanguage() {
     const gameCanvas = document.querySelector('.game-canvas');
     if (!gameCanvas) return;
-    
+
     // 根据游戏状态重新生成HTML
     if (gameStarted) {
         gameCanvas.innerHTML = `<p>${getGameText('started')}</p><button class="submit-btn" onclick="resetGame()">${getGameText('restart')}</button>`;
@@ -339,9 +339,9 @@ function initKnowledgeSlider() {
     dots = document.querySelectorAll('.knowledge-section .slider-dots .dot');
     const prevBtn = document.getElementById('knowledge-prev');
     const nextBtn = document.getElementById('knowledge-next');
-    
+
     if (slides.length === 0) return;
-    
+
     // 绑定按钮事件
     if (prevBtn) {
         prevBtn.addEventListener('click', () => {
@@ -349,14 +349,14 @@ function initKnowledgeSlider() {
             resetKnowledgeAutoPlay();
         });
     }
-    
+
     if (nextBtn) {
         nextBtn.addEventListener('click', () => {
             changeKnowledgeSlide(currentSlide + 1);
             resetKnowledgeAutoPlay();
         });
     }
-    
+
     // 绑定指示点事件
     dots.forEach((dot, index) => {
         dot.addEventListener('click', () => {
@@ -364,10 +364,10 @@ function initKnowledgeSlider() {
             resetKnowledgeAutoPlay();
         });
     });
-    
+
     // 自动播放
     startKnowledgeAutoPlay();
-    
+
     // 鼠标悬停时暂停自动播放
     const slider = document.querySelector('.knowledge-slider');
     if (slider) {
@@ -383,11 +383,11 @@ function changeKnowledgeSlide(index) {
     } else if (index >= slides.length) {
         index = 0;
     }
-    
+
     // 移除当前激活状态
     slides[currentSlide].classList.remove('active');
     dots[currentSlide].classList.remove('active');
-    
+
     // 添加新的激活状态
     currentSlide = index;
     slides[currentSlide].classList.add('active');
@@ -426,9 +426,9 @@ function initQuizIntroSlider() {
     quizIntroDots = document.querySelectorAll('.quiz-intro-section .slider-dots .dot');
     const prevBtn = document.getElementById('quiz-intro-prev');
     const nextBtn = document.getElementById('quiz-intro-next');
-    
+
     if (quizIntroSlides.length === 0) return;
-    
+
     // 绑定按钮事件
     if (prevBtn) {
         prevBtn.addEventListener('click', () => {
@@ -436,14 +436,14 @@ function initQuizIntroSlider() {
             resetQuizIntroAutoPlay();
         });
     }
-    
+
     if (nextBtn) {
         nextBtn.addEventListener('click', () => {
             changeQuizIntroSlide(currentQuizIntroSlide + 1);
             resetQuizIntroAutoPlay();
         });
     }
-    
+
     // 绑定指示点事件
     quizIntroDots.forEach((dot, index) => {
         dot.addEventListener('click', () => {
@@ -451,10 +451,10 @@ function initQuizIntroSlider() {
             resetQuizIntroAutoPlay();
         });
     });
-    
+
     // 自动播放
     startQuizIntroAutoPlay();
-    
+
     // 鼠标悬停时暂停自动播放
     const slider = document.querySelector('.quiz-intro-slider');
     if (slider) {
@@ -470,11 +470,11 @@ function changeQuizIntroSlide(index) {
     } else if (index >= quizIntroSlides.length) {
         index = 0;
     }
-    
+
     // 移除当前激活状态
     quizIntroSlides[currentQuizIntroSlide].classList.remove('active');
     quizIntroDots[currentQuizIntroSlide].classList.remove('active');
-    
+
     // 添加新的激活状态
     currentQuizIntroSlide = index;
     quizIntroSlides[currentQuizIntroSlide].classList.add('active');
@@ -605,76 +605,87 @@ function resetAllSettings() {
     }
     if (settingsUsername) settingsUsername.value = '';
     if (settingsEmail) settingsEmail.value = '';
-    
+
     applyFontSize('medium');
     applyColorblindMode(false);
     applyEyeProtectionMode(false);
     applyParentMode(false);
     applyVolume(80);
     updateLanguage('zh');
-    
+
     alert(currentLang === 'zh' ? '所有设置已重置！' : 'All settings have been reset!');
 }
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     // 导航切换功能
     const navLinks = document.querySelectorAll('.nav-link');
     const modules = document.querySelectorAll('.module');
-    
+
     // 导航链接点击事件
     navLinks.forEach(link => {
-        link.addEventListener('click', function(e) {
-            e.preventDefault();
-            
-            // 获取目标模块ID
-            const targetId = this.getAttribute('href').substring(1);
-            
-            // 隐藏所有模块
-            modules.forEach(module => {
-                module.classList.remove('active');
-            });
-            
-            // 显示目标模块
-            const targetModule = document.getElementById(targetId);
-            if (targetModule) {
-                targetModule.classList.add('active');
+        link.addEventListener('click', function (e) {
+            const href = this.getAttribute('href');
+            if (href && href.startsWith('#')) {
+                e.preventDefault();
+
+                if (href === '#quiz') {
+                    window.location.href = './quiz/quiz.html';
+                    return;
+                } else if (href === '#game') {
+                    window.location.href = './game/game_page.html';
+                    return;
+                }
+
+                // 获取目标模块ID
+                const targetId = href.substring(1);
+
+                // 隐藏所有模块
+                modules.forEach(module => {
+                    module.classList.remove('active');
+                });
+
+                // 显示目标模块
+                const targetModule = document.getElementById(targetId);
+                if (targetModule) {
+                    targetModule.classList.add('active');
+                }
+
+                // 更新导航链接激活状态
+                navLinks.forEach(navLink => {
+                    navLink.classList.remove('active');
+                });
+                this.classList.add('active');
             }
-            
-            // 更新导航链接激活状态
-            navLinks.forEach(navLink => {
-                navLink.classList.remove('active');
-            });
-            this.classList.add('active');
         });
     });
-    
+
     // 表单提交处理
     const forms = document.querySelectorAll('form');
     forms.forEach(form => {
-        form.addEventListener('submit', function(e) {
+        form.addEventListener('submit', function (e) {
             e.preventDefault();
             alert('提交成功！');
         });
     });
-    
+
     // 游戏开始按钮
     const gameButton = document.querySelector('#game .submit-btn');
     if (gameButton) {
-        gameButton.addEventListener('click', function() {
+        gameButton.addEventListener('click', function () {
             startGame();
         });
     }
-    
+
     // 导航栏字体滑块功能
     const navFontSlider = document.querySelector('.nav-slider');
     let originalFontSizes = new Map();
-    
+
     function saveOriginalFontSizes() {
         document.querySelectorAll('p, span, a, li, td, th, label, h1, h2, h3, h4, h5, h6').forEach(el => {
             originalFontSizes.set(el, parseFloat(getComputedStyle(el).fontSize));
         });
     }
-    
+
     function applyFontSize(fontSize) {
         const scale = fontSize / 16;
         originalFontSizes.forEach((originalSize, el) => {
@@ -683,19 +694,19 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
-    
+
     if (navFontSlider) {
         saveOriginalFontSizes();
-        navFontSlider.addEventListener('input', function() {
+        navFontSlider.addEventListener('input', function () {
             const fontSize = this.value;
             applyFontSize(fontSize);
         });
     }
-    
+
     // 导航栏按钮功能
     const navIconBtns = document.querySelectorAll('.nav-icon-btn');
     navIconBtns.forEach((btn, index) => {
-        btn.addEventListener('click', function() {
+        btn.addEventListener('click', function () {
             const emoji = this.textContent.trim();
             if (emoji === '🌙' || emoji === '☀️') {
                 const isEyeProtection = document.body.classList.toggle('eye-protection-mode');
@@ -706,13 +717,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 const settingsModule = document.getElementById('settings');
                 const modules = document.querySelectorAll('.module');
                 const navLinks = document.querySelectorAll('.nav-link');
-                
+
                 modules.forEach(m => m.classList.remove('active'));
                 navLinks.forEach(n => n.classList.remove('active'));
-                
+
                 if (settingsModule) settingsModule.classList.add('active');
                 document.querySelector('[href="#settings"]').classList.add('active');
-                
+
                 setTimeout(() => {
                     const loginForm = settingsModule.querySelector('.login-form');
                     if (loginForm) {
@@ -722,23 +733,23 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     });
-    
+
     // 语言切换按钮功能
     const langBtn = document.querySelector('.nav-lang-btn');
     if (langBtn) {
-        langBtn.addEventListener('click', function() {
+        langBtn.addEventListener('click', function () {
             const newLang = currentLang === 'zh' ? 'en' : 'zh';
             updateLanguage(newLang);
             this.textContent = newLang === 'zh' ? '中文' : 'English';
         });
     }
-    
+
     // 初始化知识点幻灯片
     initKnowledgeSlider();
-    
+
     // 初始化检测介绍幻灯片
     initQuizIntroSlider();
-    
+
     // 设置功能
     settingsLanguage = document.getElementById('settings-language');
     settingsFontSize = document.getElementById('settings-font-size');
@@ -761,208 +772,208 @@ document.addEventListener('DOMContentLoaded', function() {
     const settingsResetBtn = document.querySelector('#settings button[data-i18n="settings.resetSettings"]');
     const settingsChangePasswordBtn = document.querySelector('#settings button[data-i18n="settings.changePassword"]');
     const settingsDeleteAccountBtn = document.querySelector('#settings button[data-i18n="settings.deleteAccount"]');
-    
+
     // 初始化设置值
     if (settingsLanguage) {
         settingsLanguage.value = currentLang;
     }
-    
+
     // 语言切换
     if (settingsLanguage) {
-        settingsLanguage.addEventListener('change', function() {
+        settingsLanguage.addEventListener('change', function () {
             updateLanguage(this.value);
         });
     }
-    
+
     // 字体大小切换
     if (settingsFontSize) {
-        settingsFontSize.addEventListener('change', function() {
+        settingsFontSize.addEventListener('change', function () {
             applyFontSize(this.value);
         });
     }
-    
+
     // 色盲模式切换
     if (settingsColorblindMode) {
-        settingsColorblindMode.addEventListener('change', function() {
+        settingsColorblindMode.addEventListener('change', function () {
             applyColorblindMode(this.checked);
         });
     }
-    
+
     // 护眼模式切换
     if (settingsEyeProtectionMode) {
-        settingsEyeProtectionMode.addEventListener('change', function() {
+        settingsEyeProtectionMode.addEventListener('change', function () {
             applyEyeProtectionMode(this.checked);
         });
     }
-    
+
     // 家长模式切换
     if (settingsParentMode) {
-        settingsParentMode.addEventListener('change', function() {
+        settingsParentMode.addEventListener('change', function () {
             applyParentMode(this.checked);
         });
     }
-    
+
     // 自动翻译切换
     if (settingsAutoTranslate) {
-        settingsAutoTranslate.addEventListener('change', function() {
+        settingsAutoTranslate.addEventListener('change', function () {
             applyAutoTranslate(this.checked);
         });
     }
-    
+
     // 自动保存切换
     if (settingsAutoSave) {
-        settingsAutoSave.addEventListener('change', function() {
+        settingsAutoSave.addEventListener('change', function () {
             applyAutoSave(this.checked);
         });
     }
-    
+
     // 每日学习目标
     if (settingsDailyGoal) {
-        settingsDailyGoal.addEventListener('change', function() {
+        settingsDailyGoal.addEventListener('change', function () {
             applyDailyGoal(this.value);
         });
     }
-    
+
     // 学习提醒切换
     if (settingsStudyReminder) {
-        settingsStudyReminder.addEventListener('change', function() {
+        settingsStudyReminder.addEventListener('change', function () {
             applyStudyReminder(this.checked);
         });
     }
-    
+
     // 通知切换
     if (settingsNotifications) {
-        settingsNotifications.addEventListener('change', function() {
+        settingsNotifications.addEventListener('change', function () {
             applyNotifications(this.checked);
         });
     }
-    
+
     // 数据收集切换
     if (settingsDataCollection) {
-        settingsDataCollection.addEventListener('change', function() {
+        settingsDataCollection.addEventListener('change', function () {
             applyDataCollection(this.checked);
         });
     }
-    
+
     // Cookie切换
     if (settingsCookies) {
-        settingsCookies.addEventListener('change', function() {
+        settingsCookies.addEventListener('change', function () {
             applyCookies(this.checked);
         });
     }
-    
+
     // 音效切换
     if (settingsSound) {
-        settingsSound.addEventListener('change', function() {
+        settingsSound.addEventListener('change', function () {
             applySound(this.checked);
         });
     }
-    
+
     // 音量滑动条
     if (settingsVolume) {
         const volumeValue = settingsVolume.nextElementSibling;
-        settingsVolume.addEventListener('input', function() {
+        settingsVolume.addEventListener('input', function () {
             if (volumeValue) {
                 volumeValue.textContent = this.value + '%';
             }
             applyVolume(this.value);
         });
     }
-    
+
     // 用户名输入
     if (settingsUsername) {
-        settingsUsername.addEventListener('change', function() {
+        settingsUsername.addEventListener('change', function () {
             applyUsername(this.value);
         });
     }
-    
+
     // 邮箱输入
     if (settingsEmail) {
-        settingsEmail.addEventListener('change', function() {
+        settingsEmail.addEventListener('change', function () {
             applyEmail(this.value);
         });
     }
-    
+
     // 清除缓存按钮
     if (settingsClearCacheBtn) {
-        settingsClearCacheBtn.addEventListener('click', function() {
+        settingsClearCacheBtn.addEventListener('click', function () {
             if (confirm(currentLang === 'zh' ? '确定要清除缓存吗？' : 'Are you sure you want to clear cache?')) {
                 clearCache();
             }
         });
     }
-    
+
     // 重置设置按钮
     if (settingsResetBtn) {
-        settingsResetBtn.addEventListener('click', function() {
+        settingsResetBtn.addEventListener('click', function () {
             if (confirm(currentLang === 'zh' ? '确定要重置所有设置吗？' : 'Are you sure you want to reset all settings?')) {
                 resetAllSettings();
             }
         });
     }
-    
+
     // 修改密码按钮
     if (settingsChangePasswordBtn) {
-        settingsChangePasswordBtn.addEventListener('click', function() {
+        settingsChangePasswordBtn.addEventListener('click', function () {
             alert(currentLang === 'zh' ? '修改密码功能（演示）' : 'Change password (demo)');
         });
     }
-    
+
     // 删除账户按钮
     if (settingsDeleteAccountBtn) {
-        settingsDeleteAccountBtn.addEventListener('click', function() {
+        settingsDeleteAccountBtn.addEventListener('click', function () {
             if (confirm(currentLang === 'zh' ? '确定要删除账户吗？此操作不可恢复！' : 'Are you sure you want to delete your account? This action cannot be undone!')) {
                 alert(currentLang === 'zh' ? '账户删除功能（演示）' : 'Delete account (demo)');
             }
         });
     }
-    
+
     // 保存设置按钮（静态模式，不保存）
     if (settingsSaveBtn) {
-        settingsSaveBtn.addEventListener('click', function() {
+        settingsSaveBtn.addEventListener('click', function () {
             alert(currentLang === 'zh' ? '设置已应用（当前会话有效）！' : 'Settings applied (current session only)!');
         });
     }
-    
+
     // 初始化语言
     updateLanguage(currentLang);
-    
+
     // 实现h2标题背景随滚动变化的效果
     function updateH2Backgrounds() {
         const h2Elements = document.querySelectorAll('h2');
         const scrollY = window.scrollY;
-        
+
         h2Elements.forEach((h2, index) => {
             // 计算每个h2元素的滚动位置
             const h2Rect = h2.getBoundingClientRect();
             const h2Top = h2Rect.top + scrollY;
             const h2Center = h2Top + h2Rect.height / 2;
-            
+
             // 计算视口中心
             const viewportCenter = scrollY + window.innerHeight / 2;
-            
+
             // 计算滚动偏移量
             const offset = (viewportCenter - h2Center) / window.innerHeight;
-            
+
             // 更新背景位置
             const bgPositionX = 50 + offset * 20;
             h2.style.backgroundPosition = `${bgPositionX}% 50%`;
-            
+
             // 根据滚动位置调整透明度
             const distance = Math.abs(viewportCenter - h2Center);
             const maxDistance = window.innerHeight * 1.5;
             const opacity = Math.max(0.8, 1 - distance / maxDistance);
             h2.style.opacity = opacity;
-            
+
             // 根据滚动位置调整缩放
             const scale = Math.max(0.9, 1 - Math.abs(offset) * 0.1);
             h2.style.transform = `scale(${scale})`;
         });
     }
-    
+
     // 初始调用一次
     updateH2Backgrounds();
-    
+
     // 添加滚动事件监听器
     window.addEventListener('scroll', updateH2Backgrounds);
 });
@@ -974,10 +985,10 @@ function initParallaxBackgrounds() {
         '.quiz-intro-section',
         '.database-section'
     ];
-    
+
     window.addEventListener('scroll', () => {
         const scrollY = window.scrollY;
-        
+
         sections.forEach(selector => {
             const section = document.querySelector(selector);
             if (section) {

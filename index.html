@@ -1,44 +1,18 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>圆 · 几何教学平台</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="./navbar/navbar.css">
+    <script src="./navbar/navbar.js"></script>
 </head>
+
 <body>
     <!-- 顶部导航栏 -->
-    <header class="top-navbar">
-        <div class="breadcrumb">
-            <span class="bc-item" data-i18n="breadcrumb.home">首页</span>
-            <span class="bc-separator">/</span>
-            <span class="bc-item" data-i18n="breadcrumb.geometry">几何学习</span>
-        </div>
-        <nav class="nav-menu">
-            <a href="#home" class="nav-link active" data-module="home">
-                <span class="nav-text" data-i18n="nav.home">首页</span>
-            </a>
-            <a href="#quiz" class="nav-link" data-module="quiz">
-                <span class="nav-text" data-i18n="nav.quiz">检测</span>
-            </a>
-            <a href="#game" class="nav-link" data-module="game">
-                <span class="nav-text" data-i18n="nav.game">游戏</span>
-            </a>
-            <a href="#settings" class="nav-link" data-module="settings">
-                <span class="nav-text" data-i18n="nav.settings">设置</span>
-            </a>
-        </nav>
-        <div class="nav-right">
-            <div class="nav-control font-control">
-                <span data-i18n="nav.font">字体</span>
-                <input type="range" class="nav-slider" min="12" max="20" value="16">
-            </div>
-            <button class="nav-icon-btn">🌙</button>
-            <button class="nav-icon-btn">🔔</button>
-            <button class="nav-icon-btn">👤</button>
-            <button class="nav-lang-btn" data-i18n="nav.language">中文</button>
-        </div>
-    </header>
+    <top-navbar page-type="index" i18n-nav-home="nav.home"></top-navbar>
 
     <!-- 主要内容区 -->
     <main class="main-content">
@@ -47,21 +21,22 @@
             <div class="hero-section">
                 <h1 data-i18n="hero.title">探索几何的无限魅力</h1>
                 <p class="subtitle" data-i18n="hero.subtitle">专业的数学几何学习平台，让抽象的几何概念变得直观易懂</p>
-                
+
                 <!-- 首页顶部搜索框 -->
                 <div class="hero-search-box">
-                    <input type="text" class="hero-search-input" placeholder="搜索知识点，如：垂径定理、圆周角..." data-i18n-placeholder="hero.searchPlaceholder"/>
+                    <input type="text" class="hero-search-input" placeholder="搜索知识点，如：垂径定理、圆周角..."
+                        data-i18n-placeholder="hero.searchPlaceholder" />
                     <button class="hero-search-btn">
                         <span class="search-icon">🔍</span>
                     </button>
                 </div>
-                
+
                 <div class="hero-buttons">
-                    <a href="#quiz" class="cta-button" data-i18n="hero.startLearning">开始学习</a>
-                    <a href="#game" class="cta-button secondary" data-i18n="hero.geometryGames">几何游戏</a>
+                    <a href="./quiz/quiz.html" class="cta-button" data-i18n="hero.startLearning">开始学习</a>
+                    <a href="./game/game_page.html" class="cta-button secondary" data-i18n="hero.geometryGames">几何游戏</a>
                 </div>
             </div>
-            
+
             <!-- 特色功能 -->
             <section class="ag_service-area">
                 <div class="container">
@@ -136,7 +111,7 @@
                 </div>
 
             </section>
-            
+
             <!-- 圆的重要知识点 - 幻灯片展示 -->
             <div class="knowledge-section">
                 <h2 data-i18n="knowledge.title">圆的重要知识点</h2>
@@ -148,7 +123,8 @@
                             <h3 data-i18n="knowledge.verticalTheorem">垂径定理</h3>
                             <p data-i18n="knowledge.verticalTheoremDesc">垂直于弦的直径平分弦且平分弦所对的两条弧</p>
                             <div class="knowledge-diagram">
-                                <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=垂径定理几何图解，展示圆、直径垂直于弦，平分弦和所对的弧&image_size=square" alt="垂径定理图解">
+                                <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=垂径定理几何图解，展示圆、直径垂直于弦，平分弦和所对的弧&image_size=square"
+                                    alt="垂径定理图解">
                             </div>
                         </div>
                         <div class="knowledge-slide">
@@ -156,7 +132,8 @@
                             <h3 data-i18n="knowledge.circumferentialAngle">圆周角定理</h3>
                             <p data-i18n="knowledge.circumferentialAngleDesc">同弧或等弧所对的圆周角相等，等于圆心角的一半</p>
                             <div class="knowledge-diagram">
-                                <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=圆周角定理几何图解，展示圆、圆心角和圆周角，同弧所对的圆周角等于圆心角的一半&image_size=square" alt="圆周角定理图解">
+                                <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=圆周角定理几何图解，展示圆、圆心角和圆周角，同弧所对的圆周角等于圆心角的一半&image_size=square"
+                                    alt="圆周角定理图解">
                             </div>
                         </div>
                         <div class="knowledge-slide">
@@ -164,7 +141,8 @@
                             <h3 data-i18n="knowledge.standardEquation">圆的标准方程</h3>
                             <p data-i18n="knowledge.standardEquationDesc">(x-a)² + (y-b)² = r²，其中(a,b)为圆心坐标，r为半径</p>
                             <div class="knowledge-diagram">
-                                <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=圆的标准方程几何图解，展示圆、圆心坐标(a,b)和半径r，以及方程(x-a)²+(y-b)²=r²&image_size=square" alt="圆的标准方程图解">
+                                <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=圆的标准方程几何图解，展示圆、圆心坐标(a,b)和半径r，以及方程(x-a)²+(y-b)²=r²&image_size=square"
+                                    alt="圆的标准方程图解">
                             </div>
                         </div>
                         <div class="knowledge-slide">
@@ -172,7 +150,8 @@
                             <h3 data-i18n="knowledge.tangentProperty">切线性质</h3>
                             <p data-i18n="knowledge.tangentPropertyDesc">圆的切线垂直于经过切点的半径</p>
                             <div class="knowledge-diagram">
-                                <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=切线性质几何图解，展示圆、切线和经过切点的半径，切线垂直于半径&image_size=square" alt="切线性质图解">
+                                <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=切线性质几何图解，展示圆、切线和经过切点的半径，切线垂直于半径&image_size=square"
+                                    alt="切线性质图解">
                             </div>
                         </div>
                         <div class="knowledge-slide">
@@ -180,7 +159,8 @@
                             <h3 data-i18n="knowledge.centralAngle">圆心角定理</h3>
                             <p data-i18n="knowledge.centralAngleDesc">圆心角的度数等于它所对的弧的度数</p>
                             <div class="knowledge-diagram">
-                                <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=圆心角定理几何图解，展示圆、圆心角和所对的弧，圆心角的度数等于弧的度数&image_size=square" alt="圆心角定理图解">
+                                <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=圆心角定理几何图解，展示圆、圆心角和所对的弧，圆心角的度数等于弧的度数&image_size=square"
+                                    alt="圆心角定理图解">
                             </div>
                         </div>
                         <div class="knowledge-slide">
@@ -188,15 +168,18 @@
                             <h3 data-i18n="knowledge.cyclicQuadrilateral">圆内接四边形性质</h3>
                             <p data-i18n="knowledge.cyclicQuadrilateralDesc">圆内接四边形的对角互补，外角等于内对角</p>
                             <div class="knowledge-diagram">
-                                <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=圆内接四边形性质几何图解，展示圆和内接四边形，对角互补，外角等于内对角&image_size=square" alt="圆内接四边形性质图解">
+                                <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=圆内接四边形性质几何图解，展示圆和内接四边形，对角互补，外角等于内对角&image_size=square"
+                                    alt="圆内接四边形性质图解">
                             </div>
                         </div>
                         <div class="knowledge-slide">
                             <div class="knowledge-icon">📊</div>
                             <h3 data-i18n="knowledge.generalEquation">圆的一般方程</h3>
-                            <p data-i18n="knowledge.generalEquationDesc">x² + y² + Dx + Ey + F = 0，其中D² + E² - 4F > 0</p>
+                            <p data-i18n="knowledge.generalEquationDesc">x² + y² + Dx + Ey + F = 0，其中D² + E² - 4F > 0
+                            </p>
                             <div class="knowledge-diagram">
-                                <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=圆的一般方程几何图解，展示圆和坐标系，方程x²+y²+Dx+Ey+F=0&image_size=square" alt="圆的一般方程图解">
+                                <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=圆的一般方程几何图解，展示圆和坐标系，方程x²+y²+Dx+Ey+F=0&image_size=square"
+                                    alt="圆的一般方程图解">
                             </div>
                         </div>
                         <div class="knowledge-slide">
@@ -204,7 +187,8 @@
                             <h3 data-i18n="knowledge.circleRelations">两圆位置关系</h3>
                             <p data-i18n="knowledge.circleRelationsDesc">外离、外切、相交、内切、内含五种位置关系，由圆心距与两圆半径决定</p>
                             <div class="knowledge-diagram">
-                                <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=两圆位置关系几何图解，展示外离、外切、相交、内切、内含五种位置关系&image_size=square" alt="两圆位置关系图解">
+                                <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=两圆位置关系几何图解，展示外离、外切、相交、内切、内含五种位置关系&image_size=square"
+                                    alt="两圆位置关系图解">
                             </div>
                         </div>
                     </div>
@@ -221,7 +205,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <!-- 检测介绍 - 幻灯片展示 -->
             <div class="quiz-intro-section">
                 <h2 data-i18n="quizIntro.title">检测功能介绍</h2>
@@ -258,7 +242,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <!-- 网页数据库介绍 - 卡片展示 -->
             <div class="database-section">
                 <h2 data-i18n="database.title">网页数据库介绍</h2>
@@ -314,7 +298,7 @@
         <!-- 设置模块 -->
         <section id="settings" class="module">
             <h2 data-i18n="settings.title">设置</h2>
-            
+
             <div class="settings-section">
                 <h3 data-i18n="settings.appearance">外观</h3>
                 <div class="settings-container">
@@ -343,7 +327,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <div class="settings-section">
                 <h3 data-i18n="settings.language">语言</h3>
                 <div class="settings-container">
@@ -370,7 +354,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <div class="settings-section">
                 <h3 data-i18n="settings.account">账户</h3>
                 <div class="settings-container">
@@ -379,15 +363,18 @@
                         <form class="auth-form">
                             <div class="setting-item">
                                 <label data-i18n="login.username">用户名</label>
-                                <input type="text" placeholder="用户名" required class="input-field" data-i18n-placeholder="login.username"/>
+                                <input type="text" placeholder="用户名" required class="input-field"
+                                    data-i18n-placeholder="login.username" />
                             </div>
                             <div class="setting-item">
                                 <label data-i18n="login.password">密码</label>
-                                <input type="password" placeholder="密码" required class="input-field" data-i18n-placeholder="login.password"/>
+                                <input type="password" placeholder="密码" required class="input-field"
+                                    data-i18n-placeholder="login.password" />
                             </div>
                             <div class="setting-item privacy-policy">
                                 <input type="checkbox" id="privacy" required>
-                                <label for="privacy" data-i18n="login.privacy">我已阅读并同意<a href="#" onclick="alert('隐私政策：我们尊重您的隐私，不会收集任何个人信息。')">隐私政策</a></label>
+                                <label for="privacy" data-i18n="login.privacy">我已阅读并同意<a href="#"
+                                        onclick="alert('隐私政策：我们尊重您的隐私，不会收集任何个人信息。')">隐私政策</a></label>
                             </div>
                             <div class="setting-item">
                                 <button type="submit" class="submit-btn" data-i18n="login.enter">进入</button>
@@ -396,7 +383,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <div class="settings-section">
                 <h3 data-i18n="settings.learning">学习</h3>
                 <div class="settings-container">
@@ -409,7 +396,8 @@
                     </div>
                     <div class="setting-item">
                         <label data-i18n="settings.dailyGoal">每日学习目标（分钟）</label>
-                        <input type="number" id="settings-daily-goal" class="input-field" value="30" min="5" max="180" step="5">
+                        <input type="number" id="settings-daily-goal" class="input-field" value="30" min="5" max="180"
+                            step="5">
                     </div>
                     <div class="setting-item">
                         <label data-i18n="settings.studyReminder">学习提醒</label>
@@ -420,7 +408,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <div class="settings-section">
                 <h3 data-i18n="settings.privacy">隐私和安全</h3>
                 <div class="settings-container">
@@ -447,7 +435,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <div class="settings-section">
                 <h3 data-i18n="settings.advanced">高级</h3>
                 <div class="settings-container">
@@ -464,7 +452,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <div class="settings-footer">
                 <button class="submit-btn" data-i18n="settings.save">应用设置</button>
             </div>
@@ -481,8 +469,8 @@
             <div class="footer-section">
                 <h4 data-i18n="footer.links">快速链接</h4>
                 <ul>
-                    <li><a href="#quiz" data-i18n="nav.quiz">检测</a></li>
-                    <li><a href="#game" data-i18n="nav.game">游戏</a></li>
+                    <li><a href="./quiz/quiz.html" data-i18n="nav.quiz">检测</a></li>
+                    <li><a href="./game/game_page.html" data-i18n="nav.game">游戏</a></li>
                 </ul>
             </div>
             <div class="footer-section">
@@ -496,4 +484,5 @@
 
     <script src="script.js"></script>
 </body>
+
 </html>
