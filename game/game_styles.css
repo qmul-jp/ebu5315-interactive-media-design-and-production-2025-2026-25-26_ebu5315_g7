@@ -56,6 +56,7 @@ body {
   0% { transform: scale(0.9) translateY(30px); opacity: 0; }
   100% { transform: scale(1) translateY(0); opacity: 1; }
 }
+#exitBtn:hover { filter: brightness(0.95); }
 
 @keyframes fadeIn {
   from { opacity: 0; }

@@ -1,0 +1,80 @@
+<!--
+   Fixed the bug that the picture was not displaying in the "Review Answers" section.
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Circle Theorems Practice - Premium UI</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles-quiz.css">
+    <link rel="stylesheet" href="../navbar/navbar.css">
+    <script src="../navbar/navbar.js"></script>
+    <style>
+
+    </style>
+</head>
+
+<body>
+    <top-navbar page-type="quiz" home-link="../index.html"></top-navbar>
+    <div id="home-view" class="view active">
+        <header class="page-header">
+            <h1 class="page-title" data-i18n="appTitle">Circle Theorems</h1>
+            <p class="page-subtitle" data-i18n="appSubtitle">Select a difficulty level to begin</p>
+        </header>
+
+        <div class="level-menu">
+            <div class="menu-card" onclick="openLevel(1)">
+                <div class="menu-icon icon-easy">1</div>
+                <div class="menu-text">
+                    <div class="menu-title"><span data-i18n="l1Title">Level 1 • Easy</span> <span id="status-l1"
+                            class="level-status" data-i18n="statusNotStarted">Not Started</span></div>
+                    <div class="menu-desc" data-i18n="l1Desc">Foundational concepts & matching</div>
+                </div>
+                <div class="menu-chevron">›</div>
+            </div>
+            <div class="menu-card" onclick="openLevel(2)">
+                <div class="menu-icon icon-medium">2</div>
+                <div class="menu-text">
+                    <div class="menu-title"><span data-i18n="l2Title">Level 2 • Medium</span> <span id="status-l2"
+                            class="level-status" data-i18n="statusNotStarted">Not Started</span></div>
+                    <div class="menu-desc" data-i18n="l2Desc">Calculate missing angles & properties</div>
+                </div>
+                <div class="menu-chevron">›</div>
+            </div>
+            <div class="menu-card" onclick="openLevel(3)">
+                <div class="menu-icon icon-hard">3</div>
+                <div class="menu-text">
+                    <div class="menu-title"><span data-i18n="l3Title">Level 3 • Advanced</span> <span id="status-l3"
+                            class="level-status" data-i18n="statusNotStarted">Not Started</span></div>
+                    <div class="menu-desc" data-i18n="l3Desc">Proofs & complex theorem combinations</div>
+                </div>
+                <div class="menu-chevron">›</div>
+            </div>
+        </div>
+    </div>
+
+    <div id="test-view" class="view">
+        <div class="top-nav">
+            <button class="back-btn" onclick="goHome()" data-i18n="btnBack">Back</button>
+            <div class="progress-container">
+                <div class="progress-label" data-i18n="progressLabel">Level Progress</div>
+                <div class="progress-bar-bg">
+                    <div class="progress-bar-fill" id="progress-bar"></div>
+                </div>
+            </div>
+            <div class="score-badge" id="score-display">Score: 0/0</div>
+        </div>
+
+        <div id="dynamic-content" class="question-card active"></div>
+    </div>
+
+
+    <script src="questionBank.js"></script>
+    <script src="script-quiz.js"></script>
+
+</body>
+
+</html>
