@@ -164,9 +164,24 @@ function startGame2() {
 function exitGame2() {
     gameStarted2 = false;
     if (winTimer2) clearTimeout(winTimer2);
-    const gameArea2 = document.getElementById("gameArea2");
-    if (gameArea2) gameArea2.classList.add("hidden");
     if (typeof hideWinModal === 'function') hideWinModal();
+
+    const gameArea2 = document.getElementById("gameArea2");
+    const introContainer = document.getElementById("introContainer");
+
+    if (gameArea2) {
+        // 1. 触发 CRT 息屏动画
+        gameArea2.classList.add("crt-off-anim");
+
+        // 2. 延时等待动画播放完毕
+        setTimeout(() => {
+            gameArea2.classList.remove("crt-off-anim"); // 清理动画类
+            gameArea2.classList.add("hidden");          // 隐藏游戏区
+            if (introContainer) {
+                introContainer.classList.remove("hidden"); // 返回主菜单
+            }
+        }, 450);
+    }
 }
 
 function restartGame2() {
@@ -533,8 +548,8 @@ function drawMazeWalls() {
 
 function drawCustomUI() {
     ctx2.save();
-    const activeColor = "#ef4444"; 
-    const idleColor = "#4f46e5";   
+    const activeColor = "#ff0055"; 
+    const idleColor = "#00f0ff";   
     
     ctx2.beginPath();
     ctx2.arc(cx, cy, uiState.angleTrackRadius, 0, Math.PI * 2);
@@ -629,16 +644,30 @@ function draw2() {
     const isInteracting = uiState.isDraggingAngle || uiState.isDraggingRadius;
     const dotX = cx + Math.cos(playerDisk.angle) * playerDisk.radius;
     const dotY = cy + Math.sin(playerDisk.angle) * playerDisk.radius;
+    
+    // 设定主题颜色
+    const coreColor = isInteracting ? "#ff0055" : "#00f0ff";
+    const shadowColor = isInteracting ? "rgba(255, 0, 85, 0.8)" : "rgba(0, 240, 255, 0.8)";
+
+    // 1. 绘制带有强烈光晕的外壳
     ctx2.beginPath();
     ctx2.arc(dotX, dotY, playerDisk.dotSize, 0, Math.PI * 2);
-    ctx2.fillStyle = isInteracting ? "#ef4444" : "#4f46e5";
-    
-    ctx2.shadowBlur = 8;
-    ctx2.shadowColor = isInteracting ? "rgba(239,68,68,0.5)" : "rgba(79,70,229,0.5)";
-    
+    ctx2.fillStyle = coreColor;
+    ctx2.shadowBlur = 20; // 扩大发光范围
+    ctx2.shadowColor = shadowColor;
     ctx2.fill();
-    ctx2.strokeStyle = "white";
+
+    // 2. 绘制清晰的白色实线描边
+    ctx2.lineWidth = 2;
+    ctx2.strokeStyle = "rgba(255, 255, 255, 0.9)";
     ctx2.stroke();
+
+    // 3. 绘制高亮能量核心 (让它看起来在发光)
+    ctx2.beginPath();
+    ctx2.arc(dotX, dotY, playerDisk.dotSize * 0.4, 0, Math.PI * 2);
+    ctx2.fillStyle = "#ffffff";
+    ctx2.shadowBlur = 0; // 核心不需要阴影，保持锐利
+    ctx2.fill();
     
     ctx2.restore(); 
 }
