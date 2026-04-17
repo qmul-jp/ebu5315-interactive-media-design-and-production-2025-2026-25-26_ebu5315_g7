@@ -164,9 +164,24 @@ function startGame2() {
 function exitGame2() {
     gameStarted2 = false;
     if (winTimer2) clearTimeout(winTimer2);
-    const gameArea2 = document.getElementById("gameArea2");
-    if (gameArea2) gameArea2.classList.add("hidden");
     if (typeof hideWinModal === 'function') hideWinModal();
+
+    const gameArea2 = document.getElementById("gameArea2");
+    const introContainer = document.getElementById("introContainer");
+
+    if (gameArea2) {
+        // 1. 触发 CRT 息屏动画
+        gameArea2.classList.add("crt-off-anim");
+
+        // 2. 延时等待动画播放完毕
+        setTimeout(() => {
+            gameArea2.classList.remove("crt-off-anim"); // 清理动画类
+            gameArea2.classList.add("hidden");          // 隐藏游戏区
+            if (introContainer) {
+                introContainer.classList.remove("hidden"); // 返回主菜单
+            }
+        }, 450);
+    }
 }
 
 function restartGame2() {

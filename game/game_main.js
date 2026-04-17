@@ -109,9 +109,7 @@ function restartGame() {
 function exitGame() {
   gameStarted = false;
   const gameArea = document.getElementById("gameArea");
-  const gameIntro = document.getElementById("gameIntro");
-  if (gameArea) gameArea.classList.add("hidden");
-  if (gameIntro) gameIntro.classList.remove("hidden");
+  const introContainer = document.getElementById("introContainer");
 
   hideWinModal();
 
@@ -119,6 +117,20 @@ function exitGame() {
     markedPoints.clear();
   }
   hoveredPoint = null;
+
+  if (gameArea) {
+    // 1. 触发 CRT 息屏动画
+    gameArea.classList.add("crt-off-anim");
+    
+    // 2. 延时等待动画播放完毕 (450ms) 后，再执行 DOM 隐藏和显示逻辑
+    setTimeout(() => {
+      gameArea.classList.remove("crt-off-anim"); // 清理动画类
+      gameArea.classList.add("hidden");          // 隐藏游戏区
+      if (introContainer) {
+          introContainer.classList.remove("hidden"); // 返回主菜单
+      }
+    }, 450);
+  }
 }
 
 window.startGame = startGame;
