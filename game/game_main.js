@@ -945,18 +945,24 @@ function drawMapBase() {
     currentBg = bgAssets.hard;
   }
 
-  // --- 1. 绘制背景图片 ---
+  // --- 1. 绘制背景 ---
+  // 先画一层柔和的兜底底色，防止图片变透明后透出后面的背景
+  ctx.fillStyle = "#f8fafc"; 
+  ctx.fillRect(mapPanelRect.x, mapPanelRect.y, mapPanelRect.w, mapPanelRect.h);
+
   if (currentBg.complete && currentBg.naturalWidth !== 0) {
+    // 【核心修改】：调低图片的透明度（0.0 全透 ~ 1.0 不透，这里设为 0.35）
+    ctx.globalAlpha = 0.35; 
+    
     // 成功加载时绘制对应难度的图片
     ctx.drawImage(currentBg, mapPanelRect.x, mapPanelRect.y, mapPanelRect.w, mapPanelRect.h);
-  } else {
-    // 兜底底色
-    ctx.fillStyle = "#eef6ff"; 
-    ctx.fillRect(mapPanelRect.x, mapPanelRect.y, mapPanelRect.w, mapPanelRect.h);
+    
+    // 绘制完图片后，必须把透明度恢复为 1，以免影响后面网格和数字的绘制
+    ctx.globalAlpha = 1.0; 
   }
 
   // --- 2. 绘制网格线 ---
-  ctx.strokeStyle = "rgba(255, 255, 255, 0.7)"; // 半透明黑色网格线
+  ctx.strokeStyle = "rgba(0, 0, 0, 0.15)"; // 因为背景变淡了，网格线颜色稍微改深一点点保证清晰度
   ctx.lineWidth = 3;
   ctx.strokeRect(gridRect.x, gridRect.y, gridRect.w, gridRect.h);
 
@@ -977,7 +983,7 @@ function drawMapBase() {
   }
 
   // --- 3. 绘制坐标轴刻度数字 ---
-  ctx.fillStyle = "#ffffffff"; 
+  ctx.fillStyle = "#334155"; // 因为背景变淡了，刻度数字改用深色以便看清
   ctx.font = "bold 18px Arial";
   
   // 顶部 X 轴刻度

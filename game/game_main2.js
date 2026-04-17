@@ -533,8 +533,8 @@ function drawMazeWalls() {
 
 function drawCustomUI() {
     ctx2.save();
-    const activeColor = "#ef4444"; 
-    const idleColor = "#4f46e5";   
+    const activeColor = "#ff0055"; 
+    const idleColor = "#00f0ff";   
     
     ctx2.beginPath();
     ctx2.arc(cx, cy, uiState.angleTrackRadius, 0, Math.PI * 2);
@@ -629,16 +629,30 @@ function draw2() {
     const isInteracting = uiState.isDraggingAngle || uiState.isDraggingRadius;
     const dotX = cx + Math.cos(playerDisk.angle) * playerDisk.radius;
     const dotY = cy + Math.sin(playerDisk.angle) * playerDisk.radius;
+    
+    // 设定主题颜色
+    const coreColor = isInteracting ? "#ff0055" : "#00f0ff";
+    const shadowColor = isInteracting ? "rgba(255, 0, 85, 0.8)" : "rgba(0, 240, 255, 0.8)";
+
+    // 1. 绘制带有强烈光晕的外壳
     ctx2.beginPath();
     ctx2.arc(dotX, dotY, playerDisk.dotSize, 0, Math.PI * 2);
-    ctx2.fillStyle = isInteracting ? "#ef4444" : "#4f46e5";
-    
-    ctx2.shadowBlur = 8;
-    ctx2.shadowColor = isInteracting ? "rgba(239,68,68,0.5)" : "rgba(79,70,229,0.5)";
-    
+    ctx2.fillStyle = coreColor;
+    ctx2.shadowBlur = 20; // 扩大发光范围
+    ctx2.shadowColor = shadowColor;
     ctx2.fill();
-    ctx2.strokeStyle = "white";
+
+    // 2. 绘制清晰的白色实线描边
+    ctx2.lineWidth = 2;
+    ctx2.strokeStyle = "rgba(255, 255, 255, 0.9)";
     ctx2.stroke();
+
+    // 3. 绘制高亮能量核心 (让它看起来在发光)
+    ctx2.beginPath();
+    ctx2.arc(dotX, dotY, playerDisk.dotSize * 0.4, 0, Math.PI * 2);
+    ctx2.fillStyle = "#ffffff";
+    ctx2.shadowBlur = 0; // 核心不需要阴影，保持锐利
+    ctx2.fill();
     
     ctx2.restore(); 
 }
