@@ -109,9 +109,7 @@ function restartGame() {
 function exitGame() {
   gameStarted = false;
   const gameArea = document.getElementById("gameArea");
-  const gameIntro = document.getElementById("gameIntro");
-  if (gameArea) gameArea.classList.add("hidden");
-  if (gameIntro) gameIntro.classList.remove("hidden");
+  const introContainer = document.getElementById("introContainer");
 
   hideWinModal();
 
@@ -119,6 +117,20 @@ function exitGame() {
     markedPoints.clear();
   }
   hoveredPoint = null;
+
+  if (gameArea) {
+    // 1. 触发 CRT 息屏动画
+    gameArea.classList.add("crt-off-anim");
+    
+    // 2. 延时等待动画播放完毕 (450ms) 后，再执行 DOM 隐藏和显示逻辑
+    setTimeout(() => {
+      gameArea.classList.remove("crt-off-anim"); // 清理动画类
+      gameArea.classList.add("hidden");          // 隐藏游戏区
+      if (introContainer) {
+          introContainer.classList.remove("hidden"); // 返回主菜单
+      }
+    }, 450);
+  }
 }
 
 window.startGame = startGame;
@@ -580,10 +592,10 @@ class Piece {
     // 绘制完图片后去掉阴影，防止文字产生重影
     ctx.shadowBlur = 0;
 
-    // --- 4. 辅助定位线 (十字准星，可选，如果不想要可以删掉) ---
+    // --- 4. 辅助定位线 ---
     ctx.beginPath();
-    ctx.strokeStyle = "rgba(0, 0, 0, 0.3)"; 
-    ctx.lineWidth = 1;
+    ctx.strokeStyle = "rgba(0, 0, 0, 0.8)"; 
+    ctx.lineWidth = 3;
     const crossHalf = 6;
     ctx.moveTo(this.x - crossHalf, this.y); ctx.lineTo(this.x + crossHalf, this.y);
     ctx.moveTo(this.x, this.y - crossHalf); ctx.lineTo(this.x, this.y + crossHalf);
@@ -945,19 +957,25 @@ function drawMapBase() {
     currentBg = bgAssets.hard;
   }
 
-  // --- 1. 绘制背景图片 ---
+  // --- 1. 绘制背景 ---
+  // 先画一层柔和的兜底底色，防止图片变透明后透出后面的背景
+  ctx.fillStyle = "#f8fafc"; 
+  ctx.fillRect(mapPanelRect.x, mapPanelRect.y, mapPanelRect.w, mapPanelRect.h);
+
   if (currentBg.complete && currentBg.naturalWidth !== 0) {
+    // 【核心修改】：调低图片的透明度（0.0 全透 ~ 1.0 不透，这里设为 0.35）
+    ctx.globalAlpha = 0.35; 
+    
     // 成功加载时绘制对应难度的图片
     ctx.drawImage(currentBg, mapPanelRect.x, mapPanelRect.y, mapPanelRect.w, mapPanelRect.h);
-  } else {
-    // 兜底底色
-    ctx.fillStyle = "#eef6ff"; 
-    ctx.fillRect(mapPanelRect.x, mapPanelRect.y, mapPanelRect.w, mapPanelRect.h);
+    
+    // 绘制完图片后，必须把透明度恢复为 1，以免影响后面网格和数字的绘制
+    ctx.globalAlpha = 1.0; 
   }
 
   // --- 2. 绘制网格线 ---
-  ctx.strokeStyle = "rgba(0, 0, 0, 0.2)"; // 半透明黑色网格线
-  ctx.lineWidth = 1;
+  ctx.strokeStyle = "rgba(0, 0, 0, 0.15)"; // 因为背景变淡了，网格线颜色稍微改深一点点保证清晰度
+  ctx.lineWidth = 3;
   ctx.strokeRect(gridRect.x, gridRect.y, gridRect.w, gridRect.h);
 
   for (let i = 0; i <= CONFIG.cols; i++) {
@@ -977,8 +995,8 @@ function drawMapBase() {
   }
 
   // --- 3. 绘制坐标轴刻度数字 ---
-  ctx.fillStyle = "#333"; 
-  ctx.font = "bold 12px Arial";
+  ctx.fillStyle = "#334155"; // 因为背景变淡了，刻度数字改用深色以便看清
+  ctx.font = "bold 18px Arial";
   
   // 顶部 X 轴刻度
   ctx.textAlign = "center";
