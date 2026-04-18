@@ -1,5 +1,5 @@
 <!--
-   Fixed the bug that the picture was not displaying in the "Review Answers" section.
+   Added a "Mistakes Book" section to track and review incorrect answers
 -->
 <!DOCTYPE html>
 <html lang="en">
@@ -12,9 +12,6 @@
     <link rel="stylesheet" href="styles-quiz.css">
     <link rel="stylesheet" href="../navbar/navbar.css">
     <script src="../navbar/navbar.js"></script>
-    <style>
-
-    </style>
 </head>
 
 <body>
@@ -53,6 +50,16 @@
                 </div>
                 <div class="menu-chevron">›</div>
             </div>
+            <!--menu-card-->
+            <div class="menu-card" id="mistakes-card" onclick="openMistakes()">
+                <div class="menu-icon icon-mistakes">M</div>
+                <div class="menu-text">
+                    <div class="menu-title"><span data-i18n="mistakesTitle">Mistakes Book</span> <span
+                            id="status-mistakes" class="level-status" data-i18n="statusEmpty">Empty</span></div>
+                    <div class="menu-desc" data-i18n="mistakesDesc">Analytics & Redo incorrect questions</div>
+                </div>
+                <div class="menu-chevron">›</div>
+            </div>
         </div>
     </div>
 
@@ -70,7 +77,15 @@
 
         <div id="dynamic-content" class="question-card active"></div>
     </div>
+    <div id="mistakes-view" class="view">
+        <div class="top-nav" style="margin-bottom: 1.5rem;">
+            <button class="back-btn" onclick="goHome()" data-i18n="btnBack">Back</button>
+            <div class="score-badge" data-i18n="mistakesTitle" style="font-size: 1.25rem;">Mistakes Book</div>
+        </div>
 
+        <div id="mistakes-dashboard" class="mistakes-dashboard">
+        </div>
+    </div>
 
     <script src="questionBank.js"></script>
     <script src="script-quiz.js"></script>

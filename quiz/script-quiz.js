@@ -23,7 +23,12 @@ const i18nData = {
         diagramA: "Diagram 1", diagramB: "Diagram 2", diagramC: "Diagram 3",
         allDoneTitle: "Level Completed!", allDoneDesc: "You have finished all questions in this level.",
         btnReview: "Review Answers", lblCorrect: "Correct", lblIncorrect: "Incorrect",
-        fibPlaceholder: "Type your answer here..."
+        fibPlaceholder: "Type your answer here...",
+        mistakesTitle: "Mistakes Book", mistakesDesc: "Analytics & Redo incorrect questions",
+        statusEmpty: "Empty", statusNeedsReview: "Needs Review",
+        statTotal: "Total Done", statAcc: "Accuracy", statPending: "Pending",
+        lblRedo: "Redo", lblResolved: "Resolved",
+        noMistakesMsg: "Great job! You have no pending mistakes.",
     },
     zh: {
         appTitle: "试试看！", appSubtitle: "选择难度级别开始练习",
@@ -38,7 +43,12 @@ const i18nData = {
         diagramA: "放置区 1", diagramB: "放置区 2", diagramC: "放置区 3",
         allDoneTitle: "关卡已完成！", allDoneDesc: "您已经做完了该关卡的所有题目。",
         btnReview: "回顾题目", lblCorrect: "正确", lblIncorrect: "错误",
-        fibPlaceholder: "在此输入您的答案..."
+        fibPlaceholder: "在此输入您的答案...",
+        mistakesTitle: "错题本", mistakesDesc: "学情分析与错题重做",
+        statusEmpty: "暂无错题", statusNeedsReview: "待复习",
+        statTotal: "已答总数", statAcc: "正确率", statPending: "待重做",
+        lblRedo: "重做", lblResolved: "已解决",
+        noMistakesMsg: "太棒了！你目前没有待解决的错题。",
     }
 };
 
@@ -49,6 +59,8 @@ let currentQuestion = null;
 let isAnswered = false;
 let selectedAnswerId = null;
 let draggedItem = null;
+let isRedoMode = false;
+let currentRedoIndex = null; // 用于记录当前重做的是哪一道错题
 
 const levelState = {
     // 新增 activeQuestion: null，用于保存还没答完的题目
@@ -126,8 +138,18 @@ function openLevel(num) {
     updateScoreUI();
 }
 
+// ✨ 替换整个 nextQuestion 函数
 function nextQuestion() {
-    openLevel(currentLevelNum);
+    if (isRedoMode) {
+        // 答完错题后，返回错题本
+        testView.classList.remove('active');
+        document.getElementById('mistakes-view').classList.add('active');
+        isRedoMode = false;
+        currentRedoIndex = null;
+        renderMistakesDashboard();
+    } else {
+        openLevel(currentLevelNum);
+    }
 }
 
 function goHome() {
@@ -165,6 +187,23 @@ function updateHomeMenu() {
             badge.innerText = dict.statusNotStarted;
             badge.classList.remove('done', 'in-progress');
         }
+    }
+    // 新增：更新错题本状态
+    let pendingMistakes = 0;
+    for (let i = 1; i <= 3; i++) {
+        levelState[i].history.forEach(item => {
+            if (!item.isCorrect && !item.resolved) pendingMistakes++;
+        });
+    }
+    const mBadge = document.getElementById('status-mistakes');
+    if (pendingMistakes > 0) {
+        mBadge.innerText = `${pendingMistakes} ${dict.statusNeedsReview}`;
+        mBadge.style.background = 'var(--bg-incorrect)';
+        mBadge.style.color = 'var(--color-incorrect)';
+    } else {
+        mBadge.innerText = dict.statusEmpty;
+        mBadge.style.background = 'rgba(0,0,0,0.04)';
+        mBadge.style.color = 'var(--text-secondary)';
     }
 }
 
@@ -526,14 +565,22 @@ window.submitAnswer = function () {
         }
     }
 
-    if (isCorrect) levelState[currentLevelNum].score++;
-    levelState[currentLevelNum].answeredCount++;
-    levelState[currentLevelNum].history.push({
-        question: q,
-        isCorrect: isCorrect
-    });
-
-    levelState[currentLevelNum].activeQuestion = null;
+    if (isRedoMode) {
+        if (isCorrect) {
+            // 如果重做正确，标记为已解决，不增加原始分数
+            levelState[currentLevelNum].history[currentRedoIndex].resolved = true;
+        }
+    } else {
+        // 正常的答题逻辑
+        if (isCorrect) levelState[currentLevelNum].score++;
+        levelState[currentLevelNum].answeredCount++;
+        levelState[currentLevelNum].history.push({
+            question: q,
+            isCorrect: isCorrect,
+            resolved: isCorrect // 如果第一次就对了，自动视为 resolved
+        });
+        levelState[currentLevelNum].activeQuestion = null;
+    }
 
     document.getElementById('btn-submit').style.display = 'none';
     document.getElementById('btn-next').style.display = 'block';
@@ -547,6 +594,116 @@ window.submitAnswer = function () {
 
     updateScoreUI();
 };
+function openMistakes() {
+    homeView.classList.remove('active');
+    testView.classList.remove('active');
+    document.getElementById('mistakes-view').classList.add('active');
+
+    renderMistakesDashboard();
+}
+function renderMistakesDashboard() {
+    const dict = i18nData[currentLang];
+    const dashboard = document.getElementById('mistakes-dashboard');
+
+    // 1. 数据聚合 (学情分析)
+    let totalAnswered = 0;
+    let totalCorrect = 0;
+    let mistakesList = [];
+
+    for (let i = 1; i <= 3; i++) {
+        totalAnswered += levelState[i].history.length;
+        levelState[i].history.forEach((item, index) => {
+            if (item.isCorrect) {
+                totalCorrect++;
+            } else {
+                // 保存原始题目的引用、关卡和在历史记录中的索引
+                mistakesList.push({ question: item.question, level: i, historyIndex: index, resolved: item.resolved });
+            }
+        });
+    }
+
+    const accuracy = totalAnswered === 0 ? 0 : Math.round((totalCorrect / totalAnswered) * 100);
+    const pendingCount = mistakesList.filter(m => !m.resolved).length;
+
+    // 2. 渲染学情网格
+    let html = `
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-value">${totalAnswered}</div>
+                <div class="stat-label">${dict.statTotal}</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" style="color: ${accuracy >= 80 ? 'var(--color-correct)' : 'var(--accent-orange)'}">${accuracy}%</div>
+                <div class="stat-label">${dict.statAcc}</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" style="color: ${pendingCount > 0 ? 'var(--color-incorrect)' : 'var(--text-primary)'}">${pendingCount}</div>
+                <div class="stat-label">${dict.statPending}</div>
+            </div>
+        </div>
+        <h3 style="margin-bottom: 1rem; font-weight: 700;">${dict.mistakesTitle}</h3>
+    `;
+
+    // 3. 渲染错题列表
+    if (mistakesList.length === 0 || pendingCount === 0 && mistakesList.every(m => m.resolved)) {
+        html += `<div style="text-align:center; padding: 2rem; color: var(--text-secondary); background: rgba(0,0,0,0.02); border-radius: 16px;">${dict.noMistakesMsg}</div>`;
+    } else {
+        html += `<div class="mistake-list">`;
+        // 把未解决的排在前面
+        mistakesList.sort((a, b) => (a.resolved === b.resolved) ? 0 : a.resolved ? 1 : -1).forEach(m => {
+            const btnClass = m.resolved ? "redo-btn resolved-btn" : "redo-btn";
+            const btnText = m.resolved ? dict.lblResolved : dict.lblRedo;
+            const onclick = m.resolved ? "" : `onclick="startRedo(${m.level}, ${m.historyIndex})"`;
+
+            html += `
+                <div class="mistake-item-card ${m.resolved ? 'resolved' : ''}">
+                    <div class="level-badge badge-${m.level}" style="margin-bottom:0; flex-shrink:0;">L${m.level}</div>
+                    <div class="mistake-q-text">${m.question.question[currentLang]}</div>
+                    <button class="${btnClass}" ${onclick}>${btnText}</button>
+                </div>
+            `;
+        });
+        html += `</div>`;
+    }
+
+    dashboard.innerHTML = html;
+}
+function startRedo(levelNum, historyIndex) {
+    const item = levelState[levelNum].history[historyIndex];
+
+    currentLevelNum = levelNum;
+    currentQuestion = item.question;
+    isRedoMode = true;
+    currentRedoIndex = historyIndex;
+    isAnswered = false;
+
+    // 切换到答题视图
+    document.getElementById('mistakes-view').classList.remove('active');
+    testView.classList.add('active');
+
+    renderQuestion();
+
+    // 隐藏顶部进度条和得分（因为这是独立重做）
+    document.querySelector('.progress-container').style.display = 'none';
+    document.getElementById('score-display').style.display = 'none';
+}
+
+// ⚠️ 重要：修改现有的 goHome() 函数，确保重置状态并隐藏错题视图
+function goHome() {
+    testView.classList.remove('active');
+    document.getElementById('mistakes-view').classList.remove('active'); // 新增
+    homeView.classList.add('active');
+    document.getElementById('bottom-sheet')?.classList.remove('open');
+
+    // 恢复顶部导航显示
+    document.querySelector('.progress-container').style.display = 'block';
+    document.getElementById('score-display').style.display = 'block';
+
+    isRedoMode = false;
+    currentRedoIndex = null;
+
+    updateHomeMenu();
+}
 window.toggleLanguage = function () {
     setLanguage(currentLang == 'en' ? 'zh' : 'en');
 }
