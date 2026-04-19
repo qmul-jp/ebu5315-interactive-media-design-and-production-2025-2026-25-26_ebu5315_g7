@@ -173,7 +173,7 @@ const circleQuestionsData = {
                 { id: "B", en: "double", zh: "加倍" },
                 { id: "C", en: "be parallel to", zh: "平行于" }
             ],
-            answer: "A", 
+            answer: "A",
             explanation: {
                 en: "The perpendicular from the centre to a chord bisects the chord (cuts it exactly in half).",
                 zh: "垂径定理：垂直于弦的直径（或从圆心作的垂线）平分这条弦。"
@@ -208,13 +208,14 @@ const circleQuestionsData = {
         {
             id: "l3_proof_1",
             type: "proof",
+            imageSrc: "./images/l3_proof_1.png",
             imageDesc: {
                 en: "[Diagram: Alternate segment theorem proof diagram. Triangle ABC inscribed. Tangent AT at A.]",
                 zh: "[图示：弦切角定理证明图。内接三角形ABC。在点A处的切线为AT。]"
             },
             question: {
-                en: "Complete the proof step: ∠BAT = ∠BCA. State the reason.",
-                zh: "完成证明步骤：∠BAT = ∠BCA。请选择对应的理由。"
+                en: "The tangent at point A is AT. Complete the proof step: ∠BAT = ∠BCA. State the reason.",
+                zh: "切线为AT。完成证明步骤：∠BAT = ∠BCA。请选择对应的理由。"
             },
             options: [
                 { id: "opt1", en: "Alternate Segment Theorem", zh: "弦切角定理" },
@@ -323,7 +324,7 @@ class QuestionBankManager {
         if (!questions || questions.length === 0) return null;
 
         const used = this.usedQuestions[level];
-        
+
         // 如果题目已经全部抽过一遍，可以选择自动重置（这里选择返回null，让外部控制是否重置）
         if (used.size >= questions.length) {
             console.warn(`All questions in ${level} have been used. Call resetLevel('${level}') to start over.`);

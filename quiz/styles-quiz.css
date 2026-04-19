@@ -1023,7 +1023,7 @@ body {
 
 /* --- MISTAKES BOOK & ANALYTICS --- */
 .icon-mistakes {
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), transparent), var(--accent-red);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), transparent), var(--color-incorrect);
 }
 
 .mistakes-dashboard {
@@ -1115,9 +1115,10 @@ body {
     line-height: 1.4;
 }
 
+/* 修改重做按钮：使用 semantic variables */
 .redo-btn {
-    background: var(--bg-red);
-    color: var(--accent-red);
+    background: var(--bg-incorrect);
+    color: var(--color-incorrect);
     border: none;
     border-radius: 12px;
     padding: 0.75rem 1.25rem;
@@ -1128,14 +1129,15 @@ body {
 }
 
 .redo-btn:hover {
-    background: var(--accent-red);
+    background: var(--color-incorrect);
     color: white;
     transform: scale(1.05);
 }
 
+/* 修改已解决按钮：使用 semantic variables */
 .redo-btn.resolved-btn {
-    background: var(--bg-green);
-    color: var(--accent-green);
+    background: var(--bg-correct);
+    color: var(--color-correct);
     cursor: default;
 }
 
