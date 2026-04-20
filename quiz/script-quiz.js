@@ -565,6 +565,20 @@ window.submitAnswer = function () {
         }
     }
 
+    // --- Audio and Confetti Feedback ---
+    if (isCorrect) {
+        new Audio('sound/right.mp3').play().catch(e => console.log("Audio play error:", e));
+        if (typeof confetti === 'function') {
+            confetti({
+                particleCount: 100,
+                spread: 70,
+                origin: { y: 0.6 }
+            });
+        }
+    } else {
+        new Audio('sound/wrong.mp3').play().catch(e => console.log("Audio play error:", e));
+    }
+
     if (isRedoMode) {
         if (isCorrect) {
             // 如果重做正确，标记为已解决，不增加原始分数
