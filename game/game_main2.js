@@ -144,15 +144,28 @@ function generateMazeMap(ringCount, sectorCount) {
 
 /* ---------- 生命周期 ---------- */
 function startGame2() {
-    if (gameStarted2) return;
+    const gameArea2 = document.getElementById("gameArea2");
+    
+    // 逻辑调整：如果游戏二已经启动，点击 Play 按钮同样触发滑动
+    if (gameStarted2) {
+        if (gameArea2 && !gameArea2.classList.contains("hidden")) {
+            gameArea2.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+        return;
+    }
+
+    // 以下是首次启动游戏二的逻辑
     gameStarted2 = true;
     isGameWon2 = false;
     
-    const gameArea2 = document.getElementById("gameArea2");
     if (gameArea2) {
         gameArea2.classList.remove("hidden");
-        void gameArea2.offsetWidth; 
+        void gameArea2.offsetWidth; // 触发重绘以确保动画生效
+        setTimeout(() => {
+            gameArea2.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 50);
     }
+    
     setTimeout(() => {
         resizeCanvas2();
         currentMaze = generateMazeMap(currentRingCount, currentSectorCount); 
@@ -477,13 +490,17 @@ function checkWin2() {
 }
 
 function drawMazeWalls() {
-    if (!currentMaze) return;
+   if (!currentMaze) return;
     const ringWidth = maxRadius / currentRingCount;
     
     ctx2.save();
-    ctx2.strokeStyle = "#1e293b"; 
+    
+    // 根据主题选择墙壁颜色：赛博模式用紫色，水墨模式用浓墨黑
+    ctx2.strokeStyle = window.isDarkMode ? "#801e80ff" : "#2c2c2c"; 
+    
     ctx2.lineWidth = 4;
     ctx2.lineCap = "round";
+    ctx2.beginPath();
 
     for (let r = 1; r < currentRingCount; r++) {
         const radius = r * ringWidth; 
@@ -492,37 +509,26 @@ function drawMazeWalls() {
             const endAngle = (s + 1) * SECTOR_ANGLE;
 
             if (currentMaze.ringWalls[r][s]) {
-                // 画完整的墙
-                ctx2.beginPath();
+                // 【修改】：画圆弧前先将画笔移动到起点，防止与上一个图形连线
+                ctx2.moveTo(cx + Math.cos(startAngle) * radius, cy + Math.sin(startAngle) * radius);
                 ctx2.arc(cx, cy, radius, startAngle, endAngle);
-                ctx2.stroke();
             } else {
-                // 画带缺口的墙
-                const midAngle = (s + 0.5) * SECTOR_ANGLE;
-                
-                // 【核心修改】：设定门的绝对像素宽度，保证门不会随着半径缩小而完全闭合
-                // 缺口的物理跨度至少为 22 像素，或者小球直径的 2.5 倍
                 let minGapPx = Math.max(22, playerDisk.dotSize * 2.5);
-                let doorHalfAngle = (minGapPx / 2) / radius; 
+                let doorHalfAngle = Math.min((minGapPx / 2) / radius, SECTOR_ANGLE * 0.4);
+                const midAngle = (s + 0.5) * SECTOR_ANGLE;
 
-                // 防止内层缺口太大，把整个扇形的墙壁都“吃掉”。最大开口限制在扇形角度的 40% (保留首尾各 10% 的墙根)
-                doorHalfAngle = Math.min(doorHalfAngle, SECTOR_ANGLE * 0.4);
-
-                ctx2.beginPath();
+                ctx2.moveTo(cx + Math.cos(startAngle) * radius, cy + Math.sin(startAngle) * radius);
                 ctx2.arc(cx, cy, radius, startAngle, midAngle - doorHalfAngle);
-                ctx2.stroke();
 
-                ctx2.beginPath();
+                ctx2.moveTo(cx + Math.cos(midAngle + doorHalfAngle) * radius, cy + Math.sin(midAngle + doorHalfAngle) * radius);
                 ctx2.arc(cx, cy, radius, midAngle + doorHalfAngle, endAngle);
-                ctx2.stroke();
             }
         }
     }
     
     // 最外层大圆墙壁
-    ctx2.beginPath();
+    ctx2.moveTo(cx + maxRadius, cy);
     ctx2.arc(cx, cy, maxRadius, 0, Math.PI * 2);
-    ctx2.stroke();
 
     // 画径向墙
     for (let r = 1; r < currentRingCount; r++) {
@@ -531,18 +537,12 @@ function drawMazeWalls() {
         for (let s = 0; s < currentSectorCount; s++) {
             if (currentMaze.radialWalls[r][s]) {
                 const angle = (s + 1) * SECTOR_ANGLE;
-                const startX = cx + Math.cos(angle) * innerRadius;
-                const startY = cy + Math.sin(angle) * innerRadius;
-                const endX = cx + Math.cos(angle) * outerRadius;
-                const endY = cy + Math.sin(angle) * outerRadius;
-                
-                ctx2.beginPath();
-                ctx2.moveTo(startX, startY);
-                ctx2.lineTo(endX, endY);
-                ctx2.stroke();
+                ctx2.moveTo(cx + Math.cos(angle) * innerRadius, cy + Math.sin(angle) * innerRadius);
+                ctx2.lineTo(cx + Math.cos(angle) * outerRadius, cy + Math.sin(angle) * outerRadius);
             }
         }
     }
+    ctx2.stroke();
     ctx2.restore();
 }
 
@@ -570,7 +570,7 @@ function drawCustomUI() {
     ctx2.beginPath();
     ctx2.moveTo(uiState.sliderX, uiState.sliderYTop);
     ctx2.lineTo(uiState.sliderX, uiState.sliderYBottom);
-    ctx2.strokeStyle = "rgba(0, 0, 0, 0.08)";
+    ctx2.strokeStyle = "rgba(255, 255, 255, 0.15)"; 
     ctx2.lineWidth = 6;
     ctx2.lineCap = "round";
     ctx2.stroke();
@@ -580,7 +580,7 @@ function drawCustomUI() {
         ctx2.beginPath();
         ctx2.moveTo(uiState.sliderX - 8, y);
         ctx2.lineTo(uiState.sliderX + 8, y);
-        ctx2.strokeStyle = "rgba(0,0,0,0.15)";
+        ctx2.strokeStyle = "rgba(255, 255, 255, 0.2)";;
         ctx2.lineWidth = 2;
         ctx2.stroke();
     }
@@ -619,55 +619,61 @@ function draw2() {
     }
     ctx2.restore();
     
+    // 中心终点区域颜色
     ctx2.beginPath();
     ctx2.arc(cx, cy, ringWidth * 0.5, 0, Math.PI * 2); 
-    ctx2.fillStyle = "rgba(16, 185, 129, 0.15)";
+    ctx2.fillStyle = window.isDarkMode ? "rgba(16, 185, 129, 0.15)" : "rgba(139, 0, 0, 0.1)"; // 水墨用朱红淡晕
     ctx2.fill();
-    ctx2.strokeStyle = "rgba(16, 185, 129, 0.4)";
+    ctx2.strokeStyle = window.isDarkMode ? "rgba(16, 185, 129, 0.4)" : "rgba(139, 0, 0, 0.3)";
     ctx2.lineWidth = 2;
     ctx2.stroke();
 
     drawMazeWalls();
-    
     drawCustomUI();
 
+    // 玩家轨道圆环颜色
     ctx2.beginPath();
     ctx2.arc(cx, cy, playerDisk.radius, 0, Math.PI * 2);
-    ctx2.strokeStyle = "rgba(79, 70, 229, 0.4)";
+    ctx2.strokeStyle = window.isDarkMode ? "rgba(255, 255, 0, 0.4)" : "rgba(0, 0, 0, 0.1)";
     ctx2.lineWidth = 2;
     ctx2.stroke();
-    ctx2.fillStyle = "rgba(79, 70, 229, 0.08)";
-    ctx2.fill();
 
+    // --- 绘制玩家小球 ---
     ctx2.save(); 
-    
     const isInteracting = uiState.isDraggingAngle || uiState.isDraggingRadius;
     const dotX = cx + Math.cos(playerDisk.angle) * playerDisk.radius;
     const dotY = cy + Math.sin(playerDisk.angle) * playerDisk.radius;
     
-    // 设定主题颜色
-    const coreColor = isInteracting ? "#ff0055" : "#00f0ff";
-    const shadowColor = isInteracting ? "rgba(255, 0, 85, 0.8)" : "rgba(0, 240, 255, 0.8)";
+    // 根据主题定义颜色逻辑
+    let coreColor, shadowColor;
+    if (window.isDarkMode) {
+        // 赛博模式：霓虹青/亮红
+        coreColor = isInteracting ? "#ff0055" : "#00f0ff";
+        shadowColor = isInteracting ? "rgba(255, 0, 85, 0.8)" : "rgba(0, 240, 255, 0.8)";
+    } else {
+        // 水墨模式：朱砂红/墨黑
+        coreColor = isInteracting ? "#8b0000" : "#2c2c2c";
+        shadowColor = "rgba(0, 0, 0, 0.3)";
+    }
 
-    // 1. 绘制带有强烈光晕的外壳
     ctx2.beginPath();
     ctx2.arc(dotX, dotY, playerDisk.dotSize, 0, Math.PI * 2);
     ctx2.fillStyle = coreColor;
-    ctx2.shadowBlur = 20; // 扩大发光范围
-    ctx2.shadowColor = shadowColor;
+    
+    // 只有深色模式下才开启强烈阴影光晕
+    if (window.isDarkMode) {
+        ctx2.shadowBlur = 20;
+        ctx2.shadowColor = shadowColor;
+    } else {
+        ctx2.shadowBlur = 8; // 水墨模式下使用轻微的晕染阴影
+        ctx2.shadowColor = shadowColor;
+    }
     ctx2.fill();
 
-    // 2. 绘制清晰的白色实线描边
-    ctx2.lineWidth = 2;
-    ctx2.strokeStyle = "rgba(255, 255, 255, 0.9)";
+    // 水墨模式下小球描边更细
+    ctx2.lineWidth = window.isDarkMode ? 2 : 1;
+    ctx2.strokeStyle = window.isDarkMode ? "rgba(255, 255, 255, 0.9)" : "rgba(0, 0, 0, 0.5)";
     ctx2.stroke();
-
-    // 3. 绘制高亮能量核心 (让它看起来在发光)
-    ctx2.beginPath();
-    ctx2.arc(dotX, dotY, playerDisk.dotSize * 0.4, 0, Math.PI * 2);
-    ctx2.fillStyle = "#ffffff";
-    ctx2.shadowBlur = 0; // 核心不需要阴影，保持锐利
-    ctx2.fill();
     
     ctx2.restore(); 
 }

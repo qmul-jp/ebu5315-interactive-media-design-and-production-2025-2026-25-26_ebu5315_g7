@@ -42,6 +42,8 @@ Object.values(bgAssets).forEach(img => {
     };
 });
 
+let cachedComputedNodeKeys = null;
+
 /* ---------- Config ---------- */
 const CONFIG = {
   cols: 40,
@@ -81,14 +83,27 @@ function hideWinModal() {
 }
 
 function startGame() {
-  if (gameStarted) return;
-
   const gameArea = document.getElementById("gameArea");
+  
+  // 逻辑调整：如果游戏已经启动且窗口可见，直接滑动并退出
+  if (gameStarted) {
+    if (gameArea && !gameArea.classList.contains("hidden")) {
+      gameArea.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+    return;
+  }
 
+  // 以下是首次启动游戏的逻辑
   gameStarted = true;
   isGameWon = false;
 
-  if (gameArea) gameArea.classList.remove("hidden");
+  if (gameArea) {
+    gameArea.classList.remove("hidden");
+    // 稍作延迟确保 DOM 渲染和 popUp 动画开始后进行平滑滚动
+    setTimeout(() => {
+      gameArea.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, 50);
+  }
 
   resizeCanvas();
   buildGame();
@@ -698,8 +713,10 @@ function layoutTray(list) {
 let validNodeKeys = new Set();
 function makeNodeKey(x, y, r) {
   return `${x},${y},${r}`;
-}function getAllComputedNodeKeys() {
-  return new Set([...validNodeKeys, ...alternativeNodes()]);
+}
+
+function getAllComputedNodeKeys() {
+  return cachedComputedNodeKeys || new Set(); 
 }
 
 
@@ -809,6 +826,7 @@ function buildGame() {
 
     pieces.push(p);
   });
+  cachedComputedNodeKeys = new Set([...validNodeKeys, ...alternativeNodes()]);
 
   layoutTray(tray);
   draw();
@@ -946,35 +964,47 @@ function snap(p) {
 function drawMapBase() {
   ctx.save();
 
-  // 根据难度选择已经加载好的图片对象
   let currentBg;
   if (window.GAME_DIFFICULTY === 1) {
     currentBg = bgAssets.ez;
   } else if (window.GAME_DIFFICULTY === 3) {
     currentBg = bgAssets.medium;
   } else {
-    // 难度 4 (或者其他情况)
     currentBg = bgAssets.hard;
   }
 
   // --- 1. 绘制背景 ---
-  // 先画一层柔和的兜底底色，防止图片变透明后透出后面的背景
   ctx.fillStyle = "#f8fafc"; 
   ctx.fillRect(mapPanelRect.x, mapPanelRect.y, mapPanelRect.w, mapPanelRect.h);
 
   if (currentBg.complete && currentBg.naturalWidth !== 0) {
-    // 【核心修改】：调低图片的透明度（0.0 全透 ~ 1.0 不透，这里设为 0.35）
-    ctx.globalAlpha = 0.35; 
+    ctx.globalAlpha = 0.65; 
     
-    // 成功加载时绘制对应难度的图片
-    ctx.drawImage(currentBg, mapPanelRect.x, mapPanelRect.y, mapPanelRect.w, mapPanelRect.h);
+    // --- 核心修复：保持比例的 Cover 算法 ---
+    const imgW = currentBg.naturalWidth;
+    const imgH = currentBg.naturalHeight;
+    const canvasW = mapPanelRect.w;
+    const canvasH = mapPanelRect.h;
+
+    // 计算缩放倍数：取宽高缩放中较大的一个，确保铺满
+    const scale = Math.max(canvasW / imgW, canvasH / imgH);
+
+    // 计算缩放后的最终宽高
+    const drawW = imgW * scale;
+    const drawH = imgH * scale;
+
+    // 计算偏移量：居中对齐，多余部分会超出 canvas 边界（不被显示）
+    const drawX = mapPanelRect.x + (canvasW - drawW) / 2;
+    const drawY = mapPanelRect.y + (canvasH - drawH) / 2;
+
+    // 绘制图片
+    ctx.drawImage(currentBg, drawX, drawY, drawW, drawH);
     
-    // 绘制完图片后，必须把透明度恢复为 1，以免影响后面网格和数字的绘制
     ctx.globalAlpha = 1.0; 
   }
 
   // --- 2. 绘制网格线 ---
-  ctx.strokeStyle = "rgba(0, 0, 0, 0.15)"; // 因为背景变淡了，网格线颜色稍微改深一点点保证清晰度
+  ctx.strokeStyle = "rgba(255, 255, 255, 0.7)"; 
   ctx.lineWidth = 3;
   ctx.strokeRect(gridRect.x, gridRect.y, gridRect.w, gridRect.h);
 
