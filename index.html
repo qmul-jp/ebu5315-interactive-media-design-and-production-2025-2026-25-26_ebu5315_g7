@@ -6,8 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>圆 · 几何教学平台</title>
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="./navbar/navbar.css">
-    <script src="./navbar/navbar.js"></script>
+
 </head>
 
 <body>
@@ -123,8 +122,24 @@
                             <h3 data-i18n="knowledge.verticalTheorem">垂径定理</h3>
                             <p data-i18n="knowledge.verticalTheoremDesc">垂直于弦的直径平分弦且平分弦所对的两条弧</p>
                             <div class="knowledge-diagram">
-                                <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=垂径定理几何图解，展示圆、直径垂直于弦，平分弦和所对的弧&image_size=square"
-                                    alt="垂径定理图解">
+                                <svg width="300" height="200" xmlns="http://www.w3.org/2000/svg">
+                                    <defs>
+                                        <linearGradient id="circleGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                            <stop offset="0%" style="stop-color:#e3f2fd;stop-opacity:1"/>
+                                            <stop offset="100%" style="stop-color:#bbdefb;stop-opacity:1"/>
+                                        </linearGradient>
+                                    </defs>
+                                    <circle cx="150" cy="100" r="50" fill="url(#circleGradient)" stroke="#1976d2" stroke-width="2"/>
+                                    <line x1="150" y1="50" x2="150" y2="150" stroke="#d32f2f" stroke-width="2" stroke-linecap="round"/>
+                                    <line x1="100" y1="100" x2="200" y2="100" stroke="#388e3c" stroke-width="2" stroke-linecap="round"/>
+                                    <circle cx="150" cy="100" r="3" fill="#1976d2"/>
+                                    <circle cx="100" cy="100" r="3" fill="#388e3c"/>
+                                    <circle cx="200" cy="100" r="3" fill="#388e3c"/>
+                                    <circle cx="150" cy="50" r="3" fill="#d32f2f"/>
+                                    <circle cx="150" cy="150" r="3" fill="#d32f2f"/>
+                                    <text x="150" y="20" text-anchor="middle" font-size="14" fill="#1976d2" font-weight="bold"/>
+                                    <text x="150" y="180" text-anchor="middle" font-size="12" fill="#666">垂直于弦的直径平分弦</text>
+                                </svg>
                             </div>
                         </div>
                         <div class="knowledge-slide">
@@ -132,8 +147,23 @@
                             <h3 data-i18n="knowledge.circumferentialAngle">圆周角定理</h3>
                             <p data-i18n="knowledge.circumferentialAngleDesc">同弧或等弧所对的圆周角相等，等于圆心角的一半</p>
                             <div class="knowledge-diagram">
-                                <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=圆周角定理几何图解，展示圆、圆心角和圆周角，同弧所对的圆周角等于圆心角的一半&image_size=square"
-                                    alt="圆周角定理图解">
+                                <svg width="300" height="200" xmlns="http://www.w3.org/2000/svg">
+                                    <defs>
+                                        <linearGradient id="circleGradient2" x1="0%" y1="0%" x2="100%" y2="100%">
+                                            <stop offset="0%" style="stop-color:#f3e5f5;stop-opacity:1"/>
+                                            <stop offset="100%" style="stop-color:#ce93d8;stop-opacity:1"/>
+                                        </linearGradient>
+                                    </defs>
+                                    <circle cx="150" cy="100" r="50" fill="url(#circleGradient2)" stroke="#7b1fa2" stroke-width="2"/>
+                                    <line x1="150" y1="100" x2="200" y2="100" stroke="#7b1fa2" stroke-width="2" stroke-linecap="round"/>
+                                    <line x1="150" y1="100" x2="200" y2="150" stroke="#e91e63" stroke-width="2" stroke-linecap="round"/>
+                                    <line x1="100" y1="100" x2="200" y2="150" stroke="#ff9800" stroke-width="2" stroke-linecap="round"/>
+                                    <circle cx="150" cy="100" r="3" fill="#7b1fa2"/>
+                                    <circle cx="200" cy="100" r="3" fill="#7b1fa2"/>
+                                    <circle cx="100" cy="100" r="3" fill="#7b1fa2"/>
+                                    <circle cx="200" cy="150" r="3" fill="#e91e63"/>
+                                    <text x="150" y="180" text-anchor="middle" font-size="12" fill="#666">圆周角 = 圆心角的一半</text>
+                                </svg>
                             </div>
                         </div>
                         <div class="knowledge-slide">
@@ -141,8 +171,22 @@
                             <h3 data-i18n="knowledge.standardEquation">圆的标准方程</h3>
                             <p data-i18n="knowledge.standardEquationDesc">(x-a)² + (y-b)² = r²，其中(a,b)为圆心坐标，r为半径</p>
                             <div class="knowledge-diagram">
-                                <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=圆的标准方程几何图解，展示圆、圆心坐标(a,b)和半径r，以及方程(x-a)²+(y-b)²=r²&image_size=square"
-                                    alt="圆的标准方程图解">
+                                <svg width="300" height="200" xmlns="http://www.w3.org/2000/svg">
+                                    <defs>
+                                        <linearGradient id="circleGradient3" x1="0%" y1="0%" x2="100%" y2="100%">
+                                            <stop offset="0%" style="stop-color:#e8f5e8;stop-opacity:1"/>
+                                            <stop offset="100%" style="stop-color:#c8e6c9;stop-opacity:1"/>
+                                        </linearGradient>
+                                    </defs>
+                                    <circle cx="150" cy="100" r="50" fill="url(#circleGradient3)" stroke="#388e3c" stroke-width="2"/>
+                                    <line x1="100" y1="100" x2="200" y2="100" stroke="#757575" stroke-width="1" stroke-dasharray="2,2"/>
+                                    <line x1="150" y1="50" x2="150" y2="150" stroke="#757575" stroke-width="1" stroke-dasharray="2,2"/>
+                                    <line x1="150" y1="100" x2="200" y2="100" stroke="#388e3c" stroke-width="2" stroke-linecap="round"/>
+                                    <circle cx="150" cy="100" r="3" fill="#388e3c"/>
+                                    <text x="150" y="170" text-anchor="middle" font-size="12" fill="#388e3c" font-weight="bold">(x-a)² + (y-b)² = r²</text>
+                                    <text x="170" y="110" font-size="12" fill="#388e3c">(a,b)</text>
+                                    <text x="180" y="70" font-size="12" fill="#388e3c">r</text>
+                                </svg>
                             </div>
                         </div>
                         <div class="knowledge-slide">
@@ -150,8 +194,22 @@
                             <h3 data-i18n="knowledge.tangentProperty">切线性质</h3>
                             <p data-i18n="knowledge.tangentPropertyDesc">圆的切线垂直于经过切点的半径</p>
                             <div class="knowledge-diagram">
-                                <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=切线性质几何图解，展示圆、切线和经过切点的半径，切线垂直于半径&image_size=square"
-                                    alt="切线性质图解">
+                                <svg width="300" height="200" xmlns="http://www.w3.org/2000/svg">
+                                    <defs>
+                                        <linearGradient id="circleGradient4" x1="0%" y1="0%" x2="100%" y2="100%">
+                                            <stop offset="0%" style="stop-color:#fff3e0;stop-opacity:1"/>
+                                            <stop offset="100%" style="stop-color:#ffe0b2;stop-opacity:1"/>
+                                        </linearGradient>
+                                    </defs>
+                                    <circle cx="150" cy="100" r="50" fill="url(#circleGradient4)" stroke="#f57c00" stroke-width="2"/>
+                                    <line x1="150" y1="100" x2="250" y2="100" stroke="#f57c00" stroke-width="2" stroke-linecap="round"/>
+                                    <line x1="200" y1="50" x2="200" y2="150" stroke="#e65100" stroke-width="2" stroke-linecap="round"/>
+                                    <circle cx="150" cy="100" r="3" fill="#f57c00"/>
+                                    <circle cx="200" cy="100" r="3" fill="#e65100"/>
+                                    <text x="220" y="70" font-size="12" fill="#e65100">切线</text>
+                                    <text x="175" y="110" font-size="12" fill="#f57c00">半径</text>
+                                    <text x="150" y="180" text-anchor="middle" font-size="12" fill="#666">切线垂直于半径</text>
+                                </svg>
                             </div>
                         </div>
                         <div class="knowledge-slide">
@@ -159,8 +217,23 @@
                             <h3 data-i18n="knowledge.centralAngle">圆心角定理</h3>
                             <p data-i18n="knowledge.centralAngleDesc">圆心角的度数等于它所对的弧的度数</p>
                             <div class="knowledge-diagram">
-                                <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=圆心角定理几何图解，展示圆、圆心角和所对的弧，圆心角的度数等于弧的度数&image_size=square"
-                                    alt="圆心角定理图解">
+                                <svg width="300" height="200" xmlns="http://www.w3.org/2000/svg">
+                                    <defs>
+                                        <linearGradient id="circleGradient5" x1="0%" y1="0%" x2="100%" y2="100%">
+                                            <stop offset="0%" style="stop-color:#e3f2fd;stop-opacity:1"/>
+                                            <stop offset="100%" style="stop-color:#bbdefb;stop-opacity:1"/>
+                                        </linearGradient>
+                                    </defs>
+                                    <circle cx="150" cy="100" r="50" fill="url(#circleGradient5)" stroke="#1976d2" stroke-width="2"/>
+                                    <line x1="150" y1="100" x2="200" y2="100" stroke="#1976d2" stroke-width="2" stroke-linecap="round"/>
+                                    <line x1="150" y1="100" x2="175" y2="50" stroke="#1976d2" stroke-width="2" stroke-linecap="round"/>
+                                    <path d="M150 100 A50 50 0 0 0 175 50" stroke="#2196f3" stroke-width="2" fill="none"/>
+                                    <circle cx="150" cy="100" r="3" fill="#1976d2"/>
+                                    <circle cx="200" cy="100" r="3" fill="#1976d2"/>
+                                    <circle cx="175" cy="50" r="3" fill="#1976d2"/>
+                                    <text x="180" y="80" font-size="12" fill="#1976d2">圆心角</text>
+                                    <text x="150" y="180" text-anchor="middle" font-size="12" fill="#666">圆心角 = 弧的度数</text>
+                                </svg>
                             </div>
                         </div>
                         <div class="knowledge-slide">
@@ -168,8 +241,24 @@
                             <h3 data-i18n="knowledge.cyclicQuadrilateral">圆内接四边形性质</h3>
                             <p data-i18n="knowledge.cyclicQuadrilateralDesc">圆内接四边形的对角互补，外角等于内对角</p>
                             <div class="knowledge-diagram">
-                                <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=圆内接四边形性质几何图解，展示圆和内接四边形，对角互补，外角等于内对角&image_size=square"
-                                    alt="圆内接四边形性质图解">
+                                <svg width="300" height="200" xmlns="http://www.w3.org/2000/svg">
+                                    <defs>
+                                        <linearGradient id="circleGradient6" x1="0%" y1="0%" x2="100%" y2="100%">
+                                            <stop offset="0%" style="stop-color:#f3e5f5;stop-opacity:1"/>
+                                            <stop offset="100%" style="stop-color:#ce93d8;stop-opacity:1"/>
+                                        </linearGradient>
+                                    </defs>
+                                    <circle cx="150" cy="100" r="50" fill="url(#circleGradient6)" stroke="#7b1fa2" stroke-width="2"/>
+                                    <line x1="100" y1="100" x2="150" y2="50" stroke="#e91e63" stroke-width="2" stroke-linecap="round"/>
+                                    <line x1="150" y1="50" x2="200" y2="100" stroke="#e91e63" stroke-width="2" stroke-linecap="round"/>
+                                    <line x1="200" y1="100" x2="150" y2="150" stroke="#e91e63" stroke-width="2" stroke-linecap="round"/>
+                                    <line x1="150" y1="150" x2="100" y2="100" stroke="#e91e63" stroke-width="2" stroke-linecap="round"/>
+                                    <circle cx="100" cy="100" r="3" fill="#7b1fa2"/>
+                                    <circle cx="150" cy="50" r="3" fill="#7b1fa2"/>
+                                    <circle cx="200" cy="100" r="3" fill="#7b1fa2"/>
+                                    <circle cx="150" cy="150" r="3" fill="#7b1fa2"/>
+                                    <text x="150" y="180" text-anchor="middle" font-size="12" fill="#666">对角互补，外角等于内对角</text>
+                                </svg>
                             </div>
                         </div>
                         <div class="knowledge-slide">
@@ -178,8 +267,19 @@
                             <p data-i18n="knowledge.generalEquationDesc">x² + y² + Dx + Ey + F = 0，其中D² + E² - 4F > 0
                             </p>
                             <div class="knowledge-diagram">
-                                <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=圆的一般方程几何图解，展示圆和坐标系，方程x²+y²+Dx+Ey+F=0&image_size=square"
-                                    alt="圆的一般方程图解">
+                                <svg width="300" height="200" xmlns="http://www.w3.org/2000/svg">
+                                    <defs>
+                                        <linearGradient id="circleGradient7" x1="0%" y1="0%" x2="100%" y2="100%">
+                                            <stop offset="0%" style="stop-color:#e8f5e8;stop-opacity:1"/>
+                                            <stop offset="100%" style="stop-color:#c8e6c9;stop-opacity:1"/>
+                                        </linearGradient>
+                                    </defs>
+                                    <circle cx="150" cy="100" r="50" fill="url(#circleGradient7)" stroke="#388e3c" stroke-width="2"/>
+                                    <line x1="100" y1="100" x2="200" y2="100" stroke="#757575" stroke-width="1" stroke-dasharray="2,2"/>
+                                    <line x1="150" y1="50" x2="150" y2="150" stroke="#757575" stroke-width="1" stroke-dasharray="2,2"/>
+                                    <text x="150" y="170" text-anchor="middle" font-size="12" fill="#388e3c" font-weight="bold">x² + y² + Dx + Ey + F = 0</text>
+                                    <text x="150" y="185" text-anchor="middle" font-size="10" fill="#666">D² + E² - 4F > 0</text>
+                                </svg>
                             </div>
                         </div>
                         <div class="knowledge-slide">
@@ -187,8 +287,25 @@
                             <h3 data-i18n="knowledge.circleRelations">两圆位置关系</h3>
                             <p data-i18n="knowledge.circleRelationsDesc">外离、外切、相交、内切、内含五种位置关系，由圆心距与两圆半径决定</p>
                             <div class="knowledge-diagram">
-                                <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=两圆位置关系几何图解，展示外离、外切、相交、内切、内含五种位置关系&image_size=square"
-                                    alt="两圆位置关系图解">
+                                <svg width="300" height="200" xmlns="http://www.w3.org/2000/svg">
+                                    <defs>
+                                        <linearGradient id="circleGradient8" x1="0%" y1="0%" x2="100%" y2="100%">
+                                            <stop offset="0%" style="stop-color:#e3f2fd;stop-opacity:1"/>
+                                            <stop offset="100%" style="stop-color:#bbdefb;stop-opacity:1"/>
+                                        </linearGradient>
+                                        <linearGradient id="circleGradient9" x1="0%" y1="0%" x2="100%" y2="100%">
+                                            <stop offset="0%" style="stop-color:#f3e5f5;stop-opacity:1"/>
+                                            <stop offset="100%" style="stop-color:#ce93d8;stop-opacity:1"/>
+                                        </linearGradient>
+                                    </defs>
+                                    <circle cx="100" cy="100" r="30" fill="url(#circleGradient8)" stroke="#1976d2" stroke-width="2"/>
+                                    <circle cx="200" cy="100" r="20" fill="url(#circleGradient9)" stroke="#7b1fa2" stroke-width="2"/>
+                                    <line x1="130" y1="100" x2="180" y2="100" stroke="#ff9800" stroke-width="2" stroke-linecap="round"/>
+                                    <text x="100" y="70" text-anchor="middle" font-size="12" fill="#1976d2">r1</text>
+                                    <text x="200" y="70" text-anchor="middle" font-size="12" fill="#7b1fa2">r2</text>
+                                    <text x="150" y="115" text-anchor="middle" font-size="12" fill="#ff9800">d</text>
+                                    <text x="150" y="180" text-anchor="middle" font-size="12" fill="#666">外离、外切、相交、内切、内含</text>
+                                </svg>
                             </div>
                         </div>
                     </div>
