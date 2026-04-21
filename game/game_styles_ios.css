@@ -148,7 +148,9 @@ button { font-family: inherit; outline: none; }
   background: rgba(0, 0, 0, 0.08);
 }
 #resetBtn:active, #gameExitBtn:active { transform: scale(0.95); }
-
+#gameExitBtn, #gameExitBtn2 {
+  justify-self: start; 
+}
 #exitBtn { color: #FF3B30; /* 退出使用 iOS 红色警戒色 */ }
 
 /* 下拉菜单 */
@@ -221,4 +223,33 @@ canvas {
   width: 100%;
   height: 100%;
   display: block;
+}
+
+#displayAre, #displayAre2 {
+  padding: 0; /* 去除内边距，让图片完全铺满边框 */
+  overflow: hidden; /* 隐藏图片超出的直角 */
+  border: none; /* 如果你觉得保留之前的虚线框不好看，可以改成 none */
+}
+
+
+
+#displayAre, #displayAre2 {
+    width: 100%;           /* 宽度占满卡片 */
+    aspect-ratio: 4 / 3;  /* 强制 4:3 比例，这是保持一样大小的关键 */
+    overflow: hidden;      /* 隐藏图片溢出部分 */
+    padding: 0;            /* 移除内边距 */
+    border-radius: 12px;   /* 适配 iOS 或赛博风的圆角 */
+    background: #000;      /* 黑色底色防止图片加载前的闪烁 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* 统一图片样式 */
+#displayAre img, #displayAre2 img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;     /* 填充整个区域并自动裁剪，保持比例一致 */
+    display: block;
+    transition: opacity 0.3s ease; /* 切换主题时的平滑过渡 */
 }

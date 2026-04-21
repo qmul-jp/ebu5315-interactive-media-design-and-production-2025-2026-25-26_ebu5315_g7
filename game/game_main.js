@@ -2,7 +2,7 @@
    Gear Puzzle - FINAL FIXED & OPTIMIZED
    ========================= */
 
-window.DEBUG_PATH = true;
+window.DEBUG_PATH = false;
 window.GAME_DIFFICULTY = 1;
 
 const canvas = document.getElementById("canvas");
@@ -734,7 +734,7 @@ function draw() {
 
   pieces.filter(p => p.inMap && p !== active).forEach(p => p.draw(ctx));
 
-  if (window.__DEBUG_PATH__) drawPathDebug(window.__DEBUG_PATH__, ctx);
+  if (window.DEBUG_PATH && window.__DEBUG_PATH__) drawPathDebug(window.__DEBUG_PATH__, ctx);
 
   drawMapOverlay(ctx);
 
