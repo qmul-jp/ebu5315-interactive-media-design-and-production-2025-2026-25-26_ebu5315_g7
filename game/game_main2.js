@@ -1,9 +1,17 @@
 /* =========================
-   Game 2 - Circular Maze (Solid Physics & Remote Controls)
+   Game 2 - Circular Maze (Layered Rendering Optimized)
    ========================= */
 
 const canvas2 = document.getElementById("canvas2");
 const ctx2 = canvas2.getContext("2d");
+
+const offscreenCanvas = document.createElement("canvas");
+const offscreenCtx = offscreenCanvas.getContext("2d");
+
+// --- 渲染优化标志位 ---
+let needsBgCacheUpdate2 = true;
+let needsRedraw2 = false;
+let lastThemeWasDark = window.isDarkMode; // 用于监听主题切换以重绘静态缓存
 
 let gameStarted2 = false;
 let isGameWon2 = false;
@@ -13,10 +21,10 @@ let cx = 0;
 let cy = 0; 
 let maxRadius = 0; 
 
-// --- 新增：难度配置 ---
+// --- 难度配置 ---
 const DIFFICULTIES = {
     easy: { rings: 6, sectors: 12 },
-    hard: { rings: 9, sectors: 20 } // 困难模式：9层，20个分区
+    hard: { rings: 9, sectors: 20 }
 };
 
 let currentDifficulty = 'easy';
@@ -24,24 +32,21 @@ let currentRingCount = DIFFICULTIES[currentDifficulty].rings;
 let currentSectorCount = DIFFICULTIES[currentDifficulty].sectors;
 let SECTOR_ANGLE = (Math.PI * 2) / currentSectorCount; 
 
-// 磁吸滞回参数
 const SNAP_ENTER_THRESHOLD = 0.06;
 const SNAP_EXIT_THRESHOLD = 0.20;
 
 let playerDisk = {
     angle: 0,      
     radius: 0,     
-    dotSize: 10    // 现在会在 initPlayer 中动态调整
+    dotSize: 10    
 };
 
-// 独立的 UI 控制器状态
 let uiState = {
     isDraggingAngle: false,
     isDraggingRadius: false,
     intendedAngle: 0,   
     intendedRing: 0,    
     
-    // UI 布局参数（在 resize 时计算）
     angleTrackRadius: 0, 
     sliderX: 0,          
     sliderYTop: 0,       
@@ -59,7 +64,7 @@ function setDifficulty2(level) {
         SECTOR_ANGLE = (Math.PI * 2) / currentSectorCount;
         
         if (gameStarted2) {
-            restartGame2(); // 切换后自动重新生成并重置
+            restartGame2(); 
         }
     }
 }
@@ -111,15 +116,10 @@ function generateMazeMap(ringCount, sectorCount) {
                 }
             }
             
-            if (next.dir === 'in') {
-                ringWalls[current.r][current.s] = false; 
-            } else if (next.dir === 'out') {
-                ringWalls[next.r][current.s] = false;
-            } else if (next.dir === 'cw') {
-                radialWalls[current.r][current.s] = false;
-            } else if (next.dir === 'ccw') {
-                radialWalls[current.r][next.s] = false; 
-            }
+            if (next.dir === 'in') ringWalls[current.r][current.s] = false; 
+            else if (next.dir === 'out') ringWalls[next.r][current.s] = false;
+            else if (next.dir === 'cw') radialWalls[current.r][current.s] = false;
+            else if (next.dir === 'ccw') radialWalls[current.r][next.s] = false; 
             
             visited[next.r][next.s] = true;
             stack.push({ r: next.r, s: next.s });
@@ -133,9 +133,7 @@ function generateMazeMap(ringCount, sectorCount) {
     
     for (let r = 1; r < ringCount; r++) {
         for (let s = 0; s < sectorCount; s++) {
-            if (radialWalls[r][s] && Math.random() < 0.05) { 
-                radialWalls[r][s] = false;
-            }
+            if (radialWalls[r][s] && Math.random() < 0.05) radialWalls[r][s] = false;
         }
     }
     
@@ -146,7 +144,6 @@ function generateMazeMap(ringCount, sectorCount) {
 function startGame2() {
     const gameArea2 = document.getElementById("gameArea2");
     
-    // 逻辑调整：如果游戏二已经启动，点击 Play 按钮同样触发滑动
     if (gameStarted2) {
         if (gameArea2 && !gameArea2.classList.contains("hidden")) {
             gameArea2.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -154,13 +151,12 @@ function startGame2() {
         return;
     }
 
-    // 以下是首次启动游戏二的逻辑
     gameStarted2 = true;
     isGameWon2 = false;
     
     if (gameArea2) {
         gameArea2.classList.remove("hidden");
-        void gameArea2.offsetWidth; // 触发重绘以确保动画生效
+        void gameArea2.offsetWidth; 
         setTimeout(() => {
             gameArea2.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }, 50);
@@ -169,8 +165,9 @@ function startGame2() {
     setTimeout(() => {
         resizeCanvas2();
         currentMaze = generateMazeMap(currentRingCount, currentSectorCount); 
+        needsBgCacheUpdate2 = true; 
         initPlayer();
-        draw2();
+        needsRedraw2 = true;
     }, 50);
 }
 
@@ -183,16 +180,11 @@ function exitGame2() {
     const introContainer = document.getElementById("introContainer");
 
     if (gameArea2) {
-        // 1. 触发 CRT 息屏动画
         gameArea2.classList.add("crt-off-anim");
-
-        // 2. 延时等待动画播放完毕
         setTimeout(() => {
-            gameArea2.classList.remove("crt-off-anim"); // 清理动画类
-            gameArea2.classList.add("hidden");          // 隐藏游戏区
-            if (introContainer) {
-                introContainer.classList.remove("hidden"); // 返回主菜单
-            }
+            gameArea2.classList.remove("crt-off-anim"); 
+            gameArea2.classList.add("hidden");          
+            if (introContainer) introContainer.classList.remove("hidden"); 
         }, 450);
     }
 }
@@ -203,39 +195,44 @@ function restartGame2() {
     if (typeof hideWinModal === 'function') hideWinModal();
     resizeCanvas2();
     currentMaze = generateMazeMap(currentRingCount, currentSectorCount);
+    needsBgCacheUpdate2 = true;
     initPlayer();
-    draw2();
+    needsRedraw2 = true;
 }
 
 function resizeCanvas2() {
-    // 获取容器大小，如果没有则给定一个更大的默认回退尺寸 (1000x800)
     canvas2.width = canvas2.clientWidth || 1000;
     canvas2.height = canvas2.clientHeight || 800;
     
-    // 如果想要迷宫偏左边一点给右侧滑块留空间，可以微调 cx，比如：
-    // cx = canvas2.width / 2 - 30;
     cx = canvas2.width / 2;
     cy = canvas2.height / 2;
+    maxRadius = Math.max(10, Math.min(cx, cy) - 50);
     
-    // 【核心修改 1】：减小边距（从 90 缩小到 50），让迷宫圆盘变大
-    maxRadius = Math.max(10, Math.min(cx, cy) - 50); 
-    
-    // 【核心修改 2】：UI 控件往里收紧，防止迷宫变大后 UI 被挤出屏幕边界
-    uiState.angleTrackRadius = maxRadius + 20;  // 环形滑块轨道紧贴外墙
-    uiState.sliderX = cx + maxRadius + 45;      // 竖向滑块贴近右侧
+    uiState.angleTrackRadius = maxRadius + 20; 
+    uiState.sliderX = cx + maxRadius + 45;      
     uiState.sliderYTop = cy - maxRadius;        
-    uiState.sliderYBottom = cy + maxRadius;     
+    uiState.sliderYBottom = cy + maxRadius;
+
+    offscreenCanvas.width = canvas2.width;
+    offscreenCanvas.height = canvas2.height;     
+    
+    needsBgCacheUpdate2 = true;
+    needsRedraw2 = true;
 }
+
+// 绑定窗口调整大小事件
+window.addEventListener('resize', () => {
+    if (gameStarted2 && !document.getElementById("gameArea2").classList.contains("hidden")) {
+        resizeCanvas2();
+    }
+});
 
 function initPlayer() {
     uiState.intendedRing = currentRingCount - 1;
     uiState.intendedAngle = (currentMaze.startSector + 0.5) * SECTOR_ANGLE;
     
     const ringWidth = maxRadius / currentRingCount;
-    
-    // 【修改】：保证小球视觉上足够大（最小 6 像素，最大 12 像素），不再无限缩小
     playerDisk.dotSize = Math.max(6, Math.min(12, ringWidth * 0.35));
-    
     playerDisk.radius = (uiState.intendedRing + 0.5) * ringWidth; 
     playerDisk.angle = uiState.intendedAngle; 
 }
@@ -285,11 +282,8 @@ function clampAngleToArc(angle, minA, maxA) {
     let mx = (maxA % (Math.PI*2) + Math.PI*2) % (Math.PI*2);
     
     let inside = false;
-    if (mn <= mx) {
-        inside = (a >= mn && a <= mx);
-    } else { 
-        inside = (a >= mn || a <= mx);
-    }
+    if (mn <= mx) inside = (a >= mn && a <= mx);
+    else inside = (a >= mn || a <= mx);
     
     if (inside) return a;
     
@@ -323,11 +317,9 @@ function getConstrainedPos(rawAngle, rawRadius, currentAngle, currentRadius) {
     let bounds = getLogicalTrackBounds(currentRing, currentAngle, stopDist);
     let finalAngle = intendedAngle;
 
-    if (!bounds.isClosed) {
-        finalAngle = clampAngleToArc(intendedAngle, bounds.min, bounds.max);
-    }
+    if (!bounds.isClosed) finalAngle = clampAngleToArc(intendedAngle, bounds.min, bounds.max);
 
-    // --- 3. 径向数据跳跃（修复穿墙 Bug：强制视觉对齐） ---
+    // --- 3. 径向数据跳跃 ---
     let targetRing = Math.floor(rawRadius / ringWidth);
     targetRing = Math.max(0, Math.min(currentRingCount - 1, targetRing));
     
@@ -341,25 +333,16 @@ function getConstrainedPos(rawAngle, rawRadius, currentAngle, currentRadius) {
         let nextR = finalRing + step;
         let wallToCheck = (step === 1) ? nextR : finalRing;
         
-        // 【防穿墙判断 A】：逻辑上这个扇区有没有打通？
-        if (currentMaze.ringWalls[wallToCheck][actualSector]) {
-            break; // 逻辑实心墙，直接阻断
-        }
+        if (currentMaze.ringWalls[wallToCheck][actualSector]) break; 
 
-        // 【防穿墙判断 B】：小球是否精确对准了视觉上的“门缝”？
         let radiusAtWall = wallToCheck * ringWidth;
-        // 这里的 35 像素必须和 drawMazeWalls 里的视觉开口宽度保持绝对一致
         let minGapPx = Math.max(35, playerDisk.dotSize * 3.5); 
         let doorHalfAngle = (minGapPx / 2) / radiusAtWall;
 
         let midAngle = (actualSector + 0.5) * SECTOR_ANGLE;
         let distToMid = angleDist(finalAngle, midAngle);
         
-        // 如果小球偏离了门的中心，试图从视觉残留的实体墙壁上挤过去，则强制阻断跨层
-        if (distToMid > doorHalfAngle) {
-            break;
-        }
-
+        if (distToMid > doorHalfAngle) break;
         finalRing = nextR;
     }
 
@@ -390,11 +373,9 @@ function processInputs(mx, my) {
     
     playerDisk.angle = constrained.angle;
     playerDisk.radius = constrained.radius;
-
-    // 【关键修改】：消除“蓄力跳跃”。如果跨层被墙壁阻断，UI 滑块的意图立刻失效，强行与小球的实际物理层级对齐
     uiState.intendedRing = Math.floor(playerDisk.radius / ringWidth);
 
-    draw2();
+    needsRedraw2 = true;
     checkWin2();
 }
 
@@ -405,17 +386,10 @@ canvas2.addEventListener("mousedown", (e) => {
     const my = e.clientY - rect.top;
     
     const distToCenter = Math.hypot(mx - cx, my - cy);
-    if (Math.abs(distToCenter - uiState.angleTrackRadius) < 25) {
-        uiState.isDraggingAngle = true;
-    }
+    if (Math.abs(distToCenter - uiState.angleTrackRadius) < 25) uiState.isDraggingAngle = true;
+    if (Math.abs(mx - uiState.sliderX) < 25 && my >= uiState.sliderYTop - 20 && my <= uiState.sliderYBottom + 20) uiState.isDraggingRadius = true;
     
-    if (Math.abs(mx - uiState.sliderX) < 25 && my >= uiState.sliderYTop - 20 && my <= uiState.sliderYBottom + 20) {
-        uiState.isDraggingRadius = true;
-    }
-    
-    if (uiState.isDraggingAngle || uiState.isDraggingRadius) {
-        processInputs(mx, my);
-    }
+    if (uiState.isDraggingAngle || uiState.isDraggingRadius) processInputs(mx, my);
 });
 
 canvas2.addEventListener("mousemove", (e) => {
@@ -423,179 +397,184 @@ canvas2.addEventListener("mousemove", (e) => {
     const rect = canvas2.getBoundingClientRect();
     const mx = e.clientX - rect.left;
     const my = e.clientY - rect.top;
-    
     processInputs(mx, my);
 });
 
 window.addEventListener("mouseup", () => { 
-    uiState.isDraggingAngle = false; 
-    uiState.isDraggingRadius = false; 
-    draw2(); 
+    uiState.isDraggingAngle = false; uiState.isDraggingRadius = false; needsRedraw2 = true; 
 });
 window.addEventListener("mouseleave", () => { 
-    uiState.isDraggingAngle = false; 
-    uiState.isDraggingRadius = false; 
-    draw2(); 
+    uiState.isDraggingAngle = false; uiState.isDraggingRadius = false; needsRedraw2 = true;
 });
 
 canvas2.addEventListener("wheel", (e) => {
     if (!gameStarted2 || isGameWon2) return;
-    e.preventDefault(); // 防止网页跟着滚动
+    e.preventDefault(); 
 
     const ringWidth = maxRadius / currentRingCount;
-    
-    // 基于小球真实的物理位置计算当前层
     const currentPhysicalRing = Math.floor(playerDisk.radius / ringWidth);
     let targetRing = currentPhysicalRing;
 
-    // 滑轮判定：向下滚去内层，向上滚去外层
-    if (e.deltaY > 0 && currentPhysicalRing > 0) {
-        targetRing = currentPhysicalRing - 1; 
-    } else if (e.deltaY < 0 && currentPhysicalRing < currentRingCount - 1) {
-        targetRing = currentPhysicalRing + 1; 
-    }
+    if (e.deltaY > 0 && currentPhysicalRing > 0) targetRing = currentPhysicalRing - 1; 
+    else if (e.deltaY < 0 && currentPhysicalRing < currentRingCount - 1) targetRing = currentPhysicalRing + 1; 
 
     let targetRawRadius = (targetRing + 0.5) * ringWidth;
-    
-    // 放入物理引擎判定（只有当前扇区有门，constrained 的 radius 才会发生改变）
-    const constrained = getConstrainedPos(
-        uiState.intendedAngle, 
-        targetRawRadius, 
-        playerDisk.angle, 
-        playerDisk.radius
-    );
+    const constrained = getConstrainedPos(uiState.intendedAngle, targetRawRadius, playerDisk.angle, playerDisk.radius);
     
     playerDisk.angle = constrained.angle;
     playerDisk.radius = constrained.radius;
-
-    // 【关键修改】：操作结束后，必须把 UI 层级意图重置为小球实际所在层级
     uiState.intendedRing = Math.floor(playerDisk.radius / ringWidth);
 
-    draw2();
+    needsRedraw2 = true;
     checkWin2();
 }, { passive: false });
 
-/* ---------- 绘图与碰撞判定 ---------- */
+/* ---------- 分层绘图与碰撞判定 ---------- */
 function checkWin2() {
     if (isGameWon2) return;
     const ringWidth = maxRadius / currentRingCount;
     
     if (playerDisk.radius <= ringWidth * 0.6) { 
         isGameWon2 = true;
-        
         winTimer2 = setTimeout(() => {
             if(typeof showWinModal === 'function') showWinModal();
         }, 300);
     }
 }
 
-function drawMazeWalls() {
-   if (!currentMaze) return;
+// === 渲染核心 1：将静态环境完全固化在离屏画布 ===
+function updateBgCache2() {
+    if (!currentMaze) return;
+    const ctx = offscreenCtx; 
     const ringWidth = maxRadius / currentRingCount;
     
-    ctx2.save();
+    ctx.clearRect(0, 0, offscreenCanvas.width, offscreenCanvas.height);
     
-    // 根据主题选择墙壁颜色：赛博模式用紫色，水墨模式用浓墨黑
-    ctx2.strokeStyle = window.isDarkMode ? "#801e80ff" : "#2c2c2c"; 
-    
-    ctx2.lineWidth = 4;
-    ctx2.lineCap = "round";
-    ctx2.beginPath();
+    // 1. 绘制网格辅助线
+    ctx.save();
+    ctx.strokeStyle = window.isDarkMode ? "rgba(255, 255, 255, 0.05)" : "rgba(0, 0, 0, 0.04)";
+    ctx.lineWidth = 1;
+    for (let i = 0; i < currentSectorCount; i++) {
+        const a = (i + 0.5) * SECTOR_ANGLE;
+        ctx.beginPath();
+        ctx.moveTo(cx, cy);
+        ctx.lineTo(cx + Math.cos(a) * maxRadius, cy + Math.sin(a) * maxRadius);
+        ctx.stroke();
+    }
+    ctx.restore();
+
+    // 2. 绘制中心终点区域
+    ctx.save();
+    ctx.beginPath();
+    ctx.arc(cx, cy, ringWidth * 0.5, 0, Math.PI * 2); 
+    ctx.fillStyle = window.isDarkMode ? "rgba(16, 185, 129, 0.15)" : "rgba(139, 0, 0, 0.1)"; 
+    ctx.fill();
+    ctx.strokeStyle = window.isDarkMode ? "rgba(16, 185, 129, 0.4)" : "rgba(139, 0, 0, 0.3)";
+    ctx.lineWidth = 2;
+    ctx.stroke();
+    ctx.restore();
+
+    // 3. 绘制迷宫墙壁
+    ctx.save();
+    ctx.strokeStyle = window.isDarkMode ? "#801e80ff" : "#2c2c2c"; 
+    ctx.lineWidth = 4;
+    ctx.lineCap = "round";
+    ctx.beginPath(); 
 
     for (let r = 1; r < currentRingCount; r++) {
         const radius = r * ringWidth; 
         for (let s = 0; s < currentSectorCount; s++) {
             const startAngle = s * SECTOR_ANGLE;
             const endAngle = (s + 1) * SECTOR_ANGLE;
-
             if (currentMaze.ringWalls[r][s]) {
-                // 【修改】：画圆弧前先将画笔移动到起点，防止与上一个图形连线
-                ctx2.moveTo(cx + Math.cos(startAngle) * radius, cy + Math.sin(startAngle) * radius);
-                ctx2.arc(cx, cy, radius, startAngle, endAngle);
+                ctx.moveTo(cx + Math.cos(startAngle) * radius, cy + Math.sin(startAngle) * radius);
+                ctx.arc(cx, cy, radius, startAngle, endAngle);
             } else {
                 let minGapPx = Math.max(22, playerDisk.dotSize * 2.5);
                 let doorHalfAngle = Math.min((minGapPx / 2) / radius, SECTOR_ANGLE * 0.4);
                 const midAngle = (s + 0.5) * SECTOR_ANGLE;
-
-                ctx2.moveTo(cx + Math.cos(startAngle) * radius, cy + Math.sin(startAngle) * radius);
-                ctx2.arc(cx, cy, radius, startAngle, midAngle - doorHalfAngle);
-
-                ctx2.moveTo(cx + Math.cos(midAngle + doorHalfAngle) * radius, cy + Math.sin(midAngle + doorHalfAngle) * radius);
-                ctx2.arc(cx, cy, radius, midAngle + doorHalfAngle, endAngle);
+                ctx.moveTo(cx + Math.cos(startAngle) * radius, cy + Math.sin(startAngle) * radius);
+                ctx.arc(cx, cy, radius, startAngle, midAngle - doorHalfAngle);
+                ctx.moveTo(cx + Math.cos(midAngle + doorHalfAngle) * radius, cy + Math.sin(midAngle + doorHalfAngle) * radius);
+                ctx.arc(cx, cy, radius, midAngle + doorHalfAngle, endAngle);
             }
         }
     }
     
-    // 最外层大圆墙壁
-    ctx2.moveTo(cx + maxRadius, cy);
-    ctx2.arc(cx, cy, maxRadius, 0, Math.PI * 2);
-
-    // 画径向墙
+    ctx.moveTo(cx + maxRadius, cy);
+    ctx.arc(cx, cy, maxRadius, 0, Math.PI * 2);
     for (let r = 1; r < currentRingCount; r++) {
         const innerRadius = r * ringWidth;
         const outerRadius = (r + 1) * ringWidth;
         for (let s = 0; s < currentSectorCount; s++) {
             if (currentMaze.radialWalls[r][s]) {
                 const angle = (s + 1) * SECTOR_ANGLE;
-                ctx2.moveTo(cx + Math.cos(angle) * innerRadius, cy + Math.sin(angle) * innerRadius);
-                ctx2.lineTo(cx + Math.cos(angle) * outerRadius, cy + Math.sin(angle) * outerRadius);
+                ctx.moveTo(cx + Math.cos(angle) * innerRadius, cy + Math.sin(angle) * innerRadius);
+                ctx.lineTo(cx + Math.cos(angle) * outerRadius, cy + Math.sin(angle) * outerRadius);
             }
         }
     }
-    ctx2.stroke();
-    ctx2.restore();
+    ctx.stroke(); 
+    ctx.restore();
+
+    // 4. 绘制自定义控件静态 UI 轨道
+    ctx.save();
+    ctx.beginPath();
+    ctx.arc(cx, cy, uiState.angleTrackRadius, 0, Math.PI * 2);
+    ctx.strokeStyle = window.isDarkMode ? "rgba(255, 255, 255, 0.1)" : "rgba(0, 0, 0, 0.08)";
+    ctx.lineWidth = 6;
+    ctx.stroke();
+    
+    ctx.beginPath();
+    ctx.moveTo(uiState.sliderX, uiState.sliderYTop);
+    ctx.lineTo(uiState.sliderX, uiState.sliderYBottom);
+    ctx.strokeStyle = window.isDarkMode ? "rgba(255, 255, 255, 0.15)" : "rgba(0, 0, 0, 0.15)"; 
+    ctx.lineWidth = 6;
+    ctx.lineCap = "round";
+    ctx.stroke();
+    
+    for(let i = 0; i < currentRingCount; i++) {
+        let y = uiState.sliderYBottom - (i / (currentRingCount - 1)) * (uiState.sliderYBottom - uiState.sliderYTop);
+        ctx.beginPath();
+        ctx.moveTo(uiState.sliderX - 8, y);
+        ctx.lineTo(uiState.sliderX + 8, y);
+        ctx.strokeStyle = window.isDarkMode ? "rgba(255, 255, 255, 0.2)" : "rgba(0, 0, 0, 0.2)";
+        ctx.lineWidth = 2;
+        ctx.stroke();
+    }
+    ctx.restore();
+
+    needsBgCacheUpdate2 = false;
 }
 
-function drawCustomUI() {
+// === 渲染核心 2：动态把手（仅重绘变动部分）===
+function drawDynamicUI() {
     ctx2.save();
     const activeColor = "#ff0055"; 
     const idleColor = "#00f0ff";   
     
-    ctx2.beginPath();
-    ctx2.arc(cx, cy, uiState.angleTrackRadius, 0, Math.PI * 2);
-    ctx2.strokeStyle = "rgba(0, 0, 0, 0.08)";
-    ctx2.lineWidth = 6;
-    ctx2.stroke();
-    
+    // 角度环形滑块把手
     let kx = cx + Math.cos(playerDisk.angle) * uiState.angleTrackRadius;
     let ky = cy + Math.sin(playerDisk.angle) * uiState.angleTrackRadius;
     ctx2.beginPath();
     ctx2.arc(kx, ky, 12, 0, Math.PI * 2);
     ctx2.fillStyle = uiState.isDraggingAngle ? activeColor : idleColor;
     ctx2.fill();
-    ctx2.strokeStyle = "white";
+    ctx2.strokeStyle = window.isDarkMode ? "white" : "#333";
     ctx2.lineWidth = 2;
     ctx2.stroke();
 
-    ctx2.beginPath();
-    ctx2.moveTo(uiState.sliderX, uiState.sliderYTop);
-    ctx2.lineTo(uiState.sliderX, uiState.sliderYBottom);
-    ctx2.strokeStyle = "rgba(255, 255, 255, 0.15)"; 
-    ctx2.lineWidth = 6;
-    ctx2.lineCap = "round";
-    ctx2.stroke();
-    
-    for(let i = 0; i < currentRingCount; i++) {
-        let y = uiState.sliderYBottom - (i / (currentRingCount - 1)) * (uiState.sliderYBottom - uiState.sliderYTop);
-        ctx2.beginPath();
-        ctx2.moveTo(uiState.sliderX - 8, y);
-        ctx2.lineTo(uiState.sliderX + 8, y);
-        ctx2.strokeStyle = "rgba(255, 255, 255, 0.2)";;
-        ctx2.lineWidth = 2;
-        ctx2.stroke();
-    }
-
+    // 垂直半径滑块把手
     const ringWidth = maxRadius / currentRingCount;
     let currentRing = Math.floor(playerDisk.radius / ringWidth);
     currentRing = Math.max(0, Math.min(currentRingCount - 1, currentRing)); 
-    
     let sy = uiState.sliderYBottom - (currentRing / (currentRingCount - 1)) * (uiState.sliderYBottom - uiState.sliderYTop);
     
     ctx2.beginPath();
     ctx2.arc(uiState.sliderX, sy, 12, 0, Math.PI * 2);
     ctx2.fillStyle = uiState.isDraggingRadius ? activeColor : idleColor;
     ctx2.fill();
-    ctx2.strokeStyle = "white";
+    ctx2.strokeStyle = window.isDarkMode ? "white" : "#333";
     ctx2.lineWidth = 2;
     ctx2.stroke();
     
@@ -603,55 +582,44 @@ function drawCustomUI() {
 }
 
 function draw2() {
-    ctx2.clearRect(0, 0, canvas2.width, canvas2.height);
-    const ringWidth = maxRadius / currentRingCount;
+    if (!canvas2.width || !canvas2.height) return;
 
-    ctx2.save();
-    
-    ctx2.strokeStyle = "rgba(0,0,0,0.04)";
-    ctx2.lineWidth = 1;
-    for (let i = 0; i < currentSectorCount; i++) {
-        const a = (i + 0.5) * SECTOR_ANGLE;
-        ctx2.beginPath();
-        ctx2.moveTo(cx, cy);
-        ctx2.lineTo(cx + Math.cos(a) * maxRadius, cy + Math.sin(a) * maxRadius);
-        ctx2.stroke();
+    // 自动侦测主题切换：无痛触发静态环境重绘
+    if (lastThemeWasDark !== window.isDarkMode) {
+        needsBgCacheUpdate2 = true;
+        lastThemeWasDark = window.isDarkMode;
     }
-    ctx2.restore();
+
+    if (needsBgCacheUpdate2) {
+        updateBgCache2();
+    }
+
+    ctx2.clearRect(0, 0, canvas2.width, canvas2.height);
     
-    // 中心终点区域颜色
-    ctx2.beginPath();
-    ctx2.arc(cx, cy, ringWidth * 0.5, 0, Math.PI * 2); 
-    ctx2.fillStyle = window.isDarkMode ? "rgba(16, 185, 129, 0.15)" : "rgba(139, 0, 0, 0.1)"; // 水墨用朱红淡晕
-    ctx2.fill();
-    ctx2.strokeStyle = window.isDarkMode ? "rgba(16, 185, 129, 0.4)" : "rgba(139, 0, 0, 0.3)";
-    ctx2.lineWidth = 2;
-    ctx2.stroke();
+    // 1. 直接贴上已经画好的静态离屏画布（极其丝滑）
+    ctx2.drawImage(offscreenCanvas, 0, 0);
 
-    drawMazeWalls();
-    drawCustomUI();
-
-    // 玩家轨道圆环颜色
+    // 2. 玩家当前所在轨道的标识线（动态）
     ctx2.beginPath();
     ctx2.arc(cx, cy, playerDisk.radius, 0, Math.PI * 2);
     ctx2.strokeStyle = window.isDarkMode ? "rgba(255, 255, 0, 0.4)" : "rgba(0, 0, 0, 0.1)";
     ctx2.lineWidth = 2;
     ctx2.stroke();
 
-    // --- 绘制玩家小球 ---
+    // 3. 动态控件手柄
+    drawDynamicUI();
+
+    // 4. 绘制玩家小球
     ctx2.save(); 
     const isInteracting = uiState.isDraggingAngle || uiState.isDraggingRadius;
     const dotX = cx + Math.cos(playerDisk.angle) * playerDisk.radius;
     const dotY = cy + Math.sin(playerDisk.angle) * playerDisk.radius;
     
-    // 根据主题定义颜色逻辑
     let coreColor, shadowColor;
     if (window.isDarkMode) {
-        // 赛博模式：霓虹青/亮红
         coreColor = isInteracting ? "#ff0055" : "#00f0ff";
         shadowColor = isInteracting ? "rgba(255, 0, 85, 0.8)" : "rgba(0, 240, 255, 0.8)";
     } else {
-        // 水墨模式：朱砂红/墨黑
         coreColor = isInteracting ? "#8b0000" : "#2c2c2c";
         shadowColor = "rgba(0, 0, 0, 0.3)";
     }
@@ -660,17 +628,15 @@ function draw2() {
     ctx2.arc(dotX, dotY, playerDisk.dotSize, 0, Math.PI * 2);
     ctx2.fillStyle = coreColor;
     
-    // 只有深色模式下才开启强烈阴影光晕
     if (window.isDarkMode) {
         ctx2.shadowBlur = 20;
         ctx2.shadowColor = shadowColor;
     } else {
-        ctx2.shadowBlur = 8; // 水墨模式下使用轻微的晕染阴影
+        ctx2.shadowBlur = 8; 
         ctx2.shadowColor = shadowColor;
     }
     ctx2.fill();
 
-    // 水墨模式下小球描边更细
     ctx2.lineWidth = window.isDarkMode ? 2 : 1;
     ctx2.strokeStyle = window.isDarkMode ? "rgba(255, 255, 255, 0.9)" : "rgba(0, 0, 0, 0.5)";
     ctx2.stroke();
@@ -678,8 +644,16 @@ function draw2() {
     ctx2.restore(); 
 }
 
+function mainLoop2() {
+    if (needsRedraw2 && gameStarted2) {
+        draw2();
+        needsRedraw2 = false;
+    }
+    requestAnimationFrame(mainLoop2);
+}
+mainLoop2();
+
 window.startGame2 = startGame2;
 window.exitGame2 = exitGame2;
 window.restartGame2 = restartGame2;
-// 暴露给 HTML 的难度切换接口
 window.setDifficulty2 = setDifficulty2;

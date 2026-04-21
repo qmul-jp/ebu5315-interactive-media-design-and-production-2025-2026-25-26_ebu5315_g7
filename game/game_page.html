@@ -18,7 +18,7 @@
 <div id="introContainer" class="intro-container">
     
     <div id="gameIntro" class="game-intro-card">
-        <div class="game-title">圆神启动</div>
+        <div class="game-title">齿轮谜题</div>
         <div id="displayAre"></div>
         <div id="demoAre">
             <p id="gameintro1">这个游戏考察有关圆的位置关系的知识。通过放置一些列不同半径的齿轮，让整个系统运转起来吧！在较难的关卡中，你需要计算圆心之间的距离并寻找合适的齿轮。</p>
@@ -27,7 +27,7 @@
     </div>
 
     <div id="gameIntro2" class="game-intro-card">
-        <div class="game-title">圆神牛福</div>
+        <div class="game-title">霓虹轨道</div>
         <div id="displayAre2"></div>
         <div id="demoAre2">
             <p id="gameintro2">这是一个走迷宫游戏。移动小球，让它到达最中心吧！注意，不停地转圈会扰乱你的判断哦！</p>
@@ -105,7 +105,7 @@
 <script src="game_main2.js"></script>
 
 <script src="mouse_effects_cyber.js"></script>
-<script src="mouse_effects_ink.js"></script>
+<script src="mouse_effects_ios.js"></script>
 
 <script>
 
@@ -114,31 +114,44 @@ const themeToggle = document.getElementById('themeToggle');
 const themeStyle = document.getElementById('themeStyle');
 const themeIcon = document.getElementById('themeIcon');
 
-// 将变量挂载到 window，设为全局可见
 window.isDarkMode = true; 
 
-// 初始化默认特效
-window.CyberMouseEffect.start();
+// 初始化默认特效 (赛博风)
+if(window.CyberMouseEffect) window.CyberMouseEffect.start();
 
 themeToggle.addEventListener('click', () => {
-    window.isDarkMode = !window.isDarkMode; // 更新全局状态
-    if (window.isDarkMode) {
-        themeStyle.href = 'game_styles_cyber.css';
-        themeIcon.textContent = '🌞'; 
-        window.InkMouseEffect.stop();
-        window.CyberMouseEffect.start();
-    } else {
-        themeStyle.href = 'game_styles_ink.css';
-        themeIcon.textContent = '🌙'; 
-        window.CyberMouseEffect.stop();
-        window.InkMouseEffect.start();
-    }
+    window.isDarkMode = !window.isDarkMode; 
     
-    // 切换主题后手动触发一次重绘，让迷宫颜色立刻改变
-    if (typeof draw2 === 'function' && gameStarted2) {
-        draw2();
+    const newHref = window.isDarkMode ? 'game_styles_cyber.css' : 'game_styles_ios.css';
+    const oldHref = themeStyle.href;
+    
+    if (!oldHref.includes(newHref)) {
+        themeStyle.href = newHref;
+        themeIcon.textContent = window.isDarkMode ? '🌞' : '🌙'; 
+        
+        // 核心：等待新 CSS 加载完毕后再执行画布自适应
+        themeStyle.onload = () => {
+            // 切换特效
+            if (window.isDarkMode) {
+                if(window.IOSMouseEffect) window.IOSMouseEffect.stop();
+                if(window.CyberMouseEffect) window.CyberMouseEffect.start();
+            } else {
+                if(window.CyberMouseEffect) window.CyberMouseEffect.stop();
+                if(window.IOSMouseEffect) window.IOSMouseEffect.start();
+            }
+            
+            // 触发画布尺寸重算
+            if (typeof relayoutCurrentGame === 'function' && gameStarted) {
+                relayoutCurrentGame();
+            }
+            if (typeof resizeCanvas2 === 'function' && gameStarted2) {
+                resizeCanvas2();
+                needsRedraw2 = true;
+            }
+        };
     }
 });
+
 // --- Game 1 绑定 ---
 document.getElementById("startBtn").onclick = startGame;
 document.getElementById("gameExitBtn").onclick = exitGame;
@@ -148,31 +161,26 @@ document.getElementById("startBtn2").onclick = startGame2;
 document.getElementById("gameExitBtn2").onclick = exitGame2;
 document.getElementById("resetBtn2").onclick = restartGame2;
 
-// 监听 Game 2 的难度下拉框切换
 document.getElementById("difficultySelect2").addEventListener("change", function(e) {
-    if (e.target.value === "1") {
-        setDifficulty2('easy');
-    } else if (e.target.value === "2") {
-        setDifficulty2('hard');
-    }
+    if (e.target.value === "1") setDifficulty2('easy');
+    else if (e.target.value === "2") setDifficulty2('hard');
 });
 
 // --- 弹窗逻辑绑定 ---
 document.getElementById("modalCloseBtn").onclick = hideWinModal;
 
-// 根据当前打开的游戏面板决定点击弹窗按钮的行为
 document.getElementById("exitBtn").onclick = function() {
     const area1 = document.getElementById("gameArea");
     const area2 = document.getElementById("gameArea2");
-    if (!area1.classList.contains("hidden")) exitGame();
-    if (!area2.classList.contains("hidden")) exitGame2();
+    if (area1 && !area1.classList.contains("hidden")) exitGame();
+    if (area2 && !area2.classList.contains("hidden")) exitGame2();
 };
 
 document.getElementById("retryBtn").onclick = function() {
     const area1 = document.getElementById("gameArea");
     const area2 = document.getElementById("gameArea2");
-    if (!area1.classList.contains("hidden")) restartGame();
-    if (!area2.classList.contains("hidden")) restartGame2();
+    if (area1 && !area1.classList.contains("hidden")) restartGame();
+    if (area2 && !area2.classList.contains("hidden")) restartGame2();
 };
 </script>
 
