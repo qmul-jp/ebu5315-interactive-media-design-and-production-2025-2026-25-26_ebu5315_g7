@@ -18,11 +18,14 @@ class TopNavbar extends HTMLElement {
             <div class="nav-control">
                 <button class="nav-icon-btn" onclick="toggleColorblindMode()" title="Colorblind Mode">◑</button>
                 <button class="nav-icon-btn" onclick="toggleThemeMode()" title="Toggle Theme">☾</button>
-                <button class="nav-lang-btn" onclick="triggerLanguageToggle()">🌐 EN/中</button>
+                <button class="nav-lang-btn" onclick="triggerLanguageToggle()">EN/中</button>
             </div>
         `;
 
         let navMenuHtml = '';
+
+        let quizUrl = homeLink.replace('index.html', 'quiz/quiz.html');
+        let gameUrl = homeLink.replace('index.html', 'game/game_page.html');
 
         // 首页专属的控制栏配置
         if (pageType === 'index') {
@@ -36,7 +39,15 @@ class TopNavbar extends HTMLElement {
             `;
             rightControls = `
                 <div class="nav-control">
-                    <button class="nav-lang-btn" onclick="triggerLanguageToggle()" id="lang-toggle-btn">🌐 EN/中</button>
+                    <button class="nav-lang-btn" onclick="triggerLanguageToggle()" id="lang-toggle-btn">EN/中</button>
+                </div>
+            `;
+        } else if (pageType === 'quiz' || pageType === 'game') {
+            navMenuHtml = `
+                <div class="nav-menu">
+                    <a href="${homeLink}" class="nav-link" data-i18n="nav.home">首页</a>
+                    <a href="${quizUrl}" class="nav-link ${pageType === 'quiz' ? 'active' : ''}" data-i18n="nav.quiz">检测</a>
+                    <a href="${gameUrl}" class="nav-link ${pageType === 'game' ? 'active' : ''}" data-i18n="nav.game">游戏</a>
                 </div>
             `;
         }

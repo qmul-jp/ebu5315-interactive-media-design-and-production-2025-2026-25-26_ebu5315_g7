@@ -24,6 +24,7 @@ const i18nData = {
         allDoneTitle: "Level Completed!", allDoneDesc: "You have finished all questions in this level.",
         btnReview: "Review Answers", lblCorrect: "Correct", lblIncorrect: "Incorrect",
         fibPlaceholder: "Type your answer here...",
+        'nav.home': "Home", 'nav.quiz': "Quiz", 'nav.game': "Game", 'bcHome': "Home",
         mistakesTitle: "Mistakes Book", mistakesDesc: "Analytics & Redo incorrect questions",
         statusEmpty: "Empty", statusNeedsReview: "Needs Review",
         statTotal: "Total Done", statAcc: "Accuracy", statPending: "Pending",
@@ -44,6 +45,8 @@ const i18nData = {
         allDoneTitle: "关卡已完成！", allDoneDesc: "您已经做完了该关卡的所有题目。",
         btnReview: "回顾题目", lblCorrect: "正确", lblIncorrect: "错误",
         fibPlaceholder: "在此输入您的答案...",
+        fibPlaceholder: "在此输入您的答案...",
+        'nav.home': "首页", 'nav.quiz': "检测", 'nav.game': "游戏", 'bcHome': "首页",
         mistakesTitle: "错题本", mistakesDesc: "学情分析与错题重做",
         statusEmpty: "暂无错题", statusNeedsReview: "待复习",
         statTotal: "已答总数", statAcc: "正确率", statPending: "待重做",
@@ -136,6 +139,18 @@ function openLevel(num) {
     isAnswered = false;
     renderQuestion();
     updateScoreUI();
+    //breadcrumb
+    const breadcrumb = document.getElementById('breadcrumb');
+    if (breadcrumb) {
+        const dict = i18nData[currentLang];
+        breadcrumb.innerHTML = `
+            <span class="bc-item" data-i18n="bcHome" onclick="window.location.href='../index.html'" style="cursor:pointer;">${dict.bcHome}</span>
+            <span class="bc-separator">/</span>
+            <span class="bc-item" data-i18n="nav.quiz" onclick="goHome()" style="cursor:pointer;">${dict['nav.quiz']}</span>
+            <span class="bc-separator">/</span>
+            <span class="bc-item" style="cursor:default; opacity:1;" data-i18n="l${num}Title">${dict['l' + num + 'Title']}</span>
+        `;
+    }
 }
 
 // ✨ 替换整个 nextQuestion 函数
@@ -157,6 +172,16 @@ function goHome() {
     homeView.classList.add('active');
     document.getElementById('bottom-sheet')?.classList.remove('open');
     updateHomeMenu();
+    //breadcrumb
+    const breadcrumb = document.getElementById('breadcrumb');
+    if (breadcrumb) {
+        const dict = i18nData[currentLang];
+        breadcrumb.innerHTML = `
+            <span class="bc-item" data-i18n="bcHome" onclick="window.location.href='../index.html'" style="cursor:pointer;">${dict.bcHome}</span>
+            <span class="bc-separator">/</span>
+            <span class="bc-item" style="cursor:default; opacity:1;" data-i18n="nav.quiz">${dict['nav.quiz']}</span>
+        `;
+    }
 }
 
 function updateScoreUI() {
