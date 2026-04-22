@@ -6,7 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>圆 · 几何教学平台</title>
     <link rel="stylesheet" href="style.css">
-
+    <link rel="stylesheet" href="./navbar/navbar.css">
+    <script src="./navbar/navbar.js"></script>
 </head>
 
 <body>
@@ -18,21 +19,34 @@
         <!-- 首页英雄区域 -->
         <section id="home" class="module active">
             <div class="hero-section">
-                <h1 data-i18n="hero.title">探索几何的无限魅力</h1>
-                <p class="subtitle" data-i18n="hero.subtitle">专业的数学几何学习平台，让抽象的几何概念变得直观易懂</p>
+                <!-- 左侧：主要文字和操作 -->
+                <div class="hero-text-content">
+                    <h1 data-i18n="hero.title">探索几何的无限魅力</h1>
+                    <p class="subtitle" data-i18n="hero.subtitle">专业的数学几何学习平台，让抽象的几何概念变得直观易懂</p>
 
-                <!-- 首页顶部搜索框 -->
-                <div class="hero-search-box">
-                    <input type="text" class="hero-search-input" placeholder="搜索知识点，如：垂径定理、圆周角..."
-                        data-i18n-placeholder="hero.searchPlaceholder" />
-                    <button class="hero-search-btn">
-                        <span class="search-icon">🔍</span>
-                    </button>
+                    <!-- 首页顶部搜索框 -->
+                    <div class="hero-search-box">
+                        <input type="text" class="hero-search-input" placeholder="搜索知识点，如：垂径定理、圆周角..."
+                            data-i18n-placeholder="hero.searchPlaceholder" />
+                        <button class="hero-search-btn">
+                            <span class="search-icon">🔍</span>
+                        </button>
+                    </div>
+
+                    <div class="hero-buttons" style="display: flex; gap: 1rem;">
+                        <a href="./quiz/quiz.html" data-i18n="hero.startLearning"
+                            style="flex: 1; text-align: center; text-decoration: none; background: linear-gradient(180deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0)), var(--accent-blue); color: white; padding: 1.125rem; border-radius: 16px; font-size: 1.125rem; font-weight: 600; box-shadow: 0 4px 12px rgba(10, 132, 255, 0.25), inset 0 1px 1px rgba(255, 255, 255, 0.2); transition: all 0.3s ease;">开始学习</a>
+                        <a href="./game/game_page.html" data-i18n="hero.geometryGames"
+                            style="flex: 1; text-align: center; text-decoration: none; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border-strong); color: var(--text-primary); padding: 1.125rem; border-radius: 16px; font-size: 1.125rem; font-weight: 600; backdrop-filter: blur(20px); transition: all 0.3s ease;">几何游戏</a>
+                    </div>
                 </div>
 
-                <div class="hero-buttons">
-                    <a href="./quiz/quiz.html" class="cta-button" data-i18n="hero.startLearning">开始学习</a>
-                    <a href="./game/game_page.html" class="cta-button secondary" data-i18n="hero.geometryGames">几何游戏</a>
+                <!-- 右侧：圆形动画 -->
+                <div class="hero-visual-content">
+                    <div class="animated-circle-container">
+                        <div class="animated-circle"></div>
+                        <div class="animated-circle-glow"></div>
+                    </div>
                 </div>
             </div>
 
@@ -45,9 +59,9 @@
                         <p data-i18n="features.subtitle">专业的数学几何学习平台，让抽象的几何概念变得直观易懂</p>
                     </div>
 
-                    <div class="row mt-50">
-                        <div class="col-lg-3 col-md-6 col-sm-12 text-center">
-                            <div class="service-item mt-30" data-aos="flip-left">
+                    <div class="features-grid-2x2">
+                        <div class="text-center">
+                            <div class="service-item" data-aos="flip-left">
                                 <div class="item_icon item_icon1 m-auto">
                                     <i class="feature-icon">📚</i>
                                 </div>
@@ -55,14 +69,11 @@
                                     <h3 data-i18n="features.systematic">系统教学</h3>
                                     <p data-i18n="features.systematicDesc">从基础到进阶，系统化学习几何知识</p>
                                 </div>
-                                <div class="service_item-btn">
-                                    <a href="#" class="btn btn-secondary" data-i18n="features.learnMore">了解更多</a>
-                                </div>
                             </div>
                         </div>
 
-                        <div class="col-lg-3 col-md-6 col-sm-12 text-center">
-                            <div class="service-item mt-30" data-aos="flip-left">
+                        <div class="text-center">
+                            <div class="service-item" data-aos="flip-left">
                                 <div class="item_icon item_icon2 m-auto">
                                     <i class="feature-icon">🔍</i>
                                 </div>
@@ -70,14 +81,11 @@
                                     <h3 data-i18n="features.intelligent">智能搜索</h3>
                                     <p data-i18n="features.intelligentDesc">快速找到你需要的几何知识点</p>
                                 </div>
-                                <div class="service_item-btn">
-                                    <a href="#" class="btn btn-secondary" data-i18n="features.learnMore">了解更多</a>
-                                </div>
                             </div>
                         </div>
 
-                        <div class="col-lg-3 col-md-6 col-sm-12 text-center">
-                            <div class="service-item mt-30" data-aos="flip-right">
+                        <div class="text-center">
+                            <div class="service-item" data-aos="flip-right">
                                 <div class="item_icon item_icon3 m-auto">
                                     <i class="feature-icon">✏️</i>
                                 </div>
@@ -85,14 +93,11 @@
                                     <h3 data-i18n="features.quiz">随堂检测</h3>
                                     <p data-i18n="features.quizDesc">实时检验学习成果，巩固知识点</p>
                                 </div>
-                                <div class="service_item-btn">
-                                    <a href="#" class="btn btn-secondary" data-i18n="features.learnMore">了解更多</a>
-                                </div>
                             </div>
                         </div>
 
-                        <div class="col-lg-3 col-md-6 col-sm-12 text-center">
-                            <div class="service-item mt-30" data-aos="flip-right">
+                        <div class="text-center">
+                            <div class="service-item" data-aos="flip-right">
                                 <div class="item_icon item_icon4 m-auto">
                                     <i class="feature-icon">🎮</i>
                                 </div>
@@ -100,292 +105,105 @@
                                     <h3 data-i18n="features.games">几何游戏</h3>
                                     <p data-i18n="features.gamesDesc">通过游戏化方式加深几何概念理解</p>
                                 </div>
-                                <div class="service_item-btn">
-                                    <a href="#" class="btn btn-secondary" data-i18n="features.learnMore">了解更多</a>
-                                </div>
                             </div>
                         </div>
-
                     </div>
                 </div>
 
             </section>
 
-            <!-- 圆的重要知识点 - 幻灯片展示 -->
-            <div class="knowledge-section">
-                <h2 data-i18n="knowledge.title">圆的重要知识点</h2>
-                <div class="knowledge-slider">
-                    <button class="slider-btn prev-btn" id="knowledge-prev">&#10094;</button>
-                    <div class="knowledge-slides">
-                        <div class="knowledge-slide active">
-                            <div class="knowledge-icon">🔴</div>
-                            <h3 data-i18n="knowledge.verticalTheorem">垂径定理</h3>
-                            <p data-i18n="knowledge.verticalTheoremDesc">垂直于弦的直径平分弦且平分弦所对的两条弧</p>
-                            <div class="knowledge-diagram">
-                                <svg width="300" height="200" xmlns="http://www.w3.org/2000/svg">
-                                    <defs>
-                                        <linearGradient id="circleGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                                            <stop offset="0%" style="stop-color:#e3f2fd;stop-opacity:1"/>
-                                            <stop offset="100%" style="stop-color:#bbdefb;stop-opacity:1"/>
-                                        </linearGradient>
-                                    </defs>
-                                    <circle cx="150" cy="100" r="50" fill="url(#circleGradient)" stroke="#1976d2" stroke-width="2"/>
-                                    <line x1="150" y1="50" x2="150" y2="150" stroke="#d32f2f" stroke-width="2" stroke-linecap="round"/>
-                                    <line x1="100" y1="100" x2="200" y2="100" stroke="#388e3c" stroke-width="2" stroke-linecap="round"/>
-                                    <circle cx="150" cy="100" r="3" fill="#1976d2"/>
-                                    <circle cx="100" cy="100" r="3" fill="#388e3c"/>
-                                    <circle cx="200" cy="100" r="3" fill="#388e3c"/>
-                                    <circle cx="150" cy="50" r="3" fill="#d32f2f"/>
-                                    <circle cx="150" cy="150" r="3" fill="#d32f2f"/>
-                                    <text x="150" y="20" text-anchor="middle" font-size="14" fill="#1976d2" font-weight="bold"/>
-                                    <text x="150" y="180" text-anchor="middle" font-size="12" fill="#666">垂直于弦的直径平分弦</text>
-                                </svg>
+            <!-- 圆的重要知识点 - 翻转卡片展示 -->
+            <div class="knowledge-section" style="padding: 2rem 0;">
+                <h2 data-i18n="knowledge.title" style="text-align: center; margin-bottom: 2rem;">圆的重要知识点</h2>
+                <div class="flip-cards-grid">
+                    <!-- 卡片 1 -->
+                    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front">
+                                <div class="flip-icon">🔘</div>
+                                <h3 data-i18n="knowledge.circumferentialAngle">圆周角定理</h3>
                             </div>
-                        </div>
-                        <div class="knowledge-slide">
-                            <div class="knowledge-icon">📐</div>
-                            <h3 data-i18n="knowledge.circumferentialAngle">圆周角定理</h3>
-                            <p data-i18n="knowledge.circumferentialAngleDesc">同弧或等弧所对的圆周角相等，等于圆心角的一半</p>
-                            <div class="knowledge-diagram">
-                                <svg width="300" height="200" xmlns="http://www.w3.org/2000/svg">
-                                    <defs>
-                                        <linearGradient id="circleGradient2" x1="0%" y1="0%" x2="100%" y2="100%">
-                                            <stop offset="0%" style="stop-color:#f3e5f5;stop-opacity:1"/>
-                                            <stop offset="100%" style="stop-color:#ce93d8;stop-opacity:1"/>
-                                        </linearGradient>
-                                    </defs>
-                                    <circle cx="150" cy="100" r="50" fill="url(#circleGradient2)" stroke="#7b1fa2" stroke-width="2"/>
-                                    <line x1="150" y1="100" x2="200" y2="100" stroke="#7b1fa2" stroke-width="2" stroke-linecap="round"/>
-                                    <line x1="150" y1="100" x2="200" y2="150" stroke="#e91e63" stroke-width="2" stroke-linecap="round"/>
-                                    <line x1="100" y1="100" x2="200" y2="150" stroke="#ff9800" stroke-width="2" stroke-linecap="round"/>
-                                    <circle cx="150" cy="100" r="3" fill="#7b1fa2"/>
-                                    <circle cx="200" cy="100" r="3" fill="#7b1fa2"/>
-                                    <circle cx="100" cy="100" r="3" fill="#7b1fa2"/>
-                                    <circle cx="200" cy="150" r="3" fill="#e91e63"/>
-                                    <text x="150" y="180" text-anchor="middle" font-size="12" fill="#666">圆周角 = 圆心角的一半</text>
-                                </svg>
-                            </div>
-                        </div>
-                        <div class="knowledge-slide">
-                            <div class="knowledge-icon">🔄</div>
-                            <h3 data-i18n="knowledge.standardEquation">圆的标准方程</h3>
-                            <p data-i18n="knowledge.standardEquationDesc">(x-a)² + (y-b)² = r²，其中(a,b)为圆心坐标，r为半径</p>
-                            <div class="knowledge-diagram">
-                                <svg width="300" height="200" xmlns="http://www.w3.org/2000/svg">
-                                    <defs>
-                                        <linearGradient id="circleGradient3" x1="0%" y1="0%" x2="100%" y2="100%">
-                                            <stop offset="0%" style="stop-color:#e8f5e8;stop-opacity:1"/>
-                                            <stop offset="100%" style="stop-color:#c8e6c9;stop-opacity:1"/>
-                                        </linearGradient>
-                                    </defs>
-                                    <circle cx="150" cy="100" r="50" fill="url(#circleGradient3)" stroke="#388e3c" stroke-width="2"/>
-                                    <line x1="100" y1="100" x2="200" y2="100" stroke="#757575" stroke-width="1" stroke-dasharray="2,2"/>
-                                    <line x1="150" y1="50" x2="150" y2="150" stroke="#757575" stroke-width="1" stroke-dasharray="2,2"/>
-                                    <line x1="150" y1="100" x2="200" y2="100" stroke="#388e3c" stroke-width="2" stroke-linecap="round"/>
-                                    <circle cx="150" cy="100" r="3" fill="#388e3c"/>
-                                    <text x="150" y="170" text-anchor="middle" font-size="12" fill="#388e3c" font-weight="bold">(x-a)² + (y-b)² = r²</text>
-                                    <text x="170" y="110" font-size="12" fill="#388e3c">(a,b)</text>
-                                    <text x="180" y="70" font-size="12" fill="#388e3c">r</text>
-                                </svg>
-                            </div>
-                        </div>
-                        <div class="knowledge-slide">
-                            <div class="knowledge-icon">💡</div>
-                            <h3 data-i18n="knowledge.tangentProperty">切线性质</h3>
-                            <p data-i18n="knowledge.tangentPropertyDesc">圆的切线垂直于经过切点的半径</p>
-                            <div class="knowledge-diagram">
-                                <svg width="300" height="200" xmlns="http://www.w3.org/2000/svg">
-                                    <defs>
-                                        <linearGradient id="circleGradient4" x1="0%" y1="0%" x2="100%" y2="100%">
-                                            <stop offset="0%" style="stop-color:#fff3e0;stop-opacity:1"/>
-                                            <stop offset="100%" style="stop-color:#ffe0b2;stop-opacity:1"/>
-                                        </linearGradient>
-                                    </defs>
-                                    <circle cx="150" cy="100" r="50" fill="url(#circleGradient4)" stroke="#f57c00" stroke-width="2"/>
-                                    <line x1="150" y1="100" x2="250" y2="100" stroke="#f57c00" stroke-width="2" stroke-linecap="round"/>
-                                    <line x1="200" y1="50" x2="200" y2="150" stroke="#e65100" stroke-width="2" stroke-linecap="round"/>
-                                    <circle cx="150" cy="100" r="3" fill="#f57c00"/>
-                                    <circle cx="200" cy="100" r="3" fill="#e65100"/>
-                                    <text x="220" y="70" font-size="12" fill="#e65100">切线</text>
-                                    <text x="175" y="110" font-size="12" fill="#f57c00">半径</text>
-                                    <text x="150" y="180" text-anchor="middle" font-size="12" fill="#666">切线垂直于半径</text>
-                                </svg>
-                            </div>
-                        </div>
-                        <div class="knowledge-slide">
-                            <div class="knowledge-icon">🔘</div>
-                            <h3 data-i18n="knowledge.centralAngle">圆心角定理</h3>
-                            <p data-i18n="knowledge.centralAngleDesc">圆心角的度数等于它所对的弧的度数</p>
-                            <div class="knowledge-diagram">
-                                <svg width="300" height="200" xmlns="http://www.w3.org/2000/svg">
-                                    <defs>
-                                        <linearGradient id="circleGradient5" x1="0%" y1="0%" x2="100%" y2="100%">
-                                            <stop offset="0%" style="stop-color:#e3f2fd;stop-opacity:1"/>
-                                            <stop offset="100%" style="stop-color:#bbdefb;stop-opacity:1"/>
-                                        </linearGradient>
-                                    </defs>
-                                    <circle cx="150" cy="100" r="50" fill="url(#circleGradient5)" stroke="#1976d2" stroke-width="2"/>
-                                    <line x1="150" y1="100" x2="200" y2="100" stroke="#1976d2" stroke-width="2" stroke-linecap="round"/>
-                                    <line x1="150" y1="100" x2="175" y2="50" stroke="#1976d2" stroke-width="2" stroke-linecap="round"/>
-                                    <path d="M150 100 A50 50 0 0 0 175 50" stroke="#2196f3" stroke-width="2" fill="none"/>
-                                    <circle cx="150" cy="100" r="3" fill="#1976d2"/>
-                                    <circle cx="200" cy="100" r="3" fill="#1976d2"/>
-                                    <circle cx="175" cy="50" r="3" fill="#1976d2"/>
-                                    <text x="180" y="80" font-size="12" fill="#1976d2">圆心角</text>
-                                    <text x="150" y="180" text-anchor="middle" font-size="12" fill="#666">圆心角 = 弧的度数</text>
-                                </svg>
-                            </div>
-                        </div>
-                        <div class="knowledge-slide">
-                            <div class="knowledge-icon">🔄</div>
-                            <h3 data-i18n="knowledge.cyclicQuadrilateral">圆内接四边形性质</h3>
-                            <p data-i18n="knowledge.cyclicQuadrilateralDesc">圆内接四边形的对角互补，外角等于内对角</p>
-                            <div class="knowledge-diagram">
-                                <svg width="300" height="200" xmlns="http://www.w3.org/2000/svg">
-                                    <defs>
-                                        <linearGradient id="circleGradient6" x1="0%" y1="0%" x2="100%" y2="100%">
-                                            <stop offset="0%" style="stop-color:#f3e5f5;stop-opacity:1"/>
-                                            <stop offset="100%" style="stop-color:#ce93d8;stop-opacity:1"/>
-                                        </linearGradient>
-                                    </defs>
-                                    <circle cx="150" cy="100" r="50" fill="url(#circleGradient6)" stroke="#7b1fa2" stroke-width="2"/>
-                                    <line x1="100" y1="100" x2="150" y2="50" stroke="#e91e63" stroke-width="2" stroke-linecap="round"/>
-                                    <line x1="150" y1="50" x2="200" y2="100" stroke="#e91e63" stroke-width="2" stroke-linecap="round"/>
-                                    <line x1="200" y1="100" x2="150" y2="150" stroke="#e91e63" stroke-width="2" stroke-linecap="round"/>
-                                    <line x1="150" y1="150" x2="100" y2="100" stroke="#e91e63" stroke-width="2" stroke-linecap="round"/>
-                                    <circle cx="100" cy="100" r="3" fill="#7b1fa2"/>
-                                    <circle cx="150" cy="50" r="3" fill="#7b1fa2"/>
-                                    <circle cx="200" cy="100" r="3" fill="#7b1fa2"/>
-                                    <circle cx="150" cy="150" r="3" fill="#7b1fa2"/>
-                                    <text x="150" y="180" text-anchor="middle" font-size="12" fill="#666">对角互补，外角等于内对角</text>
-                                </svg>
-                            </div>
-                        </div>
-                        <div class="knowledge-slide">
-                            <div class="knowledge-icon">📊</div>
-                            <h3 data-i18n="knowledge.generalEquation">圆的一般方程</h3>
-                            <p data-i18n="knowledge.generalEquationDesc">x² + y² + Dx + Ey + F = 0，其中D² + E² - 4F > 0
-                            </p>
-                            <div class="knowledge-diagram">
-                                <svg width="300" height="200" xmlns="http://www.w3.org/2000/svg">
-                                    <defs>
-                                        <linearGradient id="circleGradient7" x1="0%" y1="0%" x2="100%" y2="100%">
-                                            <stop offset="0%" style="stop-color:#e8f5e8;stop-opacity:1"/>
-                                            <stop offset="100%" style="stop-color:#c8e6c9;stop-opacity:1"/>
-                                        </linearGradient>
-                                    </defs>
-                                    <circle cx="150" cy="100" r="50" fill="url(#circleGradient7)" stroke="#388e3c" stroke-width="2"/>
-                                    <line x1="100" y1="100" x2="200" y2="100" stroke="#757575" stroke-width="1" stroke-dasharray="2,2"/>
-                                    <line x1="150" y1="50" x2="150" y2="150" stroke="#757575" stroke-width="1" stroke-dasharray="2,2"/>
-                                    <text x="150" y="170" text-anchor="middle" font-size="12" fill="#388e3c" font-weight="bold">x² + y² + Dx + Ey + F = 0</text>
-                                    <text x="150" y="185" text-anchor="middle" font-size="10" fill="#666">D² + E² - 4F > 0</text>
-                                </svg>
-                            </div>
-                        </div>
-                        <div class="knowledge-slide">
-                            <div class="knowledge-icon">⚪</div>
-                            <h3 data-i18n="knowledge.circleRelations">两圆位置关系</h3>
-                            <p data-i18n="knowledge.circleRelationsDesc">外离、外切、相交、内切、内含五种位置关系，由圆心距与两圆半径决定</p>
-                            <div class="knowledge-diagram">
-                                <svg width="300" height="200" xmlns="http://www.w3.org/2000/svg">
-                                    <defs>
-                                        <linearGradient id="circleGradient8" x1="0%" y1="0%" x2="100%" y2="100%">
-                                            <stop offset="0%" style="stop-color:#e3f2fd;stop-opacity:1"/>
-                                            <stop offset="100%" style="stop-color:#bbdefb;stop-opacity:1"/>
-                                        </linearGradient>
-                                        <linearGradient id="circleGradient9" x1="0%" y1="0%" x2="100%" y2="100%">
-                                            <stop offset="0%" style="stop-color:#f3e5f5;stop-opacity:1"/>
-                                            <stop offset="100%" style="stop-color:#ce93d8;stop-opacity:1"/>
-                                        </linearGradient>
-                                    </defs>
-                                    <circle cx="100" cy="100" r="30" fill="url(#circleGradient8)" stroke="#1976d2" stroke-width="2"/>
-                                    <circle cx="200" cy="100" r="20" fill="url(#circleGradient9)" stroke="#7b1fa2" stroke-width="2"/>
-                                    <line x1="130" y1="100" x2="180" y2="100" stroke="#ff9800" stroke-width="2" stroke-linecap="round"/>
-                                    <text x="100" y="70" text-anchor="middle" font-size="12" fill="#1976d2">r1</text>
-                                    <text x="200" y="70" text-anchor="middle" font-size="12" fill="#7b1fa2">r2</text>
-                                    <text x="150" y="115" text-anchor="middle" font-size="12" fill="#ff9800">d</text>
-                                    <text x="150" y="180" text-anchor="middle" font-size="12" fill="#666">外离、外切、相交、内切、内含</text>
-                                </svg>
+                            <div class="flip-card-back">
+                                <h4 data-i18n="knowledge.circumferentialAngle">圆周角定理</h4>
+                                <img src="./images/theorem1.png" alt="圆周角定理的图解" class="theorem-img">
+                                <p data-i18n="knowledge.circumferentialAngleDesc">同弧或等弧所对的圆周角相等。</p>
                             </div>
                         </div>
                     </div>
-                    <button class="slider-btn next-btn" id="knowledge-next">&#10095;</button>
-                    <div class="slider-dots">
-                        <span class="dot active" data-slide="0"></span>
-                        <span class="dot" data-slide="1"></span>
-                        <span class="dot" data-slide="2"></span>
-                        <span class="dot" data-slide="3"></span>
-                        <span class="dot" data-slide="4"></span>
-                        <span class="dot" data-slide="5"></span>
-                        <span class="dot" data-slide="6"></span>
-                        <span class="dot" data-slide="7"></span>
+                    <!-- 卡片 2 -->
+                    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front">
+                                <div class="flip-icon">📐</div>
+                                <h3 data-i18n="knowledge.centralAngle">圆心角定理</h3>
+                            </div>
+                            <div class="flip-card-back">
+                                <h4 data-i18n="knowledge.centralAngle">圆心角定理</h4>
+                                <img src="./images/theorem2.png" alt="圆心角定理的图解" class="theorem-img">
+                                <p data-i18n="knowledge.centralAngleDesc">圆心角的度数等于圆周角的二倍。</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 卡片 3 -->
+                    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front">
+                                <div class="flip-icon">🌙</div>
+                                <h3 data-i18n="knowledge.semiCircleAngle">半圆上的圆周角</h3>
+                            </div>
+                            <div class="flip-card-back">
+                                <h4 data-i18n="knowledge.semiCircleAngle">半圆上的圆周角</h4>
+                                <img src="./images/theorem3.png" alt="半圆上的圆周角的图解" class="theorem-img">
+                                <p data-i18n="knowledge.semiCircleAngleDesc">半圆（或直径）所对的圆周角是直角（90°）。</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 卡片 4 -->
+                    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front">
+                                <div class="flip-icon">🔄</div>
+                                <h3 data-i18n="knowledge.cyclicQuadrilateral">圆内接四边形定理</h3>
+                            </div>
+                            <div class="flip-card-back">
+                                <h4 data-i18n="knowledge.cyclicQuadrilateral">圆内接四边形定理</h4>
+                                <img src="./images/theorem4.png" alt="圆内接四边形定理的图解" class="theorem-img">
+                                <p data-i18n="knowledge.cyclicQuadrilateralDesc">圆内接四边形的对角互补，并且任何一个外角等于它的内对角。</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 卡片 5 -->
+                    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front">
+                                <div class="flip-icon">💡</div>
+                                <h3 data-i18n="knowledge.tangentProperty">切线与半径定理</h3>
+                            </div>
+                            <div class="flip-card-back">
+                                <h4 data-i18n="knowledge.tangentProperty">切线与半径定理</h4>
+                                <img src="./images/theorem5.png" alt="切线与半径定理的图解" class="theorem-img">
+                                <p data-i18n="knowledge.tangentPropertyDesc">圆的切线垂直于经过切点的半径。</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 卡片 6 -->
+                    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front">
+                                <div class="flip-icon">✂️</div>
+                                <h3 data-i18n="knowledge.chordTangentAngle">弦切角定理</h3>
+                            </div>
+                            <div class="flip-card-back">
+                                <h4 data-i18n="knowledge.chordTangentAngle">弦切角定理</h4>
+                                <img src="./images/theorem6.png" alt="弦切角定理的图解" class="theorem-img">
+                                <p data-i18n="knowledge.chordTangentAngleDesc">弦切角的度数等于它所夹的弧对的圆周角的度数。</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <!-- 检测介绍 - 幻灯片展示 -->
-            <div class="quiz-intro-section">
-                <h2 data-i18n="quizIntro.title">检测功能介绍</h2>
-                <div class="quiz-intro-slider">
-                    <button class="slider-btn prev-btn" id="quiz-intro-prev">&#10094;</button>
-                    <div class="quiz-intro-slides">
-                        <div class="quiz-intro-slide active">
-                            <div class="quiz-intro-icon">📝</div>
-                            <h3 data-i18n="quizIntro.RealTimeFeedback">实时反馈</h3>
-                            <p data-i18n="quizIntro.RealTimeFeedbackDesc">提交答案后立即获得反馈，了解自己的学习情况</p>
-                        </div>
-                        <div class="quiz-intro-slide">
-                            <div class="quiz-intro-icon">📊</div>
-                            <h3 data-i18n="quizIntro.ProgressTracking">进度追踪</h3>
-                            <p data-i18n="quizIntro.ProgressTrackingDesc">记录学习进度，帮助你了解自己的薄弱环节</p>
-                        </div>
-                        <div class="quiz-intro-slide">
-                            <div class="quiz-intro-icon">🎯</div>
-                            <h3 data-i18n="quizIntro.TargetedPractice">针对性练习</h3>
-                            <p data-i18n="quizIntro.TargetedPracticeDesc">根据你的学习情况，提供个性化的练习题目</p>
-                        </div>
-                        <div class="quiz-intro-slide">
-                            <div class="quiz-intro-icon">🏆</div>
-                            <h3 data-i18n="quizIntro.AchievementSystem">成就系统</h3>
-                            <p data-i18n="quizIntro.AchievementSystemDesc">通过完成检测获得成就，激发学习动力</p>
-                        </div>
-                    </div>
-                    <button class="slider-btn next-btn" id="quiz-intro-next">&#10095;</button>
-                    <div class="slider-dots">
-                        <span class="dot active" data-slide="0"></span>
-                        <span class="dot" data-slide="1"></span>
-                        <span class="dot" data-slide="2"></span>
-                        <span class="dot" data-slide="3"></span>
-                    </div>
-                </div>
-            </div>
 
-            <!-- 网页数据库介绍 - 卡片展示 -->
-            <div class="database-section">
-                <h2 data-i18n="database.title">网页数据库介绍</h2>
-                <div class="database-cards">
-                    <div class="database-card">
-                        <div class="database-card-icon">💾</div>
-                        <h3 data-i18n="database.dataStorage">数据存储</h3>
-                        <p data-i18n="database.dataStorageDesc">安全存储用户学习数据和检测结果，确保数据不丢失</p>
-                    </div>
-                    <div class="database-card">
-                        <div class="database-card-icon">🔒</div>
-                        <h3 data-i18n="database.dataSecurity">数据安全</h3>
-                        <p data-i18n="database.dataSecurityDesc">采用加密技术保护用户数据，确保隐私安全</p>
-                    </div>
-                    <div class="database-card">
-                        <div class="database-card-icon">📈</div>
-                        <h3 data-i18n="database.dataAnalysis">数据分析</h3>
-                        <p data-i18n="database.dataAnalysisDesc">通过数据分析为用户提供个性化学习建议</p>
-                    </div>
-                    <div class="database-card">
-                        <div class="database-card-icon">🔄</div>
-                        <h3 data-i18n="database.dataSync">数据同步</h3>
-                        <p data-i18n="database.dataSyncDesc">多设备数据同步，随时随地继续学习</p>
-                    </div>
-                </div>
-            </div>
         </section>
 
         <!-- 检测模块 -->
@@ -428,13 +246,7 @@
                             <option value="xlarge" data-i18n="settings.fontSizeXLarge">特大</option>
                         </select>
                     </div>
-                    <div class="setting-item">
-                        <label data-i18n="settings.colorblindMode">色盲模式</label>
-                        <div class="toggle-switch">
-                            <input type="checkbox" id="settings-colorblind-mode">
-                            <label for="settings-colorblind-mode" class="toggle-label"></label>
-                        </div>
-                    </div>
+
                     <div class="setting-item">
                         <label data-i18n="settings.eyeProtectionMode">护眼模式</label>
                         <div class="toggle-switch">
@@ -455,76 +267,11 @@
                             <option value="en">English</option>
                         </select>
                     </div>
-                    <div class="setting-item">
-                        <label data-i18n="settings.autoTranslate">自动翻译</label>
-                        <div class="toggle-switch">
-                            <input type="checkbox" id="settings-auto-translate">
-                            <label for="settings-auto-translate" class="toggle-label"></label>
-                        </div>
-                    </div>
-                    <div class="setting-item">
-                        <label data-i18n="settings.parentMode">家长模式</label>
-                        <div class="toggle-switch">
-                            <input type="checkbox" id="settings-parent-mode">
-                            <label for="settings-parent-mode" class="toggle-label"></label>
-                        </div>
-                    </div>
+
                 </div>
             </div>
 
-            <div class="settings-section">
-                <h3 data-i18n="settings.account">账户</h3>
-                <div class="settings-container">
-                    <div class="login-form">
-                        <h4 data-i18n="login.title">用户登录</h4>
-                        <form class="auth-form">
-                            <div class="setting-item">
-                                <label data-i18n="login.username">用户名</label>
-                                <input type="text" placeholder="用户名" required class="input-field"
-                                    data-i18n-placeholder="login.username" />
-                            </div>
-                            <div class="setting-item">
-                                <label data-i18n="login.password">密码</label>
-                                <input type="password" placeholder="密码" required class="input-field"
-                                    data-i18n-placeholder="login.password" />
-                            </div>
-                            <div class="setting-item privacy-policy">
-                                <input type="checkbox" id="privacy" required>
-                                <label for="privacy" data-i18n="login.privacy">我已阅读并同意<a href="#"
-                                        onclick="alert('隐私政策：我们尊重您的隐私，不会收集任何个人信息。')">隐私政策</a></label>
-                            </div>
-                            <div class="setting-item">
-                                <button type="submit" class="submit-btn" data-i18n="login.enter">进入</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
 
-            <div class="settings-section">
-                <h3 data-i18n="settings.learning">学习</h3>
-                <div class="settings-container">
-                    <div class="setting-item">
-                        <label data-i18n="settings.autoSave">自动保存学习进度</label>
-                        <div class="toggle-switch">
-                            <input type="checkbox" id="settings-auto-save" checked>
-                            <label for="settings-auto-save" class="toggle-label"></label>
-                        </div>
-                    </div>
-                    <div class="setting-item">
-                        <label data-i18n="settings.dailyGoal">每日学习目标（分钟）</label>
-                        <input type="number" id="settings-daily-goal" class="input-field" value="30" min="5" max="180"
-                            step="5">
-                    </div>
-                    <div class="setting-item">
-                        <label data-i18n="settings.studyReminder">学习提醒</label>
-                        <div class="toggle-switch">
-                            <input type="checkbox" id="settings-study-reminder">
-                            <label for="settings-study-reminder" class="toggle-label"></label>
-                        </div>
-                    </div>
-                </div>
-            </div>
 
             <div class="settings-section">
                 <h3 data-i18n="settings.privacy">隐私和安全</h3>
