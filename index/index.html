@@ -4,10 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>圆 · 几何教学平台</title>
+    <title>Circle-learning-platform</title>
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="./navbar/navbar.css">
-    <script src="./navbar/navbar.js"></script>
+    <link rel="stylesheet" href="../global/navbar.css">
+    <script src="../global/navbar.js"></script>
 </head>
 
 <body>
@@ -42,21 +42,34 @@
                     </div>
 
                     <div class="hero-buttons">
-                        <a href="./quiz/quiz.html" class="btn-hero-primary" data-i18n="hero.startLearning">
+                        <a href="../quiz/quiz.html" class="btn-hero-primary" data-i18n="hero.startLearning">
                             <span class="btn-shimmer"></span>
                             <span class="btn-label">开始测验</span>
                         </a>
-                        <a href="./game/game_page.html" class="btn-hero-secondary" data-i18n="hero.geometryGames">
+                        <a href="../game/game_page.html" class="btn-hero-secondary" data-i18n="hero.geometryGames">
                             <span class="btn-border-glow"></span>
                             <span class="btn-label">几何游戏</span>
                         </a>
                     </div>
                 </div>
 
-                <!-- 右侧：圆形动画 -->
+                <!-- 右侧：圆形动画（可点击切换物品） -->
                 <div class="hero-visual-content">
-                    <div class="animated-circle-container">
-                        <div class="animated-circle"></div>
+                    <div class="animated-circle-container" id="circle-switcher" title="点击切换圆形物品">
+                        <!-- 原始渐变圆 -->
+                        <div class="animated-circle circle-layer active" data-index="0"></div>
+                        <!-- 圆形物品图层（预加载，隐藏） -->
+                        <img class="circle-item-layer circle-layer" data-index="1" src="./images/basketball.png"
+                            alt="篮球" draggable="false">
+                        <img class="circle-item-layer circle-layer" data-index="2" src="./images/football.png" alt="足球"
+                            draggable="false">
+                        <img class="circle-item-layer circle-layer" data-index="3" src="./images/tennis.png" alt="网球"
+                            draggable="false">
+                        <img class="circle-item-layer circle-layer" data-index="4" src="./images/sun.png" alt="太阳"
+                            draggable="false">
+                        <img class="circle-item-layer circle-layer" data-index="5" src="./images/moon.png" alt="月亮"
+                            draggable="false">
+                        <!-- 光晕效果 -->
                         <div class="animated-circle-glow"></div>
                     </div>
                 </div>
@@ -216,31 +229,15 @@
             </div>
 
             <!-- 广告展示区 -->
-            <div class="ads-banner-section"
-                style="padding: 2rem 0; width: 100%; display: flex; justify-content: center; align-items: center;">
-                <div class="ads-banner-container"
-                    style="max-width: 1200px; width: 90%; background: linear-gradient(135deg, #f6f8fb, #e5eef9); border-radius: 20px; padding: 3rem 2rem; display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: 0 10px 25px rgba(0,0,0,0.05); position: relative; overflow: hidden; border: 1px solid rgba(255,255,255,0.7);">
-                    <div
-                        style="position: absolute; top: 10px; right: 15px; background: rgba(0,0,0,0.05); padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; color: #888;">
-                        Advertisement</div>
-                    <h3 data-i18n="knowledge.ExploreMoreGeometryMysteries"
-                        style="font-size: 2rem; font-weight: 700; color: var(--accent-blue, #0a84ff); margin-bottom: 1rem; z-index: 1;">
-                        探索更多几何奥秘</h3>
-                    <p data-i18n="knowledge.ExploreMoreGeometryMysteriesDesc" style="font-size: 1.1rem; color: #555;
-                        margin-bottom: 2rem; text-align: center; max-width: 600px; z-index: 1;">加入我们的高级会员计划，
-                        解锁更多功能，让学习更高效。
-                    </p>
-                    <button
-                        style="background: var(--accent-blue, #0a84ff); color: white; border: none; padding: 0.8rem 2.5rem; border-radius: 30px; font-size: 1.1rem; font-weight: 600; cursor: pointer; box-shadow: 0 4px 12px rgba(10, 132, 255, 0.3); transition: transform 0.2s, box-shadow 0.2s; z-index: 1;"
-                        onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'"
-                        data-i18n="knowledge.ExploreMoreGeometryMysteriesBtn">立即解锁</button>
+            <div class="ads-banner-section">
+                <div class="ads-banner-container">
+                    <div class="ads-label">Advertisement</div>
+                    <h3 data-i18n="knowledge.ExploreMoreGeometryMysteries">探索更多几何奥秘</h3>
+                    <p data-i18n="knowledge.ExploreMoreGeometryMysteriesDesc">加入我们的高级会员计划，解锁更多功能，让学习更高效。</p>
+                    <button class="ads-cta-btn" data-i18n="knowledge.ExploreMoreGeometryMysteriesBtn">立即解锁</button>
                     <!-- Background decorative circles -->
-                    <div
-                        style="position: absolute; width: 250px; height: 250px; border-radius: 50%; background: linear-gradient(135deg, rgba(10, 132, 255, 0.08), rgba(10, 132, 255, 0)); top: -100px; left: -100px; z-index: 0;">
-                    </div>
-                    <div
-                        style="position: absolute; width: 300px; height: 300px; border-radius: 50%; background: linear-gradient(135deg, rgba(150, 50, 255, 0.08), rgba(150, 50, 255, 0)); bottom: -120px; right: -100px; z-index: 0;">
-                    </div>
+                    <div class="ads-deco-circle ads-deco-1"></div>
+                    <div class="ads-deco-circle ads-deco-2"></div>
                 </div>
             </div>
 
@@ -388,8 +385,8 @@
             <div class="footer-section">
                 <h4 data-i18n="footer.links">快速链接</h4>
                 <ul>
-                    <li><a href="./quiz/quiz.html" data-i18n="nav.quiz">检测</a></li>
-                    <li><a href="./game/game_page.html" data-i18n="nav.game">游戏</a></li>
+                    <li><a href="../quiz/quiz.html" data-i18n="nav.quiz">检测</a></li>
+                    <li><a href="../game/game_page.html" data-i18n="nav.game">游戏</a></li>
                 </ul>
             </div>
             <div class="footer-section">
@@ -402,6 +399,10 @@
     </footer>
 
     <script src="script.js"></script>
+    <script src="circle_switcher.js"></script>
+    <script src="../global/mouse_effects_cyber.js"></script>
+    <script src="../global/mouse_effects_ios.js"></script>
+    <script src="../global/mouse_effects.js"></script>
 
     <!-- Cookie 接受弹窗 -->
     <div id="cookie-consent-popup"

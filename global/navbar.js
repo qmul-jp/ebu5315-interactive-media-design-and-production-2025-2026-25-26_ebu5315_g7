@@ -4,7 +4,7 @@
 class TopNavbar extends HTMLElement {
     connectedCallback() {
         // 读取外部传入的属性，或者提供默认值
-        const homeLink = this.getAttribute('home-link') || 'index.html';
+        const homeLink = this.getAttribute('home-link') || 'index/index.html';
         const pageType = this.getAttribute('page-type') || 'quiz'; // 默认为测试页，可传入 index 适配首页
         const i18nNavHome = this.getAttribute('i18n-nav-home') || 'bcHome';
 
@@ -16,24 +16,29 @@ class TopNavbar extends HTMLElement {
                 <span style="font-size: 1.125rem;">A</span>
             </div>
             <div class="nav-control">
+                <button class="nav-icon-btn" id="mouse-fx-toggle-btn" onclick="toggleMouseEffect()" title="Toggle Click Effect">✦</button>
                 <button class="nav-icon-btn" onclick="toggleColorblindMode()" title="Colorblind Mode">◑</button>
                 <button class="nav-icon-btn" onclick="toggleThemeMode()" title="Toggle Theme">☾</button>
-                <button class="nav-lang-btn" onclick="triggerLanguageToggle()">EN/中</button>
+                <div class="nav-lang-toggle" id="lang-toggle-btn" onclick="triggerLanguageToggle()" title="Switch Language">
+                    <div class="lang-indicator"></div>
+                    <span class="lang-label lang-label-zh active">中</span>
+                    <span class="lang-label lang-label-en">EN</span>
+                </div>
             </div>
         `;
 
         let navMenuHtml = '';
 
-        let quizUrl = homeLink.replace('index.html', 'quiz/quiz.html');
-        let gameUrl = homeLink.replace('index.html', 'game/game_page.html');
+        let quizUrl = homeLink.replace('index/index.html', 'quiz/quiz.html').replace('index.html', 'quiz/quiz.html');
+        let gameUrl = homeLink.replace('index/index.html', 'game/game_page.html').replace('index.html', 'game/game_page.html');
 
         // 首页专属的控制栏配置
         if (pageType === 'index') {
             navMenuHtml = `
                 <div class="nav-menu">
                     <a href="#home" class="nav-link active" data-i18n="nav.home">首页</a>
-                    <a href="./quiz/quiz.html" class="nav-link" data-i18n="nav.quiz">检测</a>
-                    <a href="./game/game_page.html" class="nav-link" data-i18n="nav.game">游戏</a>
+                    <a href="../quiz/quiz.html" class="nav-link" data-i18n="nav.quiz">检测</a>
+                    <a href="../game/game_page.html" class="nav-link" data-i18n="nav.game">游戏</a>
                 </div>
             `;
             rightControls = `
@@ -43,8 +48,14 @@ class TopNavbar extends HTMLElement {
                     <span style="font-size: 1.125rem;">A</span>
                 </div>
                 <div class="nav-control">
+                    <button class="nav-icon-btn" id="mouse-fx-toggle-btn" onclick="toggleMouseEffect()" title="Toggle Click Effect">✦</button>
+                    <button class="nav-icon-btn" onclick="toggleColorblindMode()" title="Colorblind Mode">◑</button>
                     <button class="nav-icon-btn" onclick="toggleThemeMode()" title="Toggle Theme">☾</button>
-                    <button class="nav-lang-btn" onclick="triggerLanguageToggle()" id="lang-toggle-btn">EN/中</button>
+                    <div class="nav-lang-toggle" id="lang-toggle-btn" onclick="triggerLanguageToggle()" title="Switch Language">
+                        <div class="lang-indicator"></div>
+                        <span class="lang-label lang-label-zh active">中</span>
+                        <span class="lang-label lang-label-en">EN</span>
+                    </div>
                 </div>
             `;
         } else if (pageType === 'quiz' || pageType === 'game') {
@@ -118,8 +129,21 @@ window.changeFontSize = function (value) {
     document.documentElement.style.fontSize = value + 'px';
 };
 
+window.isColorblindMode = false;
+
 window.toggleColorblindMode = function () {
+    window.isColorblindMode = !window.isColorblindMode;
     document.documentElement.toggleAttribute('data-colorblind');
+
+    // Notify Game 2 to redraw
+    if (typeof needsBgCacheUpdate2 !== 'undefined') {
+        needsBgCacheUpdate2 = true;
+        needsRedraw2 = true;
+    }
+    // Notify Game 1 to redraw if applicable
+    if (typeof needsRedraw !== 'undefined') {
+        needsRedraw = true;
+    }
 };
 
 window.toggleThemeMode = function () {
@@ -137,8 +161,30 @@ window.toggleThemeMode = function () {
 window.triggerLanguageToggle = function () {
     // 兼容多种业务逻辑文件对语言切换的挂载情况
     if (typeof toggleLanguage === 'function') {
-        toggleLanguage(); // quiz 里可能已经覆盖的功能
+        toggleLanguage(); // quiz / game 里可能已经覆盖的功能
     } else if (typeof toggleLanguageBtn === 'function') {
         toggleLanguageBtn(); // index.html 里的名称
     }
+    // 统一更新导航栏语言切换开关的视觉状态
+    updateNavLangToggle();
 };
+
+// 通用的语言切换开关 UI 更新函数（供所有页面使用）
+window.updateNavLangToggle = function () {
+    const btn = document.getElementById('lang-toggle-btn');
+    if (!btn) return;
+    const lang = localStorage.getItem('app_lang') || (typeof currentLang !== 'undefined' ? currentLang : 'zh');
+    const indicator = btn.querySelector('.lang-indicator');
+    const zhLabel = btn.querySelector('.lang-label-zh');
+    const enLabel = btn.querySelector('.lang-label-en');
+    if (indicator) {
+        indicator.style.transform = lang === 'zh' ? 'translateX(0)' : 'translateX(100%)';
+    }
+    if (zhLabel) zhLabel.classList.toggle('active', lang === 'zh');
+    if (enLabel) enLabel.classList.toggle('active', lang === 'en');
+};
+
+// 页面加载后初始化语言切换开关的视觉状态
+document.addEventListener('DOMContentLoaded', function () {
+    setTimeout(updateNavLangToggle, 50); // 延迟确保组件已渲染
+});

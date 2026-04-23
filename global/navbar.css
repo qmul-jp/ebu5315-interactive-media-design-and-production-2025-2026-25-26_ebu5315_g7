@@ -34,9 +34,35 @@
 .nav-icon-btn:hover { background: rgba(0,0,0,0.05); }
 :root[data-theme="dark"] .nav-icon-btn:hover { background: rgba(255,255,255,0.1); }
 
-/* 主色调适配，如果没有定义 accent-blue 就用 primary-color */
-.nav-lang-btn { background: var(--accent-blue, var(--primary-color, #3498db)); color: white; border: none; padding: 6px 12px; border-radius: 12px; font-size: 0.8125rem; font-weight: 700; cursor: pointer; transition: opacity 0.2s; font-family: inherit; }
-.nav-lang-btn:hover { opacity: 0.8; }
+/* 语言左右切换开关 */
+.nav-lang-toggle {
+    display: flex; align-items: center; position: relative;
+    width: 64px; height: 28px; border-radius: 14px;
+    background: rgba(0, 0, 0, 0.06); cursor: pointer;
+    user-select: none; -webkit-user-select: none;
+    overflow: hidden; flex-shrink: 0;
+    transition: background 0.3s;
+}
+:root[data-theme="dark"] .nav-lang-toggle { background: rgba(255, 255, 255, 0.1); }
+
+.lang-indicator {
+    position: absolute; top: 2px; left: 2px;
+    width: calc(50% - 2px); height: calc(100% - 4px);
+    border-radius: 12px;
+    background: var(--accent-blue, var(--primary-color, #007AFF));
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 0;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+}
+
+.lang-label {
+    flex: 1; text-align: center; position: relative; z-index: 1;
+    font-size: 0.75rem; font-weight: 700; line-height: 28px;
+    color: var(--text-secondary, #86868B);
+    transition: color 0.3s;
+    pointer-events: none;
+}
+.lang-label.active { color: #FFFFFF; }
 
 @media (max-width: 768px) {
     .font-control { display: none; } 

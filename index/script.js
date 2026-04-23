@@ -555,10 +555,10 @@ document.addEventListener('DOMContentLoaded', function () {
                 e.preventDefault();
 
                 if (href === '#quiz') {
-                    window.location.href = './quiz/quiz.html';
+                    window.location.href = '../quiz/quiz.html';
                     return;
                 } else if (href === '#game') {
-                    window.location.href = './game/game_page.html';
+                    window.location.href = '../game/game_page.html';
                     return;
                 }
 
@@ -661,17 +661,12 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-    // 语言切换按钮功能
-    const langBtn = document.querySelector('.nav-lang-btn');
-    if (langBtn) {
-        langBtn.addEventListener('click', function () {
-            const newLang = currentLang === 'zh' ? 'en' : 'zh';
-            updateLanguage(newLang);
-            this.textContent = newLang === 'zh' ? '中文' : 'English';
-            // 持久化语言选择
-            localStorage.setItem('app_lang', newLang);
-        });
-    }
+    // 语言切换功能 (由导航栏 triggerLanguageToggle 调用)
+    window.toggleLanguage = function () {
+        const newLang = currentLang === 'zh' ? 'en' : 'zh';
+        updateLanguage(newLang);
+        localStorage.setItem('app_lang', newLang);
+    };
 
     // 设置功能
     // 初始化语言：优先读取 localStorage 中保存的语言
@@ -682,44 +677,53 @@ document.addEventListener('DOMContentLoaded', function () {
         updateLanguage(currentLang);
     }
 
-    // 实现h2标题背景随滚动变化的效果
-    function updateH2Backgrounds() {
-        const h2Elements = document.querySelectorAll('h2');
-        const scrollY = window.scrollY;
+    // 实现h2标题背景随滚动变化的效果 - 优化性能版本
+    let h2Elements = null;
+    let isTicking = false;
 
-        h2Elements.forEach((h2, index) => {
-            // 计算每个h2元素的滚动位置
+    function updateH2Backgrounds() {
+        if (!h2Elements) h2Elements = document.querySelectorAll('h2');
+        
+        const scrollY = window.scrollY;
+        const vh = window.innerHeight;
+        const viewportCenter = scrollY + vh / 2;
+
+        for (let i = 0; i < h2Elements.length; i++) {
+            const h2 = h2Elements[i];
             const h2Rect = h2.getBoundingClientRect();
             const h2Top = h2Rect.top + scrollY;
-            const h2Center = h2Top + h2Rect.height / 2;
-
-            // 计算视口中心
-            const viewportCenter = scrollY + window.innerHeight / 2;
+            const h2Height = h2Rect.height;
+            const h2Center = h2Top + h2Height / 2;
 
             // 计算滚动偏移量
-            const offset = (viewportCenter - h2Center) / window.innerHeight;
+            const offset = (viewportCenter - h2Center) / vh;
 
-            // 更新背景位置
+            // 更新样式
             const bgPositionX = 50 + offset * 20;
             h2.style.backgroundPosition = `${bgPositionX}% 50%`;
 
-            // 根据滚动位置调整透明度
             const distance = Math.abs(viewportCenter - h2Center);
-            const maxDistance = window.innerHeight * 1.5;
+            const maxDistance = vh * 1.5;
             const opacity = Math.max(0.8, 1 - distance / maxDistance);
             h2.style.opacity = opacity;
 
-            // 根据滚动位置调整缩放
             const scale = Math.max(0.9, 1 - Math.abs(offset) * 0.1);
             h2.style.transform = `scale(${scale})`;
-        });
+        }
+        
+        isTicking = false;
     }
 
     // 初始调用一次
     updateH2Backgrounds();
 
-    // 添加滚动事件监听器
-    window.addEventListener('scroll', updateH2Backgrounds);
+    // 使用 requestAnimationFrame 节流滚动事件
+    window.addEventListener('scroll', () => {
+        if (!isTicking) {
+            window.requestAnimationFrame(updateH2Backgrounds);
+            isTicking = true;
+        }
+    }, { passive: true });
 });
 
 
