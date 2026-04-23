@@ -3,66 +3,62 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Gear Puzzle</title>
-    <link id="themeStyle" rel="stylesheet" href="game_styles_cyber.css">
-    <link rel="stylesheet" href="../navbar/navbar.css">
-    <script src="../navbar/navbar.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Circle-learning-games</title>
+    <link id="themeStyle" rel="stylesheet" href="game_styles_ios.css">
+    <link rel="stylesheet" href="../global/navbar.css">
+    <script src="../global/navbar.js"></script>
 </head>
 
 <body>
 
-    <top-navbar page-type="game" home-link="../index.html"></top-navbar>
-    <div class="theme-switch-wrapper">
-        <button id="themeToggle" class="theme-btn">
-            <span class="icon" id="themeIcon">🌞</span>
-        </button>
-    </div>
-    <div id="introContainer" class="intro-container">
+    <top-navbar page-type="game" home-link="../index/index.html"></top-navbar>
 
+    <div id="introContainer" class="intro-container">
         <div id="gameIntro" class="game-intro-card">
-            <div class="game-title">圆神启动</div>
+            <div class="game-title" data-i18n="game1.title">圆神启动</div>
             <div id="displayAre">
-                <img id="coverGame1" src="source/images/gameIntro_1_cyber.png" alt="Game 1 Cover">
+                <img id="coverGame1" src="source/images/gameIntro_1_ios.png" alt="Game 1 Cover">
             </div>
             <div id="demoAre">
-                <p id="gameintro1">这个游戏考察有关圆的位置关系的知识。通过放置一些列不同半径的齿轮，让整个系统运转起来吧！在较难的关卡中，你需要计算圆心之间的距离并寻找合适的齿轮。</p>
+                <p id="gameintro1" data-i18n="game1.desc">
+                    这个游戏考察有关圆的位置关系的知识。通过放置一些列不同半径的齿轮，让整个系统运转起来吧！在较难的关卡中，你需要计算圆心之间的距离并寻找合适的齿轮。</p>
             </div>
-            <button id="startBtn">Play</button>
+            <button id="startBtn" data-i18n="game.playBtn">Play</button>
         </div>
 
         <div id="gameIntro2" class="game-intro-card">
-            <div class="game-title">原神牛福</div>
+            <div class="game-title" data-i18n="game2.title">圆神牛福</div>
             <div id="displayAre2">
-                <img id="coverGame2" src="source/images/gameIntro_2_cyber.png" alt="Game 2 Cover">
+                <img id="coverGame2" src="source/images/gameIntro_2_ios.png" alt="Game 2 Cover">
             </div>
             <div id="demoAre2">
-                <p id="gameintro2">这是一个走迷宫游戏。移动小球，让它到达最中心吧！注意，不停地转圈会扰乱你的判断哦！</p>
+                <p id="gameintro2" data-i18n="game2.desc">这是一个走迷宫游戏。移动小球，让它到达最中心吧！注意，不停地转圈会扰乱你的判断哦！</p>
             </div>
-            <button id="startBtn2">Play</button>
+            <button id="startBtn2" data-i18n="game.playBtn">Play</button>
         </div>
-
     </div>
-
 
     <div id="gameArea" class="hidden">
         <div class="game-toolbar">
-            <button id="gameExitBtn">退出</button>
-            <div class="game-title">圆神启动</div>
+            <button id="gameExitBtn" data-i18n="toolbar.exit">退出</button>
+            <div class="game-title" data-i18n="game1.title">圆神启动</div>
             <div class="toolbar-right">
                 <select id="difficultySelect">
-                    <option value="1">难度一 (简单)</option>
-                    <option value="3">难度二 (困难)</option>
-                    <option value="4">难度三 (地狱)</option>
+                    <option value="1" data-i18n="toolbar.diff1_easy">难度一 (简单)</option>
+                    <option value="3" data-i18n="toolbar.diff1_hard">难度二 (困难)</option>
+                    <option value="4" data-i18n="toolbar.diff1_hell">难度三 (地狱)</option>
                 </select>
                 <div class="toggle-container">
                     <input type="checkbox" id="markToggle">
-                    <label for="markToggle">标记模式</label>
+                    <label for="markToggle" data-i18n="toolbar.markToggle">标记模式</label>
                 </div>
-                <button id="resetBtn">重置地图</button>
+                <button id="resetBtn" data-i18n="toolbar.resetMap">重置地图</button>
                 <button id="rulesBtn1" title="游戏规则"
                     style="border-radius: 50%; width: 26px; height: 26px; font-weight: bold; background: var(--primary, #3b82f6); color: white; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 14px; padding: 0;">?</button>
             </div>
         </div>
+
         <div class="canvas-wrap">
             <canvas id="canvas"></canvas>
         </div>
@@ -70,18 +66,19 @@
 
     <div id="gameArea2" class="hidden">
         <div class="game-toolbar">
-            <button id="gameExitBtn2">退出</button>
-            <div class="game-title">原神牛福</div>
+            <button id="gameExitBtn2" data-i18n="toolbar.exit">退出</button>
+            <div class="game-title" data-i18n="game2.title">圆神牛福</div>
             <div class="toolbar-right">
                 <select id="difficultySelect2">
-                    <option value="1">难度一（简单）</option>
-                    <option value="2">难度二（困难）</option>
+                    <option value="1" data-i18n="toolbar.diff2_easy">难度一（简单）</option>
+                    <option value="2" data-i18n="toolbar.diff2_hard">难度二（困难）</option>
                 </select>
-                <button id="resetBtn2">重置地图</button>
+                <button id="resetBtn2" data-i18n="toolbar.resetMap">重置地图</button>
                 <button id="rulesBtn2" title="游戏规则"
                     style="border-radius: 50%; width: 26px; height: 26px; font-weight: bold; background: var(--primary, #3b82f6); color: white; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 14px; padding: 0;">?</button>
             </div>
         </div>
+
         <div class="canvas-wrap">
             <canvas id="canvas2"></canvas>
         </div>
@@ -89,6 +86,7 @@
 
     <div id="winModal" class="modal hidden">
         <div class="modal-content">
+
             <div class="confetti-wrapper">
                 <div class="confetti"></div>
                 <div class="confetti"></div>
@@ -96,156 +94,282 @@
                 <div class="confetti"></div>
                 <div class="confetti"></div>
             </div>
-
             <button id="modalCloseBtn" class="modal-close">×</button>
-
             <div style="font-size: 50px; margin-bottom: 10px;">🎉</div>
-            <h2 style="color: var(--primary); font-size: 48px;">胜利！</h2>
+            <h2 style="color: var(--primary); font-size: 48px;" data-i18n="modal.winTitle">胜利！</h2>
 
             <div class="modal-actions">
-                <button id="exitBtn" style="background: #f1f5f9; color: #475569; box-shadow: none;">退出</button>
-                <button id="retryBtn">再次挑战</button>
+                <button id="exitBtn" style="background: #f1f5f9; color: #475569; box-shadow: none;"
+                    data-i18n="modal.exit">退出</button>
+                <button id="retryBtn" data-i18n="modal.retry">再次挑战</button>
             </div>
         </div>
     </div>
+
 
     <div id="rulesModal" class="modal hidden">
         <div class="modal-content" style="max-width: 400px; text-align: left;">
             <button id="rulesModalCloseBtn" class="modal-close">×</button>
             <h2 id="rulesModalTitle"
                 style="color: var(--primary); font-size: 24px; text-align: center; margin-bottom: 20px;">游戏规则</h2>
-            <p id="rulesModalContent" style="color: var(--text-main, #64748b); line-height: 1.6; font-size: 16px;">
-                在这里填写游戏规则...</p>
+            <p id="rulesModalContent" style="color: var(--text-main, #64748b); line-height: 1.6; font-size: 16px;"></p>
         </div>
     </div>
+
+    <script>
+        // --- 国际化 (i18n) 字典配置 ---
+        const translations = {
+            zh: {
+                "nav.home": "首页",
+                "nav.quiz": "检测",
+                "nav.game": "游戏",
+                "game1.title": "圆神启动",
+                "game1.desc": "这个游戏考察有关圆的位置关系的知识。通过放置一些列不同半径的齿轮，让整个系统运转起来吧！在较难的关卡中，你需要计算圆心之间的距离并寻找合适的齿轮。",
+                "game2.title": "圆神牛福",
+                "game2.desc": "这是一个走迷宫游戏。移动小球，让它到达最中心吧！注意，不停地转圈会扰乱你的判断哦！",
+                "game.playBtn": "Play",
+                "toolbar.exit": "退出",
+                "toolbar.diff1_easy": "难度一 (简单)",
+                "toolbar.diff1_hard": "难度二 (困难)",
+                "toolbar.diff1_hell": "难度三 (地狱)",
+                "toolbar.diff2_easy": "难度一（简单）",
+                "toolbar.diff2_hard": "难度二（困难）",
+                "toolbar.markToggle": "标记模式",
+                "toolbar.resetMap": "重置地图",
+                "modal.winTitle": "胜利！",
+                "modal.exit": "退出",
+                "modal.retry": "再次挑战",
+                "rules1.title": "圆神启动 - 规则",
+                "rules1.content": "1.玩家需要将托盘中的齿轮放置到地图节点上，齿轮全部联通后即可通关。<br><br>2.齿轮只能放置在地图网格的结点处，齿轮会显示半径，可以通过圆心位置和半径判断圆的位置关系。<br><br>3.齿轮会根据状态改变颜色：<br>蓝色代表可以拖动的齿轮；<br>灰色代表固定在地图上的齿轮；<br>黄色代表至少有一个齿轮与该齿轮相切；<br>绿色代表该齿轮与头部齿轮之间已正确相连；<br>红色代表该齿轮与别的齿轮重合。<br><br>4.游戏有三个难度选项，简单难度下只会出现整数半径齿轮，困难和地狱难则会出现带根号的半径，需要玩家仔细计算。地狱难度的半径会更复杂哦！<br><br>5.打开“标记模式”可以在地图结点上点击以标记结点，再次点击即可取消。同时会显示鼠标所指结点的坐标，以方便玩家计算。<br><br>6.每次地图都为随机生成，可以点击“重置地图”来重新加载地图。<br>",
+                "rules2.title": "圆神牛福 - 规则",
+                "rules2.content": "1.玩家需要操控圆点走到迷宫中心来获得胜利。<br><br>2.拖动地图外的滑块可以操控小球的位置，拖动地图右侧的滑块可以控制小球向内/外移动。<br>同时，玩家也可以用鼠标滚轮操控小球内外移动，滚轮上滑向外，下滑向内。<br><br>3.游戏有两个难度选项，简单模式层级更少，困难模式层级更多。<br><br>4.每次地图为随机生成，可以点击“重置地图”来重新加载地图。<br>"
+            },
+            en: {
+                "nav.home": "Home",
+                "nav.quiz": "Quiz",
+                "nav.game": "Game",
+                "game1.title": "Gear Puzzle",
+                "game1.desc": "This game tests your knowledge of the positional relationships of circles. Place gears of varying radii to make the system run! In harder levels, calculate the distance between centers to find the right gears.",
+                "game2.title": "Maze Wanderer",
+                "game2.desc": "A maze navigation game. Move the ball to the center! Be careful, spinning in circles might mess up your sense of direction!",
+                "game.playBtn": "Play",
+                "toolbar.exit": "Exit",
+                "toolbar.diff1_easy": "Difficulty 1 (Easy)",
+                "toolbar.diff1_hard": "Difficulty 2 (Hard)",
+                "toolbar.diff1_hell": "Difficulty 3 (Hell)",
+                "toolbar.diff2_easy": "Difficulty 1 (Easy)",
+                "toolbar.diff2_hard": "Difficulty 2 (Hard)",
+                "toolbar.markToggle": "Mark Mode",
+                "toolbar.resetMap": "Reset Map",
+                "modal.winTitle": "Victory!",
+                "modal.exit": "Exit",
+                "modal.retry": "Retry",
+                "rules1.title": "Gear Puzzle - Rules",
+                "rules1.content": "1. Place gears from the tray onto map nodes. Connect all gears to win.<br><br>2. Gears can only be placed on grid nodes. Radii are displayed to help judge positional relationships.<br><br>3. Gear colors indicate status:<br>Blue: Draggable<br>Gray: Fixed<br>Yellow: Touching at least one gear<br>Green: Correctly connected to the head gear<br>Red: Overlapping.<br><br>4. Three difficulties: Easy (integer radii), Hard/Hell (square root radii requiring calculation).<br><br>5. 'Mark Mode' lets you click nodes to mark them and see their coordinates.<br><br>6. Maps are randomly generated. Click 'Reset Map' to reload.<br>",
+                "rules2.title": "Maze Wanderer - Rules",
+                "rules2.content": "1. Control the dot to reach the center of the maze to win.<br><br>2. Drag outer sliders to control position, and the right slider for inward/outward movement. Mouse wheel also works (scroll up to move out, down to move in).<br><br>3. Two difficulties: Easy (fewer layers) and Hard (more layers).<br><br>4. Maps are randomly generated. Click 'Reset Map' to reload.<br>"
+            }
+        };
+
+        // 初始化语言（从 localStorage 读取，默认为 zh）
+        let currentLang = localStorage.getItem('app_lang') || 'zh';
+
+        // 核心更新视图函数
+        function updatePageLanguage() {
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (translations[currentLang][key]) {
+                    el.innerHTML = translations[currentLang][key];
+                }
+            });
+        }
+
+        // 暴露给 navbar.js 的全局切换函数
+        window.toggleLanguage = function () {
+            currentLang = currentLang === 'zh' ? 'en' : 'zh';
+            localStorage.setItem('app_lang', currentLang); // 持久化
+            updatePageLanguage();
+            // 同步更新导航栏语言切换按钮状态
+            updateLangToggleBtn();
+        };
+
+        // 更新语言切换按钮的视觉状态
+        function updateLangToggleBtn() {
+            const btn = document.getElementById('lang-toggle-btn');
+            if (!btn) return;
+            const indicator = btn.querySelector('.lang-indicator');
+            if (indicator) {
+                indicator.style.transform = currentLang === 'zh' ? 'translateX(0)' : 'translateX(100%)';
+            }
+            const zhLabel = btn.querySelector('.lang-label-zh');
+            const enLabel = btn.querySelector('.lang-label-en');
+            if (zhLabel) zhLabel.classList.toggle('active', currentLang === 'zh');
+            if (enLabel) enLabel.classList.toggle('active', currentLang === 'en');
+        }
+
+        // 页面加载完毕后立刻应用当前语言
+        document.addEventListener('DOMContentLoaded', () => {
+            updatePageLanguage();
+            updateLangToggleBtn();
+        });
+    </script>
 
     <script src="game_main.js"></script>
     <script src="game_main2.js"></script>
 
-    <script src="mouse_effects_cyber.js"></script>
-    <script src="mouse_effects_ios.js"></script>
+    <script src="../global/mouse_effects_cyber.js"></script>
+    <script src="../global/mouse_effects_ios.js"></script>
+    <script src="../global/mouse_effects.js"></script>
 
     <script>
-
-        // --- 主题切换逻辑 ---
-        const themeToggle = document.getElementById('themeToggle');
-        const themeStyle = document.getElementById('themeStyle');
-        const themeIcon = document.getElementById('themeIcon');
-
-        const coverGame1 = document.getElementById('coverGame1');
-        const coverGame2 = document.getElementById('coverGame2');
-
-        window.isDarkMode = true;
-
-        if (window.CyberMouseEffect) window.CyberMouseEffect.start();
-
-        themeToggle.addEventListener('click', () => {
+        // --- 主题切换核心逻辑 (现在由导航栏触发) ---
+        window.toggleTheme = function () {
             window.isDarkMode = !window.isDarkMode;
+            const newTheme = window.isDarkMode ? 'dark' : 'light';
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('app_theme', newTheme); // 持久化主题
+
+            const themeStyle = document.getElementById('themeStyle');
+            const coverGame1 = document.getElementById('coverGame1');
+            const coverGame2 = document.getElementById('coverGame2');
 
             const newHref = window.isDarkMode ? 'game_styles_cyber.css' : 'game_styles_ios.css';
-            const oldHref = themeStyle.href;
 
-            if (!oldHref.includes(newHref)) {
+            if (themeStyle) {
                 themeStyle.href = newHref;
-                themeIcon.textContent = window.isDarkMode ? '🌞' : '🌙';
 
-                // 核心：动态替换封面图片
                 if (window.isDarkMode) {
-                    coverGame1.src = 'source/images/gameIntro_1_cyber.png';
-                    coverGame2.src = 'source/images/gameIntro_2_cyber.png';
+                    if (coverGame1) coverGame1.src = 'source/images/gameIntro_1_cyber.png';
+                    if (coverGame2) coverGame2.src = 'source/images/gameIntro_2_cyber.png';
                 } else {
-                    coverGame1.src = 'source/images/gameIntro_1_ios.png';
-                    coverGame2.src = 'source/images/gameIntro_2_ios.png';
+                    if (coverGame1) coverGame1.src = 'source/images/gameIntro_1_ios.png';
+                    if (coverGame2) coverGame2.src = 'source/images/gameIntro_2_ios.png';
                 }
 
                 themeStyle.onload = () => {
-                    // 切换特效
-                    if (window.isDarkMode) {
-                        if (window.IOSMouseEffect) window.IOSMouseEffect.stop();
-                        if (window.CyberMouseEffect) window.CyberMouseEffect.start();
-                    } else {
-                        if (window.CyberMouseEffect) window.CyberMouseEffect.stop();
-                        if (window.IOSMouseEffect) window.IOSMouseEffect.start();
+                    if (typeof refreshMouseEffectOnThemeChange === 'function') refreshMouseEffectOnThemeChange();
+                    if (typeof relayoutCurrentGame === 'function' && window.gameStarted) relayoutCurrentGame();
+                    if (typeof resizeCanvas2 === 'function' && window.gameStarted2) {
+                        requestAnimationFrame(() => {
+                            resizeCanvas2();
+                            window.needsRedraw2 = true;
+                        });
                     }
+                    // 主题切换后同步语言按钮状态（防止按钮被重置）
+                    if (typeof updateLangToggleBtn === 'function') updateLangToggleBtn();
+                };
+            }
+        };
 
-                    // ... (下方保留你原有的画布尺寸重算逻辑)
-                    if (typeof relayoutCurrentGame === 'function' && gameStarted) {
-                        relayoutCurrentGame();
+        // 统一在页面加载完成后绑定事件，防止找不到元素导致脚本崩溃
+        document.addEventListener('DOMContentLoaded', () => {
+            // 1. 初始化主题变量 (尊重持久化设置，默认为 light)
+            const savedTheme = localStorage.getItem('app_theme') || 'light';
+            window.isDarkMode = (savedTheme === 'dark');
+            document.documentElement.setAttribute('data-theme', savedTheme);
+
+            // 同步样式表和封面图
+            const themeStyle = document.getElementById('themeStyle');
+            const coverGame1 = document.getElementById('coverGame1');
+            const coverGame2 = document.getElementById('coverGame2');
+            if (themeStyle) {
+                themeStyle.href = window.isDarkMode ? 'game_styles_cyber.css' : 'game_styles_ios.css';
+            }
+            if (window.isDarkMode) {
+                if (coverGame1) coverGame1.src = 'source/images/gameIntro_1_cyber.png';
+                if (coverGame2) coverGame2.src = 'source/images/gameIntro_2_cyber.png';
+            } else {
+                if (coverGame1) coverGame1.src = 'source/images/gameIntro_1_ios.png';
+                if (coverGame2) coverGame2.src = 'source/images/gameIntro_2_ios.png';
+            }
+
+            // --- Game 1 绑定 ---
+            const startBtn = document.getElementById("startBtn");
+            if (startBtn) startBtn.onclick = startGame;
+
+            const gameExitBtn = document.getElementById("gameExitBtn");
+            if (gameExitBtn) gameExitBtn.onclick = exitGame;
+
+            const resetBtn = document.getElementById("resetBtn");
+            if (resetBtn && typeof restartGame === 'function') resetBtn.onclick = restartGame;
+
+            // --- Game 2 绑定 ---
+            const startBtn2 = document.getElementById("startBtn2");
+            if (startBtn2) startBtn2.onclick = startGame2;
+
+            const gameExitBtn2 = document.getElementById("gameExitBtn2");
+            if (gameExitBtn2) gameExitBtn2.onclick = exitGame2;
+
+            const resetBtn2 = document.getElementById("resetBtn2");
+            if (resetBtn2) resetBtn2.onclick = restartGame2;
+
+            const diffSelect2 = document.getElementById("difficultySelect2");
+            if (diffSelect2) {
+                diffSelect2.addEventListener("change", function (e) {
+                    if (typeof setDifficulty2 !== 'function') return;
+                    if (e.target.value === "1") setDifficulty2('easy');
+                    else if (e.target.value === "2") setDifficulty2('hard');
+                });
+            }
+
+            // --- 弹窗逻辑绑定 ---
+            const modalCloseBtn = document.getElementById("modalCloseBtn");
+            if (modalCloseBtn) modalCloseBtn.onclick = hideWinModal; // 增加了 if 检查，防止报错
+
+            const exitBtn = document.getElementById("exitBtn");
+            if (exitBtn) {
+                exitBtn.onclick = function () {
+                    const area1 = document.getElementById("gameArea");
+                    const area2 = document.getElementById("gameArea2");
+                    if (area1 && !area1.classList.contains("hidden") && typeof exitGame === 'function') exitGame();
+                    if (area2 && !area2.classList.contains("hidden") && typeof exitGame2 === 'function') exitGame2();
+                };
+            }
+
+            const retryBtn = document.getElementById("retryBtn");
+            if (retryBtn) {
+                retryBtn.onclick = function () {
+                    const area1 = document.getElementById("gameArea");
+                    const area2 = document.getElementById("gameArea2");
+                    if (area1 && !area1.classList.contains("hidden") && typeof restartGame === 'function') restartGame();
+                    if (area2 && !area2.classList.contains("hidden") && typeof restartGame2 === 'function') restartGame2();
+                };
+            }
+
+            // --- 规则多语言绑定 ---
+            const rulesModal = document.getElementById("rulesModal");
+            const rulesModalTitle = document.getElementById("rulesModalTitle");
+            const rulesModalContent = document.getElementById("rulesModalContent");
+            const rulesModalCloseBtn = document.getElementById("rulesModalCloseBtn");
+
+            if (rulesModalCloseBtn) {
+                rulesModalCloseBtn.onclick = function () {
+                    rulesModal.classList.add("hidden");
+                };
+            }
+
+            const rulesBtn1 = document.getElementById("rulesBtn1");
+            if (rulesBtn1) {
+                rulesBtn1.onclick = function () {
+                    if (translations && translations[currentLang]) {
+                        rulesModalTitle.innerHTML = translations[currentLang]["rules1.title"];
+                        rulesModalContent.innerHTML = translations[currentLang]["rules1.content"];
+                        rulesModal.classList.remove("hidden");
                     }
-                    if (typeof resizeCanvas2 === 'function' && gameStarted2) {
-                        resizeCanvas2();
-                        needsRedraw2 = true;
+                };
+            }
+
+            const rulesBtn2 = document.getElementById("rulesBtn2");
+            if (rulesBtn2) {
+                rulesBtn2.onclick = function () {
+                    if (translations && translations[currentLang]) {
+                        rulesModalTitle.innerHTML = translations[currentLang]["rules2.title"];
+                        rulesModalContent.innerHTML = translations[currentLang]["rules2.content"];
+                        rulesModal.classList.remove("hidden");
                     }
                 };
             }
         });
-
-        // --- Game 1 绑定 ---
-        document.getElementById("startBtn").onclick = startGame;
-        document.getElementById("gameExitBtn").onclick = exitGame;
-
-        // --- Game 2 绑定 ---
-        document.getElementById("startBtn2").onclick = startGame2;
-        document.getElementById("gameExitBtn2").onclick = exitGame2;
-        document.getElementById("resetBtn2").onclick = restartGame2;
-
-        document.getElementById("difficultySelect2").addEventListener("change", function (e) {
-            if (e.target.value === "1") setDifficulty2('easy');
-            else if (e.target.value === "2") setDifficulty2('hard');
-        });
-
-        // --- 弹窗逻辑绑定 ---
-        document.getElementById("modalCloseBtn").onclick = hideWinModal;
-
-        document.getElementById("exitBtn").onclick = function () {
-            const area1 = document.getElementById("gameArea");
-            const area2 = document.getElementById("gameArea2");
-            if (area1 && !area1.classList.contains("hidden")) exitGame();
-            if (area2 && !area2.classList.contains("hidden")) exitGame2();
-        };
-
-        document.getElementById("retryBtn").onclick = function () {
-            const area1 = document.getElementById("gameArea");
-            const area2 = document.getElementById("gameArea2");
-            if (area1 && !area1.classList.contains("hidden")) restartGame();
-            if (area2 && !area2.classList.contains("hidden")) restartGame2();
-        };
-
-        const rulesModal = document.getElementById("rulesModal");
-        const rulesModalTitle = document.getElementById("rulesModalTitle");
-        const rulesModalContent = document.getElementById("rulesModalContent");
-
-        document.getElementById("rulesModalCloseBtn").onclick = function () {
-            rulesModal.classList.add("hidden");
-        };
-
-        // 游戏一规则
-        document.getElementById("rulesBtn1").onclick = function() {
-            rulesModalTitle.textContent = "圆神启动 - 规则";
-            
-            rulesModalContent.innerHTML = 
-                "1.玩家需要将托盘中的齿轮放置到地图节点上，齿轮全部联通后即可通关。<br><br>" + 
-                "2.齿轮只能放置在地图网格的结点处，齿轮会显示半径，可以通过圆心位置和半径判断圆的位置关系。<br><br>" + 
-                "3.齿轮会根据状态改变颜色：<br>蓝色代表可以拖动的齿轮；<br>灰色代表固定在地图上的齿轮；<br>黄色代表至少有一个齿轮与该齿轮相切；<br>绿色代表该齿轮与头部齿轮之间已正确相连；<br>红色代表该齿轮与别的齿轮重合。<br><br>" +
-                "4.游戏有三个难度选项，简单难度下只会出现整数半径齿轮，困难和地狱难则会出现带根号的半径，需要玩家仔细计算。地狱难度的半径会更复杂哦！<br><br>" +
-                "5.打开“标记模式”可以在地图结点上点击以标记结点，再次点击即可取消。同时会显示鼠标所指结点的坐标，以方便玩家计算。<br><br>" +
-                "6.每次地图都为随机生成，可以点击“重置地图”来重新加载地图。<br>";
-                
-            rulesModal.classList.remove("hidden");
-        };
-
-        // 游戏二规则
-        document.getElementById("rulesBtn2").onclick = function() {
-            rulesModalTitle.textContent = "原神牛福 - 规则";
-            
-            rulesModalContent.innerHTML = 
-                "1.玩家需要操控圆点走到迷宫中心来获得胜利。<br><br>" + 
-                "2.拖动地图外的滑块可以操控小球的位置，拖动地图右侧的滑块可以控制小球向内/外移动。<br>同时，玩家也可以用鼠标滚轮操控小球内外移动，滚轮上滑向外，下滑向内。<br><br>" + 
-                "3.游戏有两个难度选项，简单模式层级更少，困难模式层级更多。<br><br>" +
-                "4.每次地图为随机生成，可以点击“重置地图”来重新加载地图。<br>";
-                
-            rulesModal.classList.remove("hidden");
-        };
     </script>
 
 </body>

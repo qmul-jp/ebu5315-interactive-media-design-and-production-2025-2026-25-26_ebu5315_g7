@@ -23,6 +23,12 @@
   /* 文本颜色适配暗色模式 */
   --text-main: #e2e8f0;
   --text-muted: #94a3b8;
+
+  /* navbar.css 使用的变量别名 */
+  --text-primary: #e2e8f0;
+  --text-secondary: #94a3b8;
+  --border-light: rgba(255, 255, 255, 0.1);
+  --accent-blue: #00f0ff;
 }
 
 html, body {
@@ -116,7 +122,7 @@ body {
 
 /* 霓虹发光标题 */
 .game-title {
-  font-size: 28px;
+  font-size: 1.75rem;
   font-weight: 800;
   background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
   -webkit-background-clip: text;
@@ -189,7 +195,7 @@ body {
 
 /* 大型按钮 */
 #startBtn, #startBtn2, #retryBtn {
-  font-size: 16px;
+  font-size: 1rem;
   padding: 14px 40px;
   margin-top: auto;
 }
@@ -197,7 +203,7 @@ body {
 /* 小型工具栏按钮 */
 #resetBtn, #resetBtn2, 
 #gameExitBtn, #gameExitBtn2 {
-  font-size: 14px;
+  font-size: 0.875rem;
   padding: 8px 18px; 
 }
 
@@ -227,7 +233,7 @@ body {
   background-repeat: no-repeat;
   background-position: right 12px center;
   background-size: 16px;
-  font-size: 14px;
+  font-size: 0.875rem;
   font-family: 'Consolas', monospace;
   font-weight: 600;
   color: var(--primary);
@@ -306,7 +312,7 @@ canvas {
 }
 
 .game-toolbar .game-title {
-  font-size: 22px;
+  font-size: 1.375rem;
   margin-bottom: 0;
   justify-self: center;
 }
@@ -390,7 +396,7 @@ canvas {
   background: transparent;
   color: var(--text-muted);
   cursor: pointer;
-  font-size: 20px;
+  font-size: 1.25rem;
   transition: all 0.2s;
   z-index: 2;
 }
@@ -523,4 +529,48 @@ canvas {
     object-fit: cover;     /* 填充整个区域并自动裁剪，保持比例一致 */
     display: block;
     transition: opacity 0.3s ease; /* 切换主题时的平滑过渡 */
+}
+
+/* =========================
+   10. 移动端适配 (Mobile Responsive)
+   ========================= */
+@media (max-width: 768px) {
+  body {
+    padding: 70px 16px 24px;
+  }
+  .intro-container {
+    gap: 20px;
+    padding: 10px;
+  }
+  .game-intro-card {
+    width: 100%;
+    min-height: auto;
+    padding: 24px;
+  }
+  #gameArea, #gameArea2 {
+    width: 100%;
+    height: 85vh; /* Keep it taking most of screen */
+    padding: 16px;
+    gap: 12px;
+  }
+  .game-toolbar {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    padding-bottom: 12px;
+  }
+  #gameExitBtn, #gameExitBtn2 {
+    justify-self: center;
+  }
+  .toolbar-right {
+    justify-self: center;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .game-title {
+    font-size: 1.5rem;
+  }
+  .modal-content {
+    min-width: 90vw;
+    padding: 30px 20px;
+  }
 }

@@ -707,17 +707,17 @@ function drawMapOverlay(targetCtx = ctx) {
   const trayBottom = trayPanelRect.y + trayPanelRect.h;
   targetCtx.fillRect(mapPanelRect.x, trayBottom, mapPanelRect.w, canvas.height - trayBottom);
 
+  drawTrayBase(targetCtx);
+
   targetCtx.lineWidth = 2; targetCtx.strokeStyle = "#43536b";
   targetCtx.strokeRect(mapPanelRect.x, mapPanelRect.y, mapPanelRect.w, mapPanelRect.h);
-  targetCtx.strokeRect(trayPanelRect.x, trayPanelRect.y, trayPanelRect.w, trayPanelRect.h);
+  drawTrayFrame(targetCtx);
   targetCtx.restore();
 }
 
 function updateBgCache() {
   bgCacheCtx.clearRect(0, 0, bgCacheCanvas.width, bgCacheCanvas.height);
   drawMapBase(bgCacheCtx);
-  drawTrayBase(bgCacheCtx);
-  drawTrayFrame(bgCacheCtx);
   needsBgCacheUpdate = false;
 }
 
@@ -796,10 +796,10 @@ const markToggle = document.getElementById("markToggle");
 
 let needsRedraw1 = false;
 
-canvas.addEventListener("mousedown", e => {
+function handlePointerDown(e, clientX, clientY) {
   if (isGameWon) return;
   const rect = canvas.getBoundingClientRect();
-  const mx = e.clientX - rect.left, my = e.clientY - rect.top;
+  const mx = clientX - rect.left, my = clientY - rect.top;
 
   let clickedGear = false;
   for (let i = pieces.length - 1; i >= 0; i--) {
@@ -821,12 +821,18 @@ canvas.addEventListener("mousedown", e => {
       needsRedraw1 = true;
     }
   }
-});
+}
+
+canvas.addEventListener("mousedown", e => handlePointerDown(e, e.clientX, e.clientY));
+canvas.addEventListener("touchstart", e => {
+  if (e.cancelable) e.preventDefault();
+  handlePointerDown(e, e.touches[0].clientX, e.touches[0].clientY);
+}, {passive: false});
 
 
-canvas.addEventListener("mousemove", e => {
+function handlePointerMove(e, clientX, clientY) {
   const rect = canvas.getBoundingClientRect();
-  const mx = e.clientX - rect.left, my = e.clientY - rect.top;
+  const mx = clientX - rect.left, my = clientY - rect.top;
 
   if (active) {
     active.x = mx - offsetMX; active.y = my - offsetMY;
@@ -846,7 +852,13 @@ canvas.addEventListener("mousemove", e => {
   }
 
   if (localNeedsRedraw) needsRedraw1 = true; 
-});
+}
+
+canvas.addEventListener("mousemove", e => handlePointerMove(e, e.clientX, e.clientY));
+canvas.addEventListener("touchmove", e => {
+  if (e.cancelable) e.preventDefault();
+  handlePointerMove(e, e.touches[0].clientX, e.touches[0].clientY);
+}, {passive: false});
 
 function stopDrag() {
   if (!active) return;
@@ -871,6 +883,8 @@ function resetGame() { buildGame(); }
 
 canvas.addEventListener("mouseup", stopDrag);
 canvas.addEventListener("mouseleave", stopDrag);
+canvas.addEventListener("touchend", stopDrag);
+canvas.addEventListener("touchcancel", stopDrag);
 
 window.addEventListener('resize', relayoutCurrentGame);
 
