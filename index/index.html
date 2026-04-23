@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Circle-learning-platform</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../global/navbar.css">
+    <script src="../global/navbar.js"></script>
+</head>
+
+<body>
+    <!-- 顶部导航栏 -->
+    <top-navbar page-type="index" i18n-nav-home="nav.home"></top-navbar>
+
+    <!-- 主要内容区 -->
+    <main class="main-content">
+        <!-- 首页英雄区域 -->
+        <section id="home" class="module active">
+            <div class="hero-section">
+                <!-- 左侧：主要文字和操作 -->
+                <div class="hero-text-content">
+                    <h1 data-i18n="hero.title">探索几何的无限魅力</h1>
+                    <p class="subtitle" data-i18n="hero.subtitle">专业的数学几何学习平台，让抽象的几何概念变得直观易懂</p>
+
+                    <!-- 首页顶部搜索框 -->
+                    <div class="hero-search-box">
+                        <input type="text" class="hero-search-input" placeholder="向AI助手提问，如：什么是垂径定理？"
+                            data-i18n-placeholder="hero.searchPlaceholder" />
+                        <button class="hero-search-btn" id="ai-search-btn">
+                            <span class="search-icon" data-i18n="hero.askAi">✨ 提问</span>
+                        </button>
+                    </div>
+
+                    <!-- AI 聊天回答区域 -->
+                    <div id="ai-chat-response"
+                        style="display: none; margin-top: 1rem; background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); backdrop-filter: blur(20px); padding: 1.25rem; border-radius: 16px; color: var(--text-primary); text-align: left; font-size: 1rem; line-height: 1.6; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);">
+                        <div class="ai-loading" style="display:none; color: var(--accent-blue); font-weight: bold;"
+                            data-i18n="hero.aiThinking">✨ AI 正在思考中...</div>
+                        <div class="ai-answer" style="display:none;"></div>
+                    </div>
+
+                    <div class="hero-buttons">
+                        <a href="../quiz/quiz.html" class="btn-hero-primary" data-i18n="hero.startLearning">
+                            <span class="btn-shimmer"></span>
+                            <span class="btn-label">开始测验</span>
+                        </a>
+                        <a href="../game/game_page.html" class="btn-hero-secondary" data-i18n="hero.geometryGames">
+                            <span class="btn-border-glow"></span>
+                            <span class="btn-label">几何游戏</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- 右侧：圆形动画（可点击切换物品） -->
+                <div class="hero-visual-content">
+                    <div class="animated-circle-container" id="circle-switcher" title="点击切换圆形物品">
+                        <!-- 原始渐变圆 -->
+                        <div class="animated-circle circle-layer active" data-index="0"></div>
+                        <!-- 圆形物品图层（预加载，隐藏） -->
+                        <img class="circle-item-layer circle-layer" data-index="1" src="./images/basketball.png"
+                            alt="篮球" draggable="false">
+                        <img class="circle-item-layer circle-layer" data-index="2" src="./images/football.png" alt="足球"
+                            draggable="false">
+                        <img class="circle-item-layer circle-layer" data-index="3" src="./images/tennis.png" alt="网球"
+                            draggable="false">
+                        <img class="circle-item-layer circle-layer" data-index="4" src="./images/sun.png" alt="太阳"
+                            draggable="false">
+                        <img class="circle-item-layer circle-layer" data-index="5" src="./images/moon.png" alt="月亮"
+                            draggable="false">
+                        <!-- 光晕效果 -->
+                        <div class="animated-circle-glow"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 特色功能 -->
+            <section class="ag_service-area">
+                <div class="container">
+                    <div class="section-title text-center">
+                        <h4 data-aos="zoom-in-left">Features</h4>
+                        <h2 data-i18n="features.title">平台特色</h2>
+                        <p data-i18n="features.subtitle">专业的数学几何学习平台，让抽象的几何概念变得直观易懂</p>
+                    </div>
+
+                    <div class="features-grid-2x2">
+                        <div class="text-center">
+                            <div class="service-item" data-aos="flip-left">
+                                <div class="item_icon item_icon1 m-auto">
+                                    <i class="feature-icon">📚</i>
+                                </div>
+                                <div class="item_content content_active">
+                                    <h3 data-i18n="features.systematic">记忆卡片</h3>
+                                    <p data-i18n="features.systematicDesc">包含圆的六个定理的知识翻转卡片，可交互</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="text-center">
+                            <div class="service-item" data-aos="flip-left">
+                                <div class="item_icon item_icon2 m-auto">
+                                    <i class="feature-icon">🔍</i>
+                                </div>
+                                <div class="item_content">
+                                    <h3 data-i18n="features.intelligent">智能搜索</h3>
+                                    <p data-i18n="features.intelligentDesc">快速找到你需要的几何知识点</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="text-center">
+                            <div class="service-item" data-aos="flip-right">
+                                <div class="item_icon item_icon3 m-auto">
+                                    <i class="feature-icon">✏️</i>
+                                </div>
+                                <div class="item_content">
+                                    <h3 data-i18n="features.quiz">随堂检测</h3>
+                                    <p data-i18n="features.quizDesc">实时检验学习成果，巩固知识点</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="text-center">
+                            <div class="service-item" data-aos="flip-right">
+                                <div class="item_icon item_icon4 m-auto">
+                                    <i class="feature-icon">🎮</i>
+                                </div>
+                                <div class="item_content">
+                                    <h3 data-i18n="features.games">几何游戏</h3>
+                                    <p data-i18n="features.gamesDesc">通过游戏化方式加深几何概念理解</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </section>
+
+            <!-- 圆的重要知识点 - 翻转卡片展示 -->
+            <div class="knowledge-section" style="padding: 2rem 0;">
+                <h2 data-i18n="knowledge.title" style="text-align: center; margin-bottom: 2rem;">圆的重要知识点</h2>
+                <div class="flip-cards-grid">
+                    <!-- 卡片 1 -->
+                    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front">
+                                <div class="flip-icon">🔘</div>
+                                <h3 data-i18n="knowledge.circumferentialAngle">圆周角定理</h3>
+                            </div>
+                            <div class="flip-card-back">
+                                <h4 data-i18n="knowledge.circumferentialAngle">圆周角定理</h4>
+                                <img src="./images/theorem1.png" alt="圆周角定理的图解" class="theorem-img">
+                                <p data-i18n="knowledge.circumferentialAngleDesc">同弧或等弧所对的圆周角相等。</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 卡片 2 -->
+                    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front">
+                                <div class="flip-icon">📐</div>
+                                <h3 data-i18n="knowledge.centralAngle">圆心角定理</h3>
+                            </div>
+                            <div class="flip-card-back">
+                                <h4 data-i18n="knowledge.centralAngle">圆心角定理</h4>
+                                <img src="./images/theorem2.png" alt="圆心角定理的图解" class="theorem-img">
+                                <p data-i18n="knowledge.centralAngleDesc">圆心角的度数等于圆周角的二倍。</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 卡片 3 -->
+                    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front">
+                                <div class="flip-icon">🌙</div>
+                                <h3 data-i18n="knowledge.semiCircleAngle">半圆上的圆周角</h3>
+                            </div>
+                            <div class="flip-card-back">
+                                <h4 data-i18n="knowledge.semiCircleAngle">半圆上的圆周角</h4>
+                                <img src="./images/theorem3.png" alt="半圆上的圆周角的图解" class="theorem-img">
+                                <p data-i18n="knowledge.semiCircleAngleDesc">半圆（或直径）所对的圆周角是直角（90°）。</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 卡片 4 -->
+                    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front">
+                                <div class="flip-icon">🔄</div>
+                                <h3 data-i18n="knowledge.cyclicQuadrilateral">圆内接四边形定理</h3>
+                            </div>
+                            <div class="flip-card-back">
+                                <h4 data-i18n="knowledge.cyclicQuadrilateral">圆内接四边形定理</h4>
+                                <img src="./images/theorem4.png" alt="圆内接四边形定理的图解" class="theorem-img">
+                                <p data-i18n="knowledge.cyclicQuadrilateralDesc">圆内接四边形的对角互补，并且任何一个外角等于它的内对角。</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 卡片 5 -->
+                    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front">
+                                <div class="flip-icon">💡</div>
+                                <h3 data-i18n="knowledge.tangentProperty">切线与半径定理</h3>
+                            </div>
+                            <div class="flip-card-back">
+                                <h4 data-i18n="knowledge.tangentProperty">切线与半径定理</h4>
+                                <img src="./images/theorem5.png" alt="切线与半径定理的图解" class="theorem-img">
+                                <p data-i18n="knowledge.tangentPropertyDesc">圆的切线垂直于经过切点的半径。</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 卡片 6 -->
+                    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front">
+                                <div class="flip-icon">✂️</div>
+                                <h3 data-i18n="knowledge.chordTangentAngle">弦切角定理</h3>
+                            </div>
+                            <div class="flip-card-back">
+                                <h4 data-i18n="knowledge.chordTangentAngle">弦切角定理</h4>
+                                <img src="./images/theorem6.png" alt="弦切角定理的图解" class="theorem-img">
+                                <p data-i18n="knowledge.chordTangentAngleDesc">弦切角的度数等于它所夹的弧对的圆周角的度数。</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 广告展示区 -->
+            <div class="ads-banner-section">
+                <div class="ads-banner-container">
+                    <div class="ads-label">Advertisement</div>
+                    <h3 data-i18n="knowledge.ExploreMoreGeometryMysteries">探索更多几何奥秘</h3>
+                    <p data-i18n="knowledge.ExploreMoreGeometryMysteriesDesc">加入我们的高级会员计划，解锁更多功能，让学习更高效。</p>
+                    <button class="ads-cta-btn" data-i18n="knowledge.ExploreMoreGeometryMysteriesBtn">立即解锁</button>
+                    <!-- Background decorative circles -->
+                    <div class="ads-deco-circle ads-deco-1"></div>
+                    <div class="ads-deco-circle ads-deco-2"></div>
+                </div>
+            </div>
+
+            <!-- Contact Us 联系我们 -->
+            <div class="contact-section">
+                <div class="contact-section-inner">
+
+                    <div class="contact-section-header">
+                        <h2 data-i18n="contact.title">联系我们</h2>
+                        <p data-i18n="contact.subtitle">有任何问题或建议？我们很乐意倾听。</p>
+                        <button id="toggle-feedback-btn" class="feedback-toggle-btn"
+                            data-i18n="contact.toggleBtn">反馈建议</button>
+                    </div>
+
+                    <div id="collapsible-contact-form" class="contact-collapsible-container">
+                        <!-- Demo Mode Notice -->
+                        <!--<div class="contact-demo-notice" role="note">
+                            <span aria-hidden="true">🧪</span>
+                            <span data-i18n="contact.demoNotice">这是演示表单，填写信息不会被实际发送。</span>
+                        </div>-->
+
+                        <form id="contact-form" class="contact-form" novalidate aria-label="联系我们表单">
+
+                            <!-- Row: Name + Pronouns -->
+                            <div class="contact-row">
+                                <div class="contact-field-group">
+                                    <label for="contact-name">
+                                        <span data-i18n="contact.name">您的姓名</span>
+                                        <span class="req-label" data-i18n="contact.required">（必填）</span>
+                                    </label>
+                                    <input type="text" id="contact-name" name="name" autocomplete="name"
+                                        placeholder="请输入您的姓名" data-i18n-placeholder="contact.namePlaceholder"
+                                        aria-required="true" class="contact-input" />
+                                </div>
+
+                                <!-- Inclusive Design: pronouns, not gender -->
+                                <div class="contact-field-group">
+                                    <label for="contact-pronouns">
+                                        <span data-i18n="contact.pronouns">代词（可选）</span>
+                                        <span class="opt-label" data-i18n="contact.pronounsHint">— 方便正确称呼您</span>
+                                    </label>
+                                    <select id="contact-pronouns" name="pronouns" class="contact-input">
+                                        <option value="" data-i18n="contact.pronounsSelect">请选择或留空</option>
+                                        <option value="he/him" data-i18n="contact.pronounsHe">He / Him（他）</option>
+                                        <option value="she/her" data-i18n="contact.pronounsShe">She / Her（她）</option>
+                                        <option value="they/them" data-i18n="contact.pronounsThey">They / Them（TA）
+                                        </option>
+                                        <option value="prefer-not" data-i18n="contact.pronounsPreferNot">不透露</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- Email -->
+                            <div class="contact-field-group">
+                                <label for="contact-email">
+                                    <span data-i18n="contact.email">电子邮箱</span>
+                                    <span class="req-label" data-i18n="contact.required">（必填）</span>
+                                </label>
+                                <input type="email" id="contact-email" name="email" autocomplete="email"
+                                    placeholder="your@email.com" data-i18n-placeholder="contact.emailPlaceholder"
+                                    aria-required="true" class="contact-input" />
+                            </div>
+
+                            <!-- Subject -->
+                            <div class="contact-field-group">
+                                <label for="contact-subject">
+                                    <span data-i18n="contact.subject">主题</span>
+                                    <span class="req-label" data-i18n="contact.required">（必填）</span>
+                                </label>
+                                <select id="contact-subject" name="subject" class="contact-input" aria-required="true">
+                                    <option value="" data-i18n="contact.subjectSelect">请选择主题</option>
+                                    <option value="feedback" data-i18n="contact.subjectFeedback">产品反馈</option>
+                                    <option value="bug" data-i18n="contact.subjectBug">问题报告</option>
+                                    <option value="collaboration" data-i18n="contact.subjectCollaboration">合作咨询</option>
+                                    <option value="accessibility" data-i18n="contact.subjectAccessibility">无障碍反馈
+                                    </option>
+                                    <option value="other" data-i18n="contact.subjectOther">其他</option>
+                                </select>
+                            </div>
+
+                            <!-- Message -->
+                            <div class="contact-field-group">
+                                <label for="contact-message">
+                                    <span data-i18n="contact.message">留言内容</span>
+                                    <span class="req-label" data-i18n="contact.required">（必填）</span>
+                                </label>
+                                <textarea id="contact-message" name="message" rows="5" placeholder="请输入您的留言..."
+                                    data-i18n-placeholder="contact.messagePlaceholder" aria-required="true"
+                                    class="contact-input contact-textarea"></textarea>
+                            </div>
+
+                            <!-- Ethical Data: Privacy Notice -->
+                            <div class="contact-privacy-notice" role="note">
+                                <p data-i18n="contact.privacyNotice">🔒 数据透明声明：您提交的信息仅用于回复本次来信，不会与第三方共享，保留期不超过 90
+                                    天。这是演示表单—数据不会实际发送。</p>
+                            </div>
+
+                            <!-- Ethical Data: Granular Consent -->
+                            <fieldset class="consent-group" aria-label="数据使用同意">
+                                <legend class="consent-legend" data-i18n="contact.consentLegend">数据使用同意</legend>
+                                <label class="consent-item">
+                                    <input type="checkbox" id="consent-reply" name="consent-reply" aria-required="true">
+                                    <span data-i18n="contact.consentReply">我同意平台通过我填写的邮箱联系我，以回复本次留言</span>
+                                    <span class="req-label" data-i18n="contact.required">（必填）</span>
+                                </label>
+                                <label class="consent-item">
+                                    <input type="checkbox" id="consent-newsletter" name="consent-newsletter">
+                                    <span data-i18n="contact.consentNewsletter">我愿意接收平台学习资讯与更新通知</span>
+                                    <span class="opt-label" data-i18n="contact.optional2">— 可选，可随时取消</span>
+                                </label>
+                            </fieldset>
+
+                            <!-- Validation Message -->
+                            <div id="contact-validation-msg" class="contact-validation-msg" style="display:none;"
+                                role="alert" aria-live="polite"></div>
+
+                            <button type="submit" class="contact-submit-btn" id="contact-submit-btn">
+                                <span data-i18n="contact.submit">发送留言</span>
+                            </button>
+
+                        </form>
+
+                        <!-- Success Toast -->
+                        <div id="contact-success-toast" class="contact-success-toast" style="display:none;"
+                            role="status" aria-live="polite">
+                            <span aria-hidden="true">✅ </span><span
+                                data-i18n="contact.successMsg">留言已提交！我们将尽快与您联系。（演示模式）</span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- 底部 -->
+    <footer class="main-footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4 data-i18n="footer.about">关于我们</h4>
+                <p data-i18n="footer.aboutDesc">专业的数学几何学习平台，致力于让几何学习变得简单有趣</p>
+            </div>
+            <div class="footer-section">
+                <h4 data-i18n="footer.links">快速链接</h4>
+                <ul>
+                    <li><a href="../quiz/quiz.html" data-i18n="nav.quiz">检测</a></li>
+                    <li><a href="../game/game_page.html" data-i18n="nav.game">游戏</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4 data-i18n="footer.contact">联系我们</h4>
+                <p data-i18n="footer.email">邮箱：contact@yuangeometry.com</p>
+                <p data-i18n="footer.phone">电话：400-123-4567</p>
+            </div>
+        </div>
+        <p class="copyright" data-i18n="footer.copyright">© 2026 圆数学教学平台. 万物皆数.</p>
+    </footer>
+
+    <script src="script.js"></script>
+    <script src="circle_switcher.js"></script>
+    <script src="../global/mouse_effects_cyber.js"></script>
+    <script src="../global/mouse_effects_ios.js"></script>
+    <script src="../global/mouse_effects.js"></script>
+
+    <!-- Cookie 接受弹窗 -->
+    <div id="cookie-consent-popup"
+        style="position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 600px; background: var(--card-bg, rgba(255, 255, 255, 0.95)); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); padding: 1.5rem; border-radius: 16px; box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0,0,0,0.05); border: 1px solid var(--border-light, rgba(220, 220, 220, 0.5)); display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; z-index: 1000; transition: bottom 0.5s ease-in-out, opacity 0.5s ease-in-out;">
+        <div style="flex: 1;">
+            <p style="margin: 0; font-size: 0.95rem; color: var(--text-primary, #333); line-height: 1.5;">我们使用 Cookie
+                来提升您的浏览体验，分析网站流量并提供个性化内容。继续使用本网站即表示您同意我们使用 Cookie。</p>
+        </div>
+        <div style="display: flex; gap: 0.5rem; flex-shrink: 0;">
+            <button id="decline-cookie-btn"
+                style="background: transparent; color: var(--text-secondary, #666); border: 1px solid var(--border-light, #ccc); padding: 0.6rem 1.2rem; border-radius: 8px; font-size: 0.9rem; font-weight: 500; cursor: pointer; transition: background 0.2s;"
+                onmouseover="this.style.background='var(--border-light, rgba(0,0,0,0.05))'"
+                onmouseout="this.style.background='transparent'">拒绝</button>
+            <button id="accept-cookie-btn"
+                style="background: var(--accent-blue, #0a84ff); color: white; border: none; padding: 0.6rem 1.2rem; border-radius: 8px; font-size: 0.9rem; font-weight: 600; cursor: pointer; box-shadow: 0 2px 8px rgba(10, 132, 255, 0.3); transition: background 0.2s;"
+                onmouseover="this.style.background='#0071e3'"
+                onmouseout="this.style.background='var(--accent-blue, #0a84ff)'">接受全部</button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const cookiePopup = document.getElementById('cookie-consent-popup');
+            const acceptBtn = document.getElementById('accept-cookie-btn');
+            const declineBtn = document.getElementById('decline-cookie-btn');
+
+            // 为了方便测试和更新弹窗设计，这里重置了一下存储的 key
+            // if(localStorage.getItem('cookieConsent_v2')) {
+            //     cookiePopup.style.display = 'none';
+            // }
+
+            function closePopup() {
+                cookiePopup.style.opacity = '0';
+                cookiePopup.style.bottom = '-100px';
+                setTimeout(() => {
+                    cookiePopup.style.display = 'none';
+                }, 500);
+            }
+
+            acceptBtn.addEventListener('click', function () {
+                localStorage.setItem('cookieConsent_v2', 'accepted');
+                closePopup();
+            });
+
+            declineBtn.addEventListener('click', function () {
+                localStorage.setItem('cookieConsent_v2', 'declined');
+                closePopup();
+            });
+        });
+    </script>
+</body>
+
+</html>
