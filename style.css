@@ -27,6 +27,11 @@ body {
     min-height: 100vh;
     overflow-x: hidden;
     background-attachment: fixed;
+    /* Ambient Glow — matches quiz page */
+    background-image:
+        radial-gradient(circle at 15% 0%, rgba(0, 113, 227, 0.04) 0%, transparent 40%),
+        radial-gradient(circle at 85% 100%, rgba(48, 209, 88, 0.04) 0%, transparent 40%);
+    transition: background-color 0.4s ease, color 0.4s ease;
 }
 
 /* 护眼模式的专属高对比紫色背景与渐变效果 */
@@ -163,7 +168,7 @@ body.eye-protection-mode {
     --bs-form-invalid-border-color: #dc3545;
 
     /* Apple Light/Dark Theme Variables */
-    --bg-color: #FFFFFF;
+    --bg-color: #F5F5F9;
     --card-bg: rgba(255, 255, 255, 0.75);
     --text-primary: #1C1C1E;
     --text-secondary: #8E8E93;
@@ -188,18 +193,34 @@ body.eye-protection-mode {
     --gradient-primary: linear-gradient(135deg, var(--accent-blue) 0%, #005bb5 100%);
 }
 
-@media (prefers-color-scheme: dark) {
-    :root {
-        --bg-color: #000000;
-        --card-bg: rgba(28, 28, 30, 0.75);
-        --text-primary: #F5F5F7;
-        --text-secondary: #A1A1A6;
-        --border-light: rgba(255, 255, 255, 0.08);
-        --border-strong: rgba(255, 255, 255, 0.15);
-        --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.6);
-        --shadow-hover: 0 16px 48px rgba(0, 0, 0, 0.8);
-        --text-dark: #FFFFFF;
-    }
+:root[data-theme="dark"] {
+    --bg-color: #000000;
+    --card-bg: rgba(28, 28, 30, 0.75);
+    --text-primary: #F5F5F7;
+    --text-secondary: #A1A1A6;
+    --border-light: rgba(255, 255, 255, 0.08);
+    --border-strong: rgba(255, 255, 255, 0.15);
+    --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.6);
+    --shadow-hover: 0 16px 48px rgba(0, 0, 0, 0.8);
+    --text-dark: #FFFFFF;
+}
+
+:root[data-theme="dark"] body {
+    background-image:
+        radial-gradient(circle at 15% 0%, rgba(0, 113, 227, 0.12) 0%, transparent 50%),
+        radial-gradient(circle at 85% 100%, rgba(48, 209, 88, 0.10) 0%, transparent 50%);
+}
+
+:root[data-theme="light"] {
+    --bg-color: #F5F5F9;
+    --card-bg: rgba(255, 255, 255, 0.75);
+    --text-primary: #1C1C1E;
+    --text-secondary: #8E8E93;
+    --border-light: rgba(0, 0, 0, 0.08);
+    --border-strong: rgba(0, 0, 0, 0.15);
+    --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.06);
+    --shadow-hover: 0 16px 48px rgba(0, 0, 0, 0.1);
+    --text-dark: #1C1C1E;
 }
 
 /* 平滑滚动 */
@@ -1525,57 +1546,37 @@ html {
     margin: 0 auto;
 }
 
-/* 知识点部分样式 - 幻灯片 */
+/* 知识点部分样式 - 翻转卡片 */
 .knowledge-section {
     margin-top: 4rem;
     padding: 3rem 2rem;
-    background-color: #312352;
+    background-color: transparent;
     border-radius: var(--border-radius);
-    border: 1px solid rgba(52, 152, 219, 0.2);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    border: none;
+    box-shadow: none;
 }
 
 .knowledge-section h2 {
     font-size: 2.5rem;
-    color: white;
+    color: var(--text-primary);
     text-align: center;
     margin-bottom: 3rem;
     font-weight: 700;
-    background: var(--gradient-primary);
-    padding: 1.5rem 2rem;
-    border-radius: var(--border-radius);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
     transition: all 0.3s ease;
-    background-size: 200% 200%;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-    animation: gradient-shift 3s ease-in-out infinite;
-}
-
-@keyframes gradient-shift {
-
-    0%,
-    100% {
-        background-position: 0% 50%;
-    }
-
-    50% {
-        background-position: 100% 50%;
-    }
 }
 
 .knowledge-section h2:hover {
     transform: scale(1.02);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
 }
 
 /* 检测介绍部分样式 - 幻灯片 */
 .quiz-intro-section {
     margin-top: 4rem;
     padding: 3rem 2rem;
-    background-color: #312352;
+    background-color: transparent;
     border-radius: var(--border-radius);
-    border: 1px solid rgba(52, 152, 219, 0.2);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    border: none;
+    box-shadow: none;
 }
 
 .quiz-intro-section h2 {
@@ -1705,10 +1706,10 @@ html {
 .database-section {
     margin-top: 4rem;
     padding: 3rem 2rem;
-    background-color: #312352;
+    background-color: transparent;
     border-radius: var(--border-radius);
-    border: 1px solid rgba(52, 152, 219, 0.2);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    border: none;
+    box-shadow: none;
 }
 
 .database-section h2 {
@@ -1994,9 +1995,9 @@ html {
 
 /* 模块样式 */
 .module {
-    background-color: #312352;
+    background-color: transparent;
     border-radius: var(--bs-border-radius-lg);
-    box-shadow: var(--bs-box-shadow);
+    box-shadow: none;
     padding: 2rem;
     margin-bottom: 2rem;
     display: none;
@@ -2395,8 +2396,8 @@ select.input-field {
 
 /* 底部 */
 .main-footer {
-    background-color: #312352;
-    border-top: 1px solid var(--border-color);
+    background-color: var(--card-bg);
+    border-top: 1px solid var(--border-light);
     margin-top: 4rem;
     padding: 3rem 2rem 1.5rem;
     border-radius: 0 0 var(--border-radius) var(--border-radius);
@@ -2809,6 +2810,8 @@ select.input-field {
     justify-content: center;
     align-items: center;
     padding: 24px;
+    box-sizing: border-box;
+    overflow-y: auto;
     box-shadow: var(--shadow-card);
     border: 1px solid var(--border-light);
 }
@@ -2845,15 +2848,529 @@ select.input-field {
 
 .theorem-img {
     max-width: 100%;
-    max-height: 220px;
+    max-height: 150px;
     object-fit: contain;
-    margin-bottom: 15px;
+    margin-bottom: 10px;
     border-radius: 6px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    flex-shrink: 0;
 }
 
 .flip-card-back p {
-    font-size: 1.15rem;
+    font-size: 1.05rem;
     line-height: 1.6;
     font-weight: 500;
+    flex-shrink: 0;
+}
+
+/* ===========================
+   Contact Us Section
+   =========================== */
+.contact-section {
+    padding: 4rem 1.5rem 2rem;
+    width: 100%;
+}
+
+.contact-section-inner {
+    max-width: 760px;
+    margin: 0 auto;
+}
+
+.contact-section-header {
+    text-align: center;
+    margin-bottom: 1.75rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.25rem;
+}
+
+.contact-section-header p {
+    color: var(--text-secondary, #666);
+    font-size: 1.05rem;
+    margin-top: 0.5rem;
+    line-height: 1.6;
+    max-width: 500px;
+}
+
+/* Feedback Toggle Button */
+.feedback-toggle-btn {
+    background: var(--accent-blue, #0a84ff);
+    color: white;
+    border: none;
+    padding: 0.85rem 2.2rem;
+    border-radius: 30px;
+    font-size: 1.05rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    box-shadow: 0 4px 15px rgba(10, 132, 255, 0.3);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.feedback-toggle-btn:hover {
+    transform: translateY(-3px) scale(1.03);
+    box-shadow: 0 8px 25px rgba(10, 132, 255, 0.4);
+    background: #0071e3;
+}
+
+.feedback-toggle-btn:active {
+    transform: translateY(-1px) scale(0.98);
+}
+
+.feedback-toggle-btn::after {
+    content: '↓';
+    font-size: 1.1rem;
+    transition: transform 0.3s ease;
+}
+
+.contact-collapsible-container.expanded + .contact-section-header .feedback-toggle-btn::after,
+#collapsible-contact-form.expanded ~ .contact-section-header .feedback-toggle-btn::after {
+    /* We'll handle this with a simpler approach in JS or CSS if needed, 
+       but for now let's just use the JS text update. 
+       Actually, let's just make the arrow rotate. */
+}
+
+/* Collapsible Container */
+.contact-collapsible-container {
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition: max-height 0.7s cubic-bezier(0.4, 0, 0.2, 1), 
+                opacity 0.5s ease, 
+                padding 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+    padding: 0;
+}
+
+.contact-collapsible-container.expanded {
+    max-height: 2000px; /* Large enough to fit content */
+    opacity: 1;
+    padding: 1rem 0;
+}
+
+.contact-demo-notice {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(255, 159, 10, 0.1);
+    border: 1px solid rgba(255, 159, 10, 0.3);
+    border-radius: 10px;
+    padding: 0.6rem 1rem;
+    font-size: 0.875rem;
+    color: #c77b0a;
+    margin-bottom: 1.5rem;
+}
+
+[data-theme="dark"] .contact-demo-notice {
+    color: #ffd60a;
+    background: rgba(255, 214, 10, 0.08);
+    border-color: rgba(255, 214, 10, 0.2);
+}
+
+.contact-form {
+    background: var(--card-bg, rgba(255,255,255,0.85));
+    border: 1px solid var(--border-light, rgba(220,220,220,0.5));
+    border-radius: 24px;
+    padding: 2.5rem;
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.07), 0 1px 3px rgba(0,0,0,0.04);
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.contact-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+}
+
+@media (max-width: 600px) {
+    .contact-row {
+        grid-template-columns: 1fr;
+    }
+    .contact-form {
+        padding: 1.5rem;
+    }
+}
+
+.contact-field-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+}
+
+.contact-field-group label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 0.2rem;
+}
+
+.req-label {
+    color: var(--accent-blue, #0a84ff);
+    font-weight: 400;
+    font-size: 0.8rem;
+}
+
+.opt-label {
+    color: var(--text-secondary, #888);
+    font-weight: 400;
+    font-size: 0.8rem;
+}
+
+.contact-input {
+    width: 100%;
+    padding: 0.8rem 1rem;
+    border: 1.5px solid var(--border-light, rgba(220,220,220,0.6));
+    border-radius: 12px;
+    font-size: 0.95rem;
+    font-family: inherit;
+    background: rgba(255, 255, 255, 0.5);
+    color: var(--text-primary);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    outline: none;
+    box-sizing: border-box;
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+[data-theme="dark"] .contact-input,
+body.eye-protection-mode .contact-input {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: var(--border-strong, rgba(255,255,255,0.15));
+    color: var(--text-primary, #f5f5f7);
+}
+
+.contact-input:focus {
+    border-color: var(--accent-blue, #0a84ff);
+    box-shadow: 0 0 0 3.5px rgba(10, 132, 255, 0.15);
+    background: rgba(255, 255, 255, 0.8);
+}
+
+[data-theme="dark"] .contact-input:focus,
+body.eye-protection-mode .contact-input:focus {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.contact-input::placeholder {
+    color: var(--text-secondary, #aaa);
+    opacity: 0.8;
+}
+
+.contact-textarea {
+    resize: vertical;
+    min-height: 130px;
+    line-height: 1.6;
+}
+
+/* Select arrow */
+select.contact-input {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23888' viewBox='0 0 16 16'%3E%3Cpath d='M8 11l-5-5 1.41-1.41L8 8.17l3.59-3.58L13 6l-5 5z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    background-size: 13px;
+    padding-right: 2.5rem;
+    cursor: pointer;
+}
+
+.contact-privacy-notice {
+    background: rgba(10, 132, 255, 0.05);
+    border: 1px solid rgba(10, 132, 255, 0.18);
+    border-radius: 10px;
+    padding: 0.875rem 1rem;
+    font-size: 0.85rem;
+    color: var(--text-secondary, #666);
+    line-height: 1.65;
+}
+
+/* Consent fieldset */
+.consent-group {
+    border: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+}
+
+.consent-legend {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 0.6rem;
+    display: block;
+}
+
+.consent-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.6rem;
+    cursor: pointer;
+    font-size: 0.88rem;
+    color: var(--text-primary);
+    line-height: 1.55;
+    flex-wrap: wrap;
+}
+
+.consent-item input[type="checkbox"] {
+    width: 17px;
+    height: 17px;
+    flex-shrink: 0;
+    margin-top: 2px;
+    accent-color: var(--accent-blue, #0a84ff);
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.contact-validation-msg {
+    font-size: 0.875rem;
+    color: #ff453a;
+    background: rgba(255, 69, 58, 0.08);
+    border: 1px solid rgba(255, 69, 58, 0.25);
+    border-radius: 8px;
+    padding: 0.6rem 0.875rem;
+}
+
+.contact-submit-btn {
+    background: linear-gradient(135deg, #0a84ff 0%, #5e5ce6 100%);
+    color: #fff;
+    border: none;
+    padding: 0.95rem 2.5rem;
+    border-radius: 14px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    box-shadow: 0 4px 16px rgba(10, 132, 255, 0.3), inset 0 1px 1px rgba(255,255,255,0.2);
+    align-self: flex-end;
+    letter-spacing: 0.02em;
+    font-family: inherit;
+}
+
+.contact-submit-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(10, 132, 255, 0.38), inset 0 1px 1px rgba(255,255,255,0.2);
+}
+
+.contact-submit-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(10, 132, 255, 0.25);
+}
+
+.contact-success-toast {
+    margin-top: 1.5rem;
+    padding: 1rem 1.5rem;
+    background: rgba(48, 209, 88, 0.1);
+    border: 1px solid rgba(48, 209, 88, 0.35);
+    border-radius: 14px;
+    color: #30d158;
+    font-weight: 600;
+    text-align: center;
+    font-size: 1rem;
+    animation: contactFadeIn 0.4s ease;
+}
+
+@keyframes contactFadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ===========================
+   Hero Buttons — Special FX
+   =========================== */
+
+/* Layout */
+.hero-buttons {
+    display: flex;
+    gap: 1rem;
+}
+
+/* ── Shared base ── */
+.btn-hero-primary,
+.btn-hero-secondary {
+    position: relative;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    text-decoration: none;
+    border-radius: 16px;
+    padding: 1.125rem 1rem;
+    font-size: 1.125rem;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    /* spring-like bounce */
+    transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1),
+                box-shadow 0.3s ease;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+}
+
+/* press down */
+.btn-hero-primary:active,
+.btn-hero-secondary:active {
+    transform: scale(0.96) !important;
+    transition-duration: 0.1s;
+}
+
+/* btn-label sits above pseudo-elements */
+.btn-hero-primary .btn-label,
+.btn-hero-secondary .btn-label {
+    position: relative;
+    z-index: 2;
+    pointer-events: none;
+}
+
+/* ── Primary: blue solid with shimmer ── */
+.btn-hero-primary {
+    background: linear-gradient(180deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0) 100%),
+                var(--accent-blue, #0a84ff);
+    color: #fff;
+    box-shadow:
+        0 4px 14px rgba(10, 132, 255, 0.35),
+        inset 0 1px 1px rgba(255,255,255,0.22);
+}
+
+.btn-hero-primary:hover {
+    transform: translateY(-3px) scale(1.02);
+    box-shadow:
+        0 10px 30px rgba(10, 132, 255, 0.45),
+        0 2px 8px rgba(10, 132, 255, 0.2),
+        inset 0 1px 1px rgba(255,255,255,0.22);
+}
+
+/* shimmer sweep element */
+.btn-shimmer {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    border-radius: inherit;
+    background: linear-gradient(
+        110deg,
+        transparent 30%,
+        rgba(255,255,255,0.35) 50%,
+        transparent 70%
+    );
+    background-size: 250% 100%;
+    background-position: 150% center;
+    transition: background-position 0s;
+    pointer-events: none;
+}
+
+/* trigger shimmer on hover */
+.btn-hero-primary:hover .btn-shimmer {
+    background-position: -50% center;
+    transition: background-position 0.55s ease;
+}
+
+/* continuous idle shimmer animation */
+@keyframes shimmerIdle {
+    0%   { background-position: 150% center; }
+    100% { background-position: -50% center; }
+}
+
+.btn-hero-primary .btn-shimmer {
+    animation: shimmerIdle 2.8s ease-in-out infinite;
+}
+
+.btn-hero-primary:hover .btn-shimmer {
+    animation: none;
+}
+
+/* ── Secondary: ghost glass with border glow ── */
+.btn-hero-secondary {
+    background: rgba(255,255,255,0.05);
+    color: var(--text-primary);
+    border: 1px solid var(--border-strong, rgba(100,100,100,0.3));
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    box-shadow: none;
+}
+
+.btn-hero-secondary:hover {
+    transform: translateY(-3px) scale(1.02);
+    background: rgba(255,255,255,0.12);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+}
+
+/* animated border glow via conic-gradient */
+.btn-border-glow {
+    position: absolute;
+    inset: -2px;
+    border-radius: 18px;
+    background: conic-gradient(
+        from var(--angle, 0deg),
+        transparent 60%,
+        rgba(10, 132, 255, 0.7) 75%,
+        rgba(94, 92, 230, 0.7) 85%,
+        transparent 100%
+    );
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+
+    /* mask so only border ring is visible */
+    -webkit-mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+    mask-composite: exclude;
+    padding: 2px;
+}
+
+@property --angle {
+    syntax: '<angle>';
+    initial-value: 0deg;
+    inherits: false;
+}
+
+@keyframes rotateBorder {
+    to { --angle: 360deg; }
+}
+
+.btn-hero-secondary:hover .btn-border-glow {
+    opacity: 1;
+    animation: rotateBorder 2s linear infinite;
+}
+
+/* ripple layer — created by JS */
+.btn-ripple {
+    position: absolute;
+    border-radius: 50%;
+    width: 10px;
+    height: 10px;
+    background: rgba(255,255,255,0.45);
+    transform: scale(0);
+    animation: rippleExpand 0.55s linear forwards;
+    pointer-events: none;
+    z-index: 3;
+}
+
+@keyframes rippleExpand {
+    to {
+        transform: scale(35);
+        opacity: 0;
+    }
+}
+
+/* mobile: stack vertically */
+@media (max-width: 600px) {
+    .hero-buttons {
+        flex-direction: column;
+    }
 }

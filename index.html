@@ -26,18 +26,30 @@
 
                     <!-- 首页顶部搜索框 -->
                     <div class="hero-search-box">
-                        <input type="text" class="hero-search-input" placeholder="搜索知识点，如：垂径定理、圆周角..."
+                        <input type="text" class="hero-search-input" placeholder="向AI助手提问，如：什么是垂径定理？"
                             data-i18n-placeholder="hero.searchPlaceholder" />
-                        <button class="hero-search-btn">
-                            <span class="search-icon">🔍</span>
+                        <button class="hero-search-btn" id="ai-search-btn">
+                            <span class="search-icon" data-i18n="hero.askAi">✨ 提问</span>
                         </button>
                     </div>
 
-                    <div class="hero-buttons" style="display: flex; gap: 1rem;">
-                        <a href="./quiz/quiz.html" data-i18n="hero.startLearning"
-                            style="flex: 1; text-align: center; text-decoration: none; background: linear-gradient(180deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0)), var(--accent-blue); color: white; padding: 1.125rem; border-radius: 16px; font-size: 1.125rem; font-weight: 600; box-shadow: 0 4px 12px rgba(10, 132, 255, 0.25), inset 0 1px 1px rgba(255, 255, 255, 0.2); transition: all 0.3s ease;">开始学习</a>
-                        <a href="./game/game_page.html" data-i18n="hero.geometryGames"
-                            style="flex: 1; text-align: center; text-decoration: none; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border-strong); color: var(--text-primary); padding: 1.125rem; border-radius: 16px; font-size: 1.125rem; font-weight: 600; backdrop-filter: blur(20px); transition: all 0.3s ease;">几何游戏</a>
+                    <!-- AI 聊天回答区域 -->
+                    <div id="ai-chat-response"
+                        style="display: none; margin-top: 1rem; background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); backdrop-filter: blur(20px); padding: 1.25rem; border-radius: 16px; color: var(--text-primary); text-align: left; font-size: 1rem; line-height: 1.6; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);">
+                        <div class="ai-loading" style="display:none; color: var(--accent-blue); font-weight: bold;"
+                            data-i18n="hero.aiThinking">✨ AI 正在思考中...</div>
+                        <div class="ai-answer" style="display:none;"></div>
+                    </div>
+
+                    <div class="hero-buttons">
+                        <a href="./quiz/quiz.html" class="btn-hero-primary" data-i18n="hero.startLearning">
+                            <span class="btn-shimmer"></span>
+                            <span class="btn-label">开始测验</span>
+                        </a>
+                        <a href="./game/game_page.html" class="btn-hero-secondary" data-i18n="hero.geometryGames">
+                            <span class="btn-border-glow"></span>
+                            <span class="btn-label">几何游戏</span>
+                        </a>
                     </div>
                 </div>
 
@@ -66,8 +78,8 @@
                                     <i class="feature-icon">📚</i>
                                 </div>
                                 <div class="item_content content_active">
-                                    <h3 data-i18n="features.systematic">系统教学</h3>
-                                    <p data-i18n="features.systematicDesc">从基础到进阶，系统化学习几何知识</p>
+                                    <h3 data-i18n="features.systematic">记忆卡片</h3>
+                                    <p data-i18n="features.systematicDesc">包含圆的六个定理的知识翻转卡片，可交互</p>
                                 </div>
                             </div>
                         </div>
@@ -203,124 +215,167 @@
                 </div>
             </div>
 
-
-        </section>
-
-        <!-- 检测模块 -->
-        <section id="quiz" class="module">
-            <h2 data-i18n="quiz.title">随堂检测</h2>
-            <div class="quiz-item">
-                <p data-i18n="quiz.question1">1. 垂径定理的内容是？</p>
-                <textarea placeholder="请输入您的答案..." data-i18n-placeholder="quiz.answer"></textarea>
-            </div>
-            <div class="quiz-item">
-                <p data-i18n="quiz.question2">2. 圆的标准方程是什么？</p>
-                <textarea placeholder="请输入您的答案..." data-i18n-placeholder="quiz.answer"></textarea>
-            </div>
-            <button class="submit-btn" data-i18n="quiz.submit">提交答卷</button>
-        </section>
-
-        <!-- 游戏模块 -->
-        <section id="game" class="module">
-            <h2 data-i18n="game.title">几何挑战游戏</h2>
-            <div class="game-canvas">
-                <!-- 这里通常放置Canvas或游戏组件 -->
-                <p data-i18n="game.loading">几何拼图游戏加载中...</p>
-                <button class="submit-btn" data-i18n="game.start">开始游戏</button>
-            </div>
-        </section>
-
-        <!-- 设置模块 -->
-        <section id="settings" class="module">
-            <h2 data-i18n="settings.title">设置</h2>
-
-            <div class="settings-section">
-                <h3 data-i18n="settings.appearance">外观</h3>
-                <div class="settings-container">
-                    <div class="setting-item">
-                        <label data-i18n="settings.fontSize">字体大小</label>
-                        <select id="settings-font-size" class="input-field">
-                            <option value="small" data-i18n="settings.fontSizeSmall">小</option>
-                            <option value="medium" data-i18n="settings.fontSizeMedium" selected>中</option>
-                            <option value="large" data-i18n="settings.fontSizeLarge">大</option>
-                            <option value="xlarge" data-i18n="settings.fontSizeXLarge">特大</option>
-                        </select>
+            <!-- 广告展示区 -->
+            <div class="ads-banner-section"
+                style="padding: 2rem 0; width: 100%; display: flex; justify-content: center; align-items: center;">
+                <div class="ads-banner-container"
+                    style="max-width: 1200px; width: 90%; background: linear-gradient(135deg, #f6f8fb, #e5eef9); border-radius: 20px; padding: 3rem 2rem; display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: 0 10px 25px rgba(0,0,0,0.05); position: relative; overflow: hidden; border: 1px solid rgba(255,255,255,0.7);">
+                    <div
+                        style="position: absolute; top: 10px; right: 15px; background: rgba(0,0,0,0.05); padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; color: #888;">
+                        Advertisement</div>
+                    <h3 data-i18n="knowledge.ExploreMoreGeometryMysteries"
+                        style="font-size: 2rem; font-weight: 700; color: var(--accent-blue, #0a84ff); margin-bottom: 1rem; z-index: 1;">
+                        探索更多几何奥秘</h3>
+                    <p data-i18n="knowledge.ExploreMoreGeometryMysteriesDesc" style="font-size: 1.1rem; color: #555;
+                        margin-bottom: 2rem; text-align: center; max-width: 600px; z-index: 1;">加入我们的高级会员计划，
+                        解锁更多功能，让学习更高效。
+                    </p>
+                    <button
+                        style="background: var(--accent-blue, #0a84ff); color: white; border: none; padding: 0.8rem 2.5rem; border-radius: 30px; font-size: 1.1rem; font-weight: 600; cursor: pointer; box-shadow: 0 4px 12px rgba(10, 132, 255, 0.3); transition: transform 0.2s, box-shadow 0.2s; z-index: 1;"
+                        onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'"
+                        data-i18n="knowledge.ExploreMoreGeometryMysteriesBtn">立即解锁</button>
+                    <!-- Background decorative circles -->
+                    <div
+                        style="position: absolute; width: 250px; height: 250px; border-radius: 50%; background: linear-gradient(135deg, rgba(10, 132, 255, 0.08), rgba(10, 132, 255, 0)); top: -100px; left: -100px; z-index: 0;">
                     </div>
-
-                    <div class="setting-item">
-                        <label data-i18n="settings.eyeProtectionMode">护眼模式</label>
-                        <div class="toggle-switch">
-                            <input type="checkbox" id="settings-eye-protection-mode">
-                            <label for="settings-eye-protection-mode" class="toggle-label"></label>
-                        </div>
+                    <div
+                        style="position: absolute; width: 300px; height: 300px; border-radius: 50%; background: linear-gradient(135deg, rgba(150, 50, 255, 0.08), rgba(150, 50, 255, 0)); bottom: -120px; right: -100px; z-index: 0;">
                     </div>
                 </div>
             </div>
 
-            <div class="settings-section">
-                <h3 data-i18n="settings.language">语言</h3>
-                <div class="settings-container">
-                    <div class="setting-item">
-                        <label data-i18n="settings.displayLanguage">显示语言</label>
-                        <select id="settings-language" class="input-field">
-                            <option value="zh">中文</option>
-                            <option value="en">English</option>
-                        </select>
+            <!-- Contact Us 联系我们 -->
+            <div class="contact-section">
+                <div class="contact-section-inner">
+
+                    <div class="contact-section-header">
+                        <h2 data-i18n="contact.title">联系我们</h2>
+                        <p data-i18n="contact.subtitle">有任何问题或建议？我们很乐意倾听。</p>
+                        <button id="toggle-feedback-btn" class="feedback-toggle-btn"
+                            data-i18n="contact.toggleBtn">反馈建议</button>
+                    </div>
+
+                    <div id="collapsible-contact-form" class="contact-collapsible-container">
+                        <!-- Demo Mode Notice -->
+                        <!--<div class="contact-demo-notice" role="note">
+                            <span aria-hidden="true">🧪</span>
+                            <span data-i18n="contact.demoNotice">这是演示表单，填写信息不会被实际发送。</span>
+                        </div>-->
+
+                        <form id="contact-form" class="contact-form" novalidate aria-label="联系我们表单">
+
+                            <!-- Row: Name + Pronouns -->
+                            <div class="contact-row">
+                                <div class="contact-field-group">
+                                    <label for="contact-name">
+                                        <span data-i18n="contact.name">您的姓名</span>
+                                        <span class="req-label" data-i18n="contact.required">（必填）</span>
+                                    </label>
+                                    <input type="text" id="contact-name" name="name" autocomplete="name"
+                                        placeholder="请输入您的姓名" data-i18n-placeholder="contact.namePlaceholder"
+                                        aria-required="true" class="contact-input" />
+                                </div>
+
+                                <!-- Inclusive Design: pronouns, not gender -->
+                                <div class="contact-field-group">
+                                    <label for="contact-pronouns">
+                                        <span data-i18n="contact.pronouns">代词（可选）</span>
+                                        <span class="opt-label" data-i18n="contact.pronounsHint">— 方便正确称呼您</span>
+                                    </label>
+                                    <select id="contact-pronouns" name="pronouns" class="contact-input">
+                                        <option value="" data-i18n="contact.pronounsSelect">请选择或留空</option>
+                                        <option value="he/him" data-i18n="contact.pronounsHe">He / Him（他）</option>
+                                        <option value="she/her" data-i18n="contact.pronounsShe">She / Her（她）</option>
+                                        <option value="they/them" data-i18n="contact.pronounsThey">They / Them（TA）
+                                        </option>
+                                        <option value="prefer-not" data-i18n="contact.pronounsPreferNot">不透露</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- Email -->
+                            <div class="contact-field-group">
+                                <label for="contact-email">
+                                    <span data-i18n="contact.email">电子邮箱</span>
+                                    <span class="req-label" data-i18n="contact.required">（必填）</span>
+                                </label>
+                                <input type="email" id="contact-email" name="email" autocomplete="email"
+                                    placeholder="your@email.com" data-i18n-placeholder="contact.emailPlaceholder"
+                                    aria-required="true" class="contact-input" />
+                            </div>
+
+                            <!-- Subject -->
+                            <div class="contact-field-group">
+                                <label for="contact-subject">
+                                    <span data-i18n="contact.subject">主题</span>
+                                    <span class="req-label" data-i18n="contact.required">（必填）</span>
+                                </label>
+                                <select id="contact-subject" name="subject" class="contact-input" aria-required="true">
+                                    <option value="" data-i18n="contact.subjectSelect">请选择主题</option>
+                                    <option value="feedback" data-i18n="contact.subjectFeedback">产品反馈</option>
+                                    <option value="bug" data-i18n="contact.subjectBug">问题报告</option>
+                                    <option value="collaboration" data-i18n="contact.subjectCollaboration">合作咨询</option>
+                                    <option value="accessibility" data-i18n="contact.subjectAccessibility">无障碍反馈
+                                    </option>
+                                    <option value="other" data-i18n="contact.subjectOther">其他</option>
+                                </select>
+                            </div>
+
+                            <!-- Message -->
+                            <div class="contact-field-group">
+                                <label for="contact-message">
+                                    <span data-i18n="contact.message">留言内容</span>
+                                    <span class="req-label" data-i18n="contact.required">（必填）</span>
+                                </label>
+                                <textarea id="contact-message" name="message" rows="5" placeholder="请输入您的留言..."
+                                    data-i18n-placeholder="contact.messagePlaceholder" aria-required="true"
+                                    class="contact-input contact-textarea"></textarea>
+                            </div>
+
+                            <!-- Ethical Data: Privacy Notice -->
+                            <div class="contact-privacy-notice" role="note">
+                                <p data-i18n="contact.privacyNotice">🔒 数据透明声明：您提交的信息仅用于回复本次来信，不会与第三方共享，保留期不超过 90
+                                    天。这是演示表单—数据不会实际发送。</p>
+                            </div>
+
+                            <!-- Ethical Data: Granular Consent -->
+                            <fieldset class="consent-group" aria-label="数据使用同意">
+                                <legend class="consent-legend" data-i18n="contact.consentLegend">数据使用同意</legend>
+                                <label class="consent-item">
+                                    <input type="checkbox" id="consent-reply" name="consent-reply" aria-required="true">
+                                    <span data-i18n="contact.consentReply">我同意平台通过我填写的邮箱联系我，以回复本次留言</span>
+                                    <span class="req-label" data-i18n="contact.required">（必填）</span>
+                                </label>
+                                <label class="consent-item">
+                                    <input type="checkbox" id="consent-newsletter" name="consent-newsletter">
+                                    <span data-i18n="contact.consentNewsletter">我愿意接收平台学习资讯与更新通知</span>
+                                    <span class="opt-label" data-i18n="contact.optional2">— 可选，可随时取消</span>
+                                </label>
+                            </fieldset>
+
+                            <!-- Validation Message -->
+                            <div id="contact-validation-msg" class="contact-validation-msg" style="display:none;"
+                                role="alert" aria-live="polite"></div>
+
+                            <button type="submit" class="contact-submit-btn" id="contact-submit-btn">
+                                <span data-i18n="contact.submit">发送留言</span>
+                            </button>
+
+                        </form>
+
+                        <!-- Success Toast -->
+                        <div id="contact-success-toast" class="contact-success-toast" style="display:none;"
+                            role="status" aria-live="polite">
+                            <span aria-hidden="true">✅ </span><span
+                                data-i18n="contact.successMsg">留言已提交！我们将尽快与您联系。（演示模式）</span>
+                        </div>
                     </div>
 
                 </div>
             </div>
 
-
-
-            <div class="settings-section">
-                <h3 data-i18n="settings.privacy">隐私和安全</h3>
-                <div class="settings-container">
-                    <div class="setting-item">
-                        <label data-i18n="settings.notifications">通知</label>
-                        <div class="toggle-switch">
-                            <input type="checkbox" id="settings-notifications" checked>
-                            <label for="settings-notifications" class="toggle-label"></label>
-                        </div>
-                    </div>
-                    <div class="setting-item">
-                        <label data-i18n="settings.dataCollection">数据收集</label>
-                        <div class="toggle-switch">
-                            <input type="checkbox" id="settings-data-collection">
-                            <label for="settings-data-collection" class="toggle-label"></label>
-                        </div>
-                    </div>
-                    <div class="setting-item">
-                        <label data-i18n="settings.cookies">Cookie</label>
-                        <div class="toggle-switch">
-                            <input type="checkbox" id="settings-cookies" checked>
-                            <label for="settings-cookies" class="toggle-label"></label>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="settings-section">
-                <h3 data-i18n="settings.advanced">高级</h3>
-                <div class="settings-container">
-                    <div class="setting-item">
-                        <label data-i18n="settings.sound">音效</label>
-                        <div class="toggle-switch">
-                            <input type="checkbox" id="settings-sound" checked>
-                            <label for="settings-sound" class="toggle-label"></label>
-                        </div>
-                    </div>
-                    <div class="setting-item">
-                        <button class="secondary-btn" data-i18n="settings.clearCache">清除缓存</button>
-                        <button class="secondary-btn" data-i18n="settings.resetSettings">重置所有设置</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="settings-footer">
-                <button class="submit-btn" data-i18n="settings.save">应用设置</button>
-            </div>
         </section>
+
     </main>
 
     <!-- 底部 -->
@@ -347,6 +402,56 @@
     </footer>
 
     <script src="script.js"></script>
+
+    <!-- Cookie 接受弹窗 -->
+    <div id="cookie-consent-popup"
+        style="position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 600px; background: var(--card-bg, rgba(255, 255, 255, 0.95)); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); padding: 1.5rem; border-radius: 16px; box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0,0,0,0.05); border: 1px solid var(--border-light, rgba(220, 220, 220, 0.5)); display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; z-index: 1000; transition: bottom 0.5s ease-in-out, opacity 0.5s ease-in-out;">
+        <div style="flex: 1;">
+            <p style="margin: 0; font-size: 0.95rem; color: var(--text-primary, #333); line-height: 1.5;">我们使用 Cookie
+                来提升您的浏览体验，分析网站流量并提供个性化内容。继续使用本网站即表示您同意我们使用 Cookie。</p>
+        </div>
+        <div style="display: flex; gap: 0.5rem; flex-shrink: 0;">
+            <button id="decline-cookie-btn"
+                style="background: transparent; color: var(--text-secondary, #666); border: 1px solid var(--border-light, #ccc); padding: 0.6rem 1.2rem; border-radius: 8px; font-size: 0.9rem; font-weight: 500; cursor: pointer; transition: background 0.2s;"
+                onmouseover="this.style.background='var(--border-light, rgba(0,0,0,0.05))'"
+                onmouseout="this.style.background='transparent'">拒绝</button>
+            <button id="accept-cookie-btn"
+                style="background: var(--accent-blue, #0a84ff); color: white; border: none; padding: 0.6rem 1.2rem; border-radius: 8px; font-size: 0.9rem; font-weight: 600; cursor: pointer; box-shadow: 0 2px 8px rgba(10, 132, 255, 0.3); transition: background 0.2s;"
+                onmouseover="this.style.background='#0071e3'"
+                onmouseout="this.style.background='var(--accent-blue, #0a84ff)'">接受全部</button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const cookiePopup = document.getElementById('cookie-consent-popup');
+            const acceptBtn = document.getElementById('accept-cookie-btn');
+            const declineBtn = document.getElementById('decline-cookie-btn');
+
+            // 为了方便测试和更新弹窗设计，这里重置了一下存储的 key
+            // if(localStorage.getItem('cookieConsent_v2')) {
+            //     cookiePopup.style.display = 'none';
+            // }
+
+            function closePopup() {
+                cookiePopup.style.opacity = '0';
+                cookiePopup.style.bottom = '-100px';
+                setTimeout(() => {
+                    cookiePopup.style.display = 'none';
+                }, 500);
+            }
+
+            acceptBtn.addEventListener('click', function () {
+                localStorage.setItem('cookieConsent_v2', 'accepted');
+                closePopup();
+            });
+
+            declineBtn.addEventListener('click', function () {
+                localStorage.setItem('cookieConsent_v2', 'declined');
+                closePopup();
+            });
+        });
+    </script>
 </body>
 
 </html>

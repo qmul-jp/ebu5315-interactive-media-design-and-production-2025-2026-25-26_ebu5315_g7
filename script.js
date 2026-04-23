@@ -19,15 +19,15 @@ const translations = {
         'breadcrumb.geometry': '几何学习',
         'hero.title': '探索几何的无限魅力',
         'hero.subtitle': '专业的数学几何学习平台，让抽象的几何概念变得直观易懂',
-        'hero.startLearning': '开始学习',
+        'hero.startLearning': '开始测验',
         'hero.geometryGames': '几何游戏',
         'features.title': '平台特色',
         'features.subtitle': '专业的数学几何学习平台，让抽象的几何概念变得直观易懂',
-        'features.systematic': '测验和游戏',
-        'features.systematicDesc': '从基础到进阶的测验，极具创意的游戏',
+        'features.systematic': '记忆卡片',
+        'features.systematicDesc': '包含圆的六个定理的知识翻转卡片，可交互',
         'features.intelligent': '智能搜索',
         'features.intelligentDesc': '快速找到你需要的几何知识点',
-        'features.quiz': '随堂检测',
+        'features.quiz': '在线检测',
         'features.quizDesc': '实时检验学习成果，巩固知识点',
         'features.games': '几何游戏',
         'features.gamesDesc': '通过游戏化方式加深几何概念理解',
@@ -37,8 +37,10 @@ const translations = {
         'login.password': '密码',
         'login.privacy': '我已阅读并同意<a href="#" onclick="alert(\'隐私政策：我们尊重您的隐私，不会收集任何个人信息。\')">隐私政策</a>',
         'login.enter': '进入',
-        'hero.searchPlaceholder': '搜索知识点，如：垂径定理、圆周角...',
-        'quiz.title': '随堂检测',
+        'hero.searchPlaceholder': '向AI助手提问，如：什么是垂径定理？',
+        'hero.askAi': '✨ 提问',
+        'hero.aiThinking': '✨ AI 正在思考中...',
+        'quiz.title': '在线检测',
         'quiz.question1': '1. 垂径定理的内容是？',
         'quiz.question2': '2. 圆的标准方程是什么？',
         'quiz.answer': '请输入您的答案...',
@@ -125,7 +127,48 @@ const translations = {
         'footer.contact': '联系我们',
         'footer.email': '邮箱：contact@yuangeometry.com',
         'footer.phone': '电话：400-123-4567',
-        'footer.copyright': '© 2026 圆数学教学平台. 万物皆数.'
+        'footer.copyright': '© 2026 圆数学教学平台. 万物皆数.',
+        'contact.title': '联系我们',
+        'contact.subtitle': '有任何问题或建议？我们很乐意倾听。',
+        'contact.demoNotice': '这是演示表单，填写信息不会被实际发送。',
+        'contact.name': '您的姓名',
+        'contact.namePlaceholder': '请输入您的姓名',
+        'contact.required': '（必填）',
+        'contact.pronouns': '代词（可选）',
+        'contact.pronounsHint': '— 方便正确称呼您',
+        'contact.pronounsSelect': '请选择或留空',
+        'contact.pronounsHe': 'He / Him（他）',
+        'contact.pronounsShe': 'She / Her（她）',
+        'contact.pronounsThey': 'They / Them（TA）',
+        'contact.pronounsPreferNot': '不透露',
+        'contact.email': '电子邮箱',
+        'contact.emailPlaceholder': 'your@email.com',
+        'contact.subject': '主题',
+        'contact.subjectSelect': '请选择主题',
+        'contact.subjectFeedback': '产品反馈',
+        'contact.subjectBug': '问题报告',
+        'contact.subjectCollaboration': '合作咨询',
+        'contact.subjectAccessibility': '无障碍反馈',
+        'contact.subjectOther': '其他',
+        'contact.message': '留言内容',
+        'contact.messagePlaceholder': '请输入您的留言...',
+        'contact.privacyNotice': '🔒 数据透明声明：您提交的信息仅用于回复本次来信，不会与第三方共享，保留期不超过 90 天。这是演示表单—数据不会实际发送。',
+        'contact.consentLegend': '数据使用同意',
+        'contact.consentReply': '我同意平台通过我填写的邮箱联系我，以回复本次留言',
+        'contact.consentNewsletter': '我愿意接收平台学习资讯与更新通知',
+        'contact.optional2': '— 可选，可随时取消',
+        'contact.submit': '发送留言',
+        'contact.successMsg': '留言已提交！我们将尽快与您联系。（演示模式）',
+        'contact.toggleBtn': '反馈建议',
+        'contact.toggleBtnHide': '收起表单',
+        'contact.validationName': '请填写您的姓名。',
+        'contact.validationEmail': '请填写有效的电子邮箱。',
+        'contact.validationSubject': '请选择留言主题。',
+        'contact.validationMessage': '请填写留言内容。',
+        'contact.validationConsent': '请勾选同意条款以继续。',
+        'knowledge.ExploreMoreGeometryMysteries': '探索更多几何奥秘',
+        'knowledge.ExploreMoreGeometryMysteriesDesc': '加入我们的高级会员计划，解锁更多功能，让学习更高效。',
+        'knowledge.ExploreMoreGeometryMysteriesBtn': '立即解锁'
     },
     en: {
         logo: 'Circle · Geometry',
@@ -142,15 +185,15 @@ const translations = {
         'breadcrumb.geometry': 'Geometry Learning',
         'hero.title': 'Explore the Infinite Charm of Geometry',
         'hero.subtitle': 'A professional mathematics geometry learning platform that makes abstract geometric concepts intuitive and easy to understand',
-        'hero.startLearning': 'Start Learning',
+        'hero.startLearning': 'Start Quiz',
         'hero.geometryGames': 'Geometry Games',
         'features.title': 'Platform Features',
         'features.subtitle': 'Professional mathematics geometry learning platform, making abstract geometric concepts intuitive and easy to understand',
-        'features.systematic': 'Quizzes and Games',
-        'features.systematicDesc': 'From basic to advanced quizzes, highly creative games',
+        'features.systematic': 'Memory Cards',
+        'features.systematicDesc': 'Including interactive knowledge flip cards for the six theorems of circle',
         'features.intelligent': 'Intelligent Search',
         'features.intelligentDesc': 'Quickly find the geometry knowledge points you need',
-        'features.quiz': 'In-class Quiz',
+        'features.quiz': 'Online Quiz',
         'features.quizDesc': 'Real-time inspection of learning outcomes, consolidate knowledge points',
         'features.games': 'Geometry Games',
         'features.gamesDesc': 'Deepen geometric concept understanding through gamification',
@@ -160,8 +203,10 @@ const translations = {
         'login.password': 'Password',
         'login.privacy': 'I have read and agree to the <a href="#" onclick="alert(\'Privacy Policy: We respect your privacy and will not collect any personal information.\')">Privacy Policy</a>',
         'login.enter': 'Enter',
-        'hero.searchPlaceholder': 'Search knowledge points, e.g.: Vertical Diameter Theorem...',
-        'quiz.title': 'In-class Quiz',
+        'hero.searchPlaceholder': 'Ask AI assistant, e.g.: What is the Vertical Diameter Theorem?',
+        'hero.askAi': '✨ Ask',
+        'hero.aiThinking': '✨ AI is thinking...',
+        'quiz.title': 'Online Quiz',
         'quiz.question1': '1. What is the content of the Vertical Diameter Theorem?',
         'quiz.question2': '2. What is the standard equation of a circle?',
         'quiz.answer': 'Please enter your answer...',
@@ -248,12 +293,53 @@ const translations = {
         'footer.contact': 'Contact Us',
         'footer.email': 'Email: contact@yuangeometry.com',
         'footer.phone': 'Phone: 400-123-4567',
-        'footer.copyright': '© 2026 Circle Mathematics Teaching Platform. Everything is number.'
+        'footer.copyright': '© 2026 Circle Mathematics Teaching Platform. Everything is number.',
+        'contact.title': 'Contact Us',
+        'contact.subtitle': 'Have a question or suggestion? We would love to hear from you.',
+        'contact.demoNotice': 'This is a demo form - information submitted will not actually be sent.',
+        'contact.name': 'Your Name',
+        'contact.namePlaceholder': 'Enter your name',
+        'contact.required': '(required)',
+        'contact.pronouns': 'Pronouns (optional)',
+        'contact.pronounsHint': '- helps us address you correctly',
+        'contact.pronounsSelect': 'Select or leave blank',
+        'contact.pronounsHe': 'He / Him',
+        'contact.pronounsShe': 'She / Her',
+        'contact.pronounsThey': 'They / Them',
+        'contact.pronounsPreferNot': 'Prefer not to say',
+        'contact.email': 'Email Address',
+        'contact.emailPlaceholder': 'your@email.com',
+        'contact.subject': 'Subject',
+        'contact.subjectSelect': 'Select a subject',
+        'contact.subjectFeedback': 'Product Feedback',
+        'contact.subjectBug': 'Bug Report',
+        'contact.subjectCollaboration': 'Collaboration Inquiry',
+        'contact.subjectAccessibility': 'Accessibility Feedback',
+        'contact.subjectOther': 'Other',
+        'contact.message': 'Message',
+        'contact.messagePlaceholder': 'Write your message here...',
+        'contact.privacyNotice': 'Transparency Notice: Information you submit is used solely to reply to your message, will not be shared with third parties, and retained for no longer than 90 days. This is a demo form - no data is actually sent.',
+        'contact.consentLegend': 'Data Use Consent',
+        'contact.consentReply': 'I agree to be contacted at the email address provided to receive a reply to this message',
+        'contact.consentNewsletter': 'I would like to receive learning updates and news from the platform',
+        'contact.optional2': '- optional, unsubscribe anytime',
+        'contact.submit': 'Send Message',
+        'contact.successMsg': 'Message submitted! We will get back to you as soon as possible. (Demo mode)',
+        'contact.toggleBtn': 'Feedback & Suggestions',
+        'contact.toggleBtnHide': 'Collapse Form',
+        'contact.validationName': 'Please enter your name.',
+        'contact.validationEmail': 'Please enter a valid email address.',
+        'contact.validationSubject': 'Please select a subject.',
+        'contact.validationMessage': 'Please write your message.',
+        'contact.validationConsent': 'Please check the consent box to continue.',
+        'knowledge.ExploreMoreGeometryMysteries': 'Explore More Geometry Mysteries',
+        'knowledge.ExploreMoreGeometryMysteriesDesc': 'Join our advanced membership plan to unlock more features and make learning more efficient.',
+        'knowledge.ExploreMoreGeometryMysteriesBtn': 'Unlock Now'
     }
 };
 
 // 当前语言
-let currentLang = 'zh';
+let currentLang = 'en';
 
 // 设置元素变量（全局）
 let settingsLanguage, settingsFontSize, settingsColorblindMode, settingsEyeProtectionMode,
@@ -336,177 +422,9 @@ function startGame() {
     }
 }
 
-// 知识点幻灯片功能
-let currentSlide = 0;
-let slides = [];
-let dots = [];
-let slideInterval;
-
-function initKnowledgeSlider() {
-    slides = document.querySelectorAll('.knowledge-slide');
-    dots = document.querySelectorAll('.knowledge-section .slider-dots .dot');
-    const prevBtn = document.getElementById('knowledge-prev');
-    const nextBtn = document.getElementById('knowledge-next');
-
-    if (slides.length === 0) return;
-
-    // 绑定按钮事件
-    if (prevBtn) {
-        prevBtn.addEventListener('click', () => {
-            changeKnowledgeSlide(currentSlide - 1);
-            resetKnowledgeAutoPlay();
-        });
-    }
-
-    if (nextBtn) {
-        nextBtn.addEventListener('click', () => {
-            changeKnowledgeSlide(currentSlide + 1);
-            resetKnowledgeAutoPlay();
-        });
-    }
-
-    // 绑定指示点事件
-    dots.forEach((dot, index) => {
-        dot.addEventListener('click', () => {
-            changeKnowledgeSlide(index);
-            resetKnowledgeAutoPlay();
-        });
-    });
-
-    // 自动播放
-    startKnowledgeAutoPlay();
-
-    // 鼠标悬停时暂停自动播放
-    const slider = document.querySelector('.knowledge-slider');
-    if (slider) {
-        slider.addEventListener('mouseenter', stopKnowledgeAutoPlay);
-        slider.addEventListener('mouseleave', startKnowledgeAutoPlay);
-    }
-}
-
-function changeKnowledgeSlide(index) {
-    // 处理循环
-    if (index < 0) {
-        index = slides.length - 1;
-    } else if (index >= slides.length) {
-        index = 0;
-    }
-
-    // 移除当前激活状态
-    slides[currentSlide].classList.remove('active');
-    dots[currentSlide].classList.remove('active');
-
-    // 添加新的激活状态
-    currentSlide = index;
-    slides[currentSlide].classList.add('active');
-    dots[currentSlide].classList.add('active');
-}
-
-function startKnowledgeAutoPlay() {
-    stopKnowledgeAutoPlay();
-    slideInterval = setInterval(() => {
-        changeKnowledgeSlide(currentSlide + 1);
-    }, 5000); // 每5秒自动切换
-}
-
-function stopKnowledgeAutoPlay() {
-    if (slideInterval) {
-        clearInterval(slideInterval);
-        slideInterval = null;
-    }
-}
-
-function resetKnowledgeAutoPlay() {
-    stopKnowledgeAutoPlay();
-    startKnowledgeAutoPlay();
-}
 
 
 
-// 检测介绍幻灯片功能
-let currentQuizIntroSlide = 0;
-let quizIntroSlides = [];
-let quizIntroDots = [];
-let quizIntroSlideInterval;
-
-function initQuizIntroSlider() {
-    quizIntroSlides = document.querySelectorAll('.quiz-intro-slide');
-    quizIntroDots = document.querySelectorAll('.quiz-intro-section .slider-dots .dot');
-    const prevBtn = document.getElementById('quiz-intro-prev');
-    const nextBtn = document.getElementById('quiz-intro-next');
-
-    if (quizIntroSlides.length === 0) return;
-
-    // 绑定按钮事件
-    if (prevBtn) {
-        prevBtn.addEventListener('click', () => {
-            changeQuizIntroSlide(currentQuizIntroSlide - 1);
-            resetQuizIntroAutoPlay();
-        });
-    }
-
-    if (nextBtn) {
-        nextBtn.addEventListener('click', () => {
-            changeQuizIntroSlide(currentQuizIntroSlide + 1);
-            resetQuizIntroAutoPlay();
-        });
-    }
-
-    // 绑定指示点事件
-    quizIntroDots.forEach((dot, index) => {
-        dot.addEventListener('click', () => {
-            changeQuizIntroSlide(index);
-            resetQuizIntroAutoPlay();
-        });
-    });
-
-    // 自动播放
-    startQuizIntroAutoPlay();
-
-    // 鼠标悬停时暂停自动播放
-    const slider = document.querySelector('.quiz-intro-slider');
-    if (slider) {
-        slider.addEventListener('mouseenter', stopQuizIntroAutoPlay);
-        slider.addEventListener('mouseleave', startQuizIntroAutoPlay);
-    }
-}
-
-function changeQuizIntroSlide(index) {
-    // 处理循环
-    if (index < 0) {
-        index = quizIntroSlides.length - 1;
-    } else if (index >= quizIntroSlides.length) {
-        index = 0;
-    }
-
-    // 移除当前激活状态
-    quizIntroSlides[currentQuizIntroSlide].classList.remove('active');
-    quizIntroDots[currentQuizIntroSlide].classList.remove('active');
-
-    // 添加新的激活状态
-    currentQuizIntroSlide = index;
-    quizIntroSlides[currentQuizIntroSlide].classList.add('active');
-    quizIntroDots[currentQuizIntroSlide].classList.add('active');
-}
-
-function startQuizIntroAutoPlay() {
-    stopQuizIntroAutoPlay();
-    quizIntroSlideInterval = setInterval(() => {
-        changeQuizIntroSlide(currentQuizIntroSlide + 1);
-    }, 5000); // 每5秒自动切换
-}
-
-function stopQuizIntroAutoPlay() {
-    if (quizIntroSlideInterval) {
-        clearInterval(quizIntroSlideInterval);
-        quizIntroSlideInterval = null;
-    }
-}
-
-function resetQuizIntroAutoPlay() {
-    stopQuizIntroAutoPlay();
-    startQuizIntroAutoPlay();
-}
 
 // 应用字体大小
 function applyFontSize(size) {
@@ -667,8 +585,8 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-    // 表单提交处理
-    const forms = document.querySelectorAll('form');
+    // 表单提交处理（联系表单有专属验证，跳过；其余表单拦截默认提交）
+    const forms = document.querySelectorAll('form:not(#contact-form)');
     forms.forEach(form => {
         form.addEventListener('submit', function (e) {
             e.preventDefault();
@@ -730,7 +648,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 navLinks.forEach(n => n.classList.remove('active'));
 
                 if (settingsModule) settingsModule.classList.add('active');
-                document.querySelector('[href="#settings"]').classList.add('active');
+                const settingsNavLink = document.querySelector('[href="#settings"]');
+                if (settingsNavLink) settingsNavLink.classList.add('active');
 
                 setTimeout(() => {
                     const loginForm = settingsModule.querySelector('.login-form');
@@ -749,202 +668,19 @@ document.addEventListener('DOMContentLoaded', function () {
             const newLang = currentLang === 'zh' ? 'en' : 'zh';
             updateLanguage(newLang);
             this.textContent = newLang === 'zh' ? '中文' : 'English';
+            // 持久化语言选择
+            localStorage.setItem('app_lang', newLang);
         });
     }
-
-    // 初始化知识点幻灯片
-    initKnowledgeSlider();
-
-    // 初始化检测介绍幻灯片
-    initQuizIntroSlider();
 
     // 设置功能
-    settingsLanguage = document.getElementById('settings-language');
-    settingsFontSize = document.getElementById('settings-font-size');
-    settingsColorblindMode = document.getElementById('settings-colorblind-mode');
-    settingsEyeProtectionMode = document.getElementById('settings-eye-protection-mode');
-    settingsParentMode = document.getElementById('settings-parent-mode');
-    settingsAutoTranslate = document.getElementById('settings-auto-translate');
-    settingsAutoSave = document.getElementById('settings-auto-save');
-    settingsDailyGoal = document.getElementById('settings-daily-goal');
-    settingsStudyReminder = document.getElementById('settings-study-reminder');
-    settingsNotifications = document.getElementById('settings-notifications');
-    settingsDataCollection = document.getElementById('settings-data-collection');
-    settingsCookies = document.getElementById('settings-cookies');
-    settingsSound = document.getElementById('settings-sound');
-    settingsVolume = document.getElementById('settings-volume');
-    settingsUsername = document.getElementById('settings-username');
-    settingsEmail = document.getElementById('settings-email');
-    const settingsSaveBtn = document.querySelector('#settings .submit-btn');
-    const settingsClearCacheBtn = document.querySelector('#settings button[data-i18n="settings.clearCache"]');
-    const settingsResetBtn = document.querySelector('#settings button[data-i18n="settings.resetSettings"]');
-    const settingsChangePasswordBtn = document.querySelector('#settings button[data-i18n="settings.changePassword"]');
-    const settingsDeleteAccountBtn = document.querySelector('#settings button[data-i18n="settings.deleteAccount"]');
-
-    // 初始化设置值
-    if (settingsLanguage) {
-        settingsLanguage.value = currentLang;
+    // 初始化语言：优先读取 localStorage 中保存的语言
+    const savedLang = localStorage.getItem('app_lang');
+    if (savedLang && savedLang !== currentLang) {
+        updateLanguage(savedLang);
+    } else {
+        updateLanguage(currentLang);
     }
-
-    // 语言切换
-    if (settingsLanguage) {
-        settingsLanguage.addEventListener('change', function () {
-            updateLanguage(this.value);
-        });
-    }
-
-    // 字体大小切换
-    if (settingsFontSize) {
-        settingsFontSize.addEventListener('change', function () {
-            applyFontSize(this.value);
-        });
-    }
-
-    // 色盲模式切换
-    if (settingsColorblindMode) {
-        settingsColorblindMode.addEventListener('change', function () {
-            applyColorblindMode(this.checked);
-        });
-    }
-
-    // 护眼模式切换
-    if (settingsEyeProtectionMode) {
-        settingsEyeProtectionMode.addEventListener('change', function () {
-            applyEyeProtectionMode(this.checked);
-        });
-    }
-
-    // 家长模式切换
-    if (settingsParentMode) {
-        settingsParentMode.addEventListener('change', function () {
-            applyParentMode(this.checked);
-        });
-    }
-
-    // 自动翻译切换
-    if (settingsAutoTranslate) {
-        settingsAutoTranslate.addEventListener('change', function () {
-            applyAutoTranslate(this.checked);
-        });
-    }
-
-    // 自动保存切换
-    if (settingsAutoSave) {
-        settingsAutoSave.addEventListener('change', function () {
-            applyAutoSave(this.checked);
-        });
-    }
-
-    // 每日学习目标
-    if (settingsDailyGoal) {
-        settingsDailyGoal.addEventListener('change', function () {
-            applyDailyGoal(this.value);
-        });
-    }
-
-    // 学习提醒切换
-    if (settingsStudyReminder) {
-        settingsStudyReminder.addEventListener('change', function () {
-            applyStudyReminder(this.checked);
-        });
-    }
-
-    // 通知切换
-    if (settingsNotifications) {
-        settingsNotifications.addEventListener('change', function () {
-            applyNotifications(this.checked);
-        });
-    }
-
-    // 数据收集切换
-    if (settingsDataCollection) {
-        settingsDataCollection.addEventListener('change', function () {
-            applyDataCollection(this.checked);
-        });
-    }
-
-    // Cookie切换
-    if (settingsCookies) {
-        settingsCookies.addEventListener('change', function () {
-            applyCookies(this.checked);
-        });
-    }
-
-    // 音效切换
-    if (settingsSound) {
-        settingsSound.addEventListener('change', function () {
-            applySound(this.checked);
-        });
-    }
-
-    // 音量滑动条
-    if (settingsVolume) {
-        const volumeValue = settingsVolume.nextElementSibling;
-        settingsVolume.addEventListener('input', function () {
-            if (volumeValue) {
-                volumeValue.textContent = this.value + '%';
-            }
-            applyVolume(this.value);
-        });
-    }
-
-    // 用户名输入
-    if (settingsUsername) {
-        settingsUsername.addEventListener('change', function () {
-            applyUsername(this.value);
-        });
-    }
-
-    // 邮箱输入
-    if (settingsEmail) {
-        settingsEmail.addEventListener('change', function () {
-            applyEmail(this.value);
-        });
-    }
-
-    // 清除缓存按钮
-    if (settingsClearCacheBtn) {
-        settingsClearCacheBtn.addEventListener('click', function () {
-            if (confirm(currentLang === 'zh' ? '确定要清除缓存吗？' : 'Are you sure you want to clear cache?')) {
-                clearCache();
-            }
-        });
-    }
-
-    // 重置设置按钮
-    if (settingsResetBtn) {
-        settingsResetBtn.addEventListener('click', function () {
-            if (confirm(currentLang === 'zh' ? '确定要重置所有设置吗？' : 'Are you sure you want to reset all settings?')) {
-                resetAllSettings();
-            }
-        });
-    }
-
-    // 修改密码按钮
-    if (settingsChangePasswordBtn) {
-        settingsChangePasswordBtn.addEventListener('click', function () {
-            alert(currentLang === 'zh' ? '修改密码功能（演示）' : 'Change password (demo)');
-        });
-    }
-
-    // 删除账户按钮
-    if (settingsDeleteAccountBtn) {
-        settingsDeleteAccountBtn.addEventListener('click', function () {
-            if (confirm(currentLang === 'zh' ? '确定要删除账户吗？此操作不可恢复！' : 'Are you sure you want to delete your account? This action cannot be undone!')) {
-                alert(currentLang === 'zh' ? '账户删除功能（演示）' : 'Delete account (demo)');
-            }
-        });
-    }
-
-    // 保存设置按钮（静态模式，不保存）
-    if (settingsSaveBtn) {
-        settingsSaveBtn.addEventListener('click', function () {
-            alert(currentLang === 'zh' ? '设置已应用（当前会话有效）！' : 'Settings applied (current session only)!');
-        });
-    }
-
-    // 初始化语言
-    updateLanguage(currentLang);
 
     // 实现h2标题背景随滚动变化的效果
     function updateH2Backgrounds() {
@@ -986,27 +722,245 @@ document.addEventListener('DOMContentLoaded', function () {
     window.addEventListener('scroll', updateH2Backgrounds);
 });
 
-// 滚动时背景花纹变化效果
-function initParallaxBackgrounds() {
-    const sections = [
-        '.knowledge-section',
-        '.quiz-intro-section',
-        '.database-section'
-    ];
 
-    window.addEventListener('scroll', () => {
-        const scrollY = window.scrollY;
 
-        sections.forEach(selector => {
-            const section = document.querySelector(selector);
-            if (section) {
-                const speed = 0.5;
-                const yPos = -(scrollY * speed);
-                section.style.backgroundPosition = `0 ${yPos}px, 40px ${60 + yPos * 0.8}px, 130px ${270 + yPos * 0.6}px, 70px ${100 + yPos * 0.4}px`;
+// --- AI 模拟助手功能 ---
+const aiDictionary = {
+    zh: {
+        "垂径定理": "垂径定理：垂直于弦的直径平分弦，并且平分弦所对的两条弧。这是圆的基本性质之一，常用于解决弦长和距离问题。",
+        "圆周角": "圆周角定理：同弧或等弧所对的圆周角相等；半圆（或直径）所对的圆周角是直角（90°）。圆周角的度数等于它所对的弧的度数的一半。",
+        "圆心角": "圆心角定理：在同圆或等圆中，相等的圆心角所对的弧相等，所对的弦也相等；圆心角的度数等于它所对的弧的度数。圆心角的度数是圆周角的两倍。",
+        "切线": "切线性质：圆的切线垂直于经过切点的半径。推论：经过圆心且垂直于切线的直线必经过切点。过圆外一点引圆的两条切线，切线长相等。",
+        "方程": "圆的标准方程：(x-a)² + (y-b)² = r²，其中(a,b)为圆心，r为半径。一般方程：x² + y² + Dx + Ey + F = 0 (D² + E² > 4F)。",
+        "内接四边形": "圆内接四边形：它的对角互补（相加等于180°），并且任何一个外角等于它的内对角。",
+        "弦切角": "弦切角定理：弦切角的度数等于它所夹的弧对的圆周角的度数。",
+        "圆的定义": "圆的定义：平面内到一个定点的距离等于定长的点的集合。定点即圆心，定长即半径。",
+        "面积": "圆的面积公式：S = πr²，其中r为半径。",
+        "周长": "圆的周长公式：C = 2πr 或者 C = πd，其中r为半径，d为直径。",
+        "你好": "你好！我是圆数学教学平台的人工智能助手，很高兴为您服务。",
+        "默认": "抱歉，我目前的几何知识库中没有直接匹配该问题的答案，您可以尝试提问：什么是垂径定理？圆周角定理是什么？圆的标准方程等..."
+    },
+    en: {
+        "vertical diameter": "Vertical Diameter Theorem: A diameter perpendicular to a chord bisects the chord and its arcs.",
+        "inscribed angle": "Inscribed Angle Theorem: Inscribed angles subtended by the same arc are equal. The angle subtended by a semicircle is a right angle.",
+        "central angle": "Central Angle Theorem: The measure of a central angle is twice the measure of the inscribed angle subtended by the same arc.",
+        "tangent": "Tangent Property: The tangent to a circle is perpendicular to the radius at the point of tangency.",
+        "equation": "Standard Equation: (x-a)² + (y-b)² = r², where (a,b) is the center and r is the radius.",
+        "cyclic quadrilateral": "Cyclic Quadrilateral: Opposite angles of a cyclic quadrilateral are supplementary (sum to 180°).",
+        "chord-tangent": "Tangent-Chord Theorem: The angle between a tangent and a chord is equal to the angle in the alternate segment.",
+        "definition": "Definition of a Circle: The set of all points in a plane that are at a given distance from a given point, the center.",
+        "area": "Area of a circle: A = πr².",
+        "circumference": "Circumference of a circle: C = 2πr.",
+        "hello": "Hello! I am the AI assistant of the Circle Mathematics Teaching Platform, happy to serve you.",
+        "default": "Sorry, I couldn't find a direct match in my geometry knowledge base. Try asking about: central angle, tangent, vertical diameter, equation, etc."
+    }
+};
+
+document.addEventListener('DOMContentLoaded', function () {
+    const aiSearchBtn = document.getElementById('ai-search-btn');
+    const aiSearchInput = document.querySelector('.hero-search-input');
+    const responseBox = document.getElementById('ai-chat-response');
+    const loadingEl = responseBox ? responseBox.querySelector('.ai-loading') : null;
+    const answerEl = responseBox ? responseBox.querySelector('.ai-answer') : null;
+
+    if (!aiSearchBtn || !aiSearchInput || !responseBox) return;
+
+    function triggerAI() {
+        const query = aiSearchInput.value.trim().toLowerCase();
+        if (!query) return;
+
+        // 显示解答框和加载动画
+        responseBox.style.display = 'block';
+        loadingEl.style.display = 'flex';
+        answerEl.style.display = 'none';
+        answerEl.innerHTML = '';
+
+        // 模拟 AI 思考延迟 1.5 - 2 秒
+        setTimeout(() => {
+            loadingEl.style.display = 'none';
+            answerEl.style.display = 'block';
+
+            const dict = aiDictionary[currentLang] || aiDictionary['zh'];
+            let foundAnswer = dict['默认'] || dict['default'];
+
+            const zhKeys = Object.keys(aiDictionary.zh);
+            const enKeys = Object.keys(aiDictionary.en);
+            let matchedIndex = -1;
+
+            for (let i = 0; i < zhKeys.length; i++) {
+                if (zhKeys[i] !== '默认' && query.includes(zhKeys[i].toLowerCase())) {
+                    matchedIndex = i;
+                    break;
+                }
+            }
+
+            if (matchedIndex === -1) {
+                for (let i = 0; i < enKeys.length; i++) {
+                    if (enKeys[i] !== 'default' && query.includes(enKeys[i].toLowerCase())) {
+                        matchedIndex = i;
+                        break;
+                    }
+                }
+            }
+
+            if (matchedIndex !== -1) {
+                const targetKeys = Object.keys(dict);
+                if (matchedIndex < targetKeys.length) {
+                    foundAnswer = dict[targetKeys[matchedIndex]];
+                }
+            }
+
+            // 简单打字机效果显示文本
+            answerEl.innerHTML = '';
+            let i = 0;
+            function typeWriter() {
+                if (i < foundAnswer.length) {
+                    answerEl.innerHTML += foundAnswer.charAt(i);
+                    i++;
+                    setTimeout(typeWriter, 15);
+                }
+            }
+            typeWriter();
+
+        }, 1500);
+    }
+
+    aiSearchBtn.addEventListener('click', triggerAI);
+    aiSearchInput.addEventListener('keypress', function (e) {
+        if (e.key === 'Enter') {
+            triggerAI();
+        }
+    });
+});
+
+// =============================
+// Contact Us Form Handler
+// =============================
+document.addEventListener('DOMContentLoaded', function () {
+    const contactForm = document.getElementById('contact-form');
+    if (!contactForm) return;
+
+    const validationMsg = document.getElementById('contact-validation-msg');
+    const successToast = document.getElementById('contact-success-toast');
+
+    contactForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        const name = document.getElementById('contact-name').value.trim();
+        const email = document.getElementById('contact-email').value.trim();
+        const subject = document.getElementById('contact-subject').value;
+        const message = document.getElementById('contact-message').value.trim();
+        const consentReply = document.getElementById('consent-reply').checked;
+
+        const t = translations[currentLang] || translations['zh'];
+
+        // Validate required fields
+        if (!name) {
+            showContactValidation(t['contact.validationName']);
+            document.getElementById('contact-name').focus();
+            return;
+        }
+        if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+            showContactValidation(t['contact.validationEmail']);
+            document.getElementById('contact-email').focus();
+            return;
+        }
+        if (!subject) {
+            showContactValidation(t['contact.validationSubject']);
+            document.getElementById('contact-subject').focus();
+            return;
+        }
+        if (!message) {
+            showContactValidation(t['contact.validationMessage']);
+            document.getElementById('contact-message').focus();
+            return;
+        }
+        if (!consentReply) {
+            showContactValidation(t['contact.validationConsent']);
+            document.getElementById('consent-reply').focus();
+            return;
+        }
+
+        // All valid — hide validation, show success
+        hideContactValidation();
+        contactForm.style.opacity = '0.5';
+        contactForm.style.pointerEvents = 'none';
+
+        setTimeout(function () {
+            contactForm.style.display = 'none';
+            if (successToast) {
+                successToast.style.display = 'block';
+                // Update toast text in case language was switched
+                const toastSpan = successToast.querySelector('[data-i18n="contact.successMsg"]');
+                if (toastSpan && t['contact.successMsg']) {
+                    toastSpan.textContent = t['contact.successMsg'];
+                }
+            }
+        }, 400);
+    });
+
+    function showContactValidation(msg) {
+        if (!validationMsg) return;
+        validationMsg.textContent = msg;
+        validationMsg.style.display = 'block';
+        validationMsg.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    function hideContactValidation() {
+        if (!validationMsg) return;
+        validationMsg.style.display = 'none';
+        validationMsg.textContent = '';
+    }
+
+    // Toggle Form Visibility
+    const toggleBtn = document.getElementById('toggle-feedback-btn');
+    const collapsibleForm = document.getElementById('collapsible-contact-form');
+
+    if (toggleBtn && collapsibleForm) {
+        toggleBtn.addEventListener('click', function () {
+            const isExpanded = collapsibleForm.classList.toggle('expanded');
+
+            // Update button text using i18n key
+            const key = isExpanded ? 'contact.toggleBtnHide' : 'contact.toggleBtn';
+            toggleBtn.setAttribute('data-i18n', key);
+
+            // Re-run i18n update for this button specifically
+            const t = translations[currentLang] || translations['zh'];
+            if (t[key]) {
+                toggleBtn.textContent = t[key];
+            }
+
+            // If collapsing, scroll button into view if it moved
+            if (!isExpanded) {
+                toggleBtn.scrollIntoView({ behavior: 'smooth', block: 'center' });
             }
         });
-    });
-}
+    }
+});
 
-// 页面加载完成后初始化背景滚动效果
-window.addEventListener('DOMContentLoaded', initParallaxBackgrounds);
+// =============================
+// Hero Button Ripple Effect
+// =============================
+document.addEventListener('DOMContentLoaded', function () {
+    const heroButtons = document.querySelectorAll('.btn-hero-primary, .btn-hero-secondary');
+
+    heroButtons.forEach(btn => {
+        btn.addEventListener('mousedown', function (e) {
+            // Create ripple element
+            const ripple = document.createElement('span');
+            ripple.classList.add('btn-ripple');
+
+            // Position at click point relative to button
+            const rect = btn.getBoundingClientRect();
+            const x = e.clientX - rect.left - 5;
+            const y = e.clientY - rect.top - 5;
+            ripple.style.left = x + 'px';
+            ripple.style.top = y + 'px';
+
+            btn.appendChild(ripple);
+
+            // Remove after animation completes
+            ripple.addEventListener('animationend', () => ripple.remove());
+        });
+    });
+});
