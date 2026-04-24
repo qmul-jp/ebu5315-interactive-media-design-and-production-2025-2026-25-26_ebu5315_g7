@@ -1,5 +1,5 @@
 <!--
-   Fixed the bug that the picture was not displaying in the "Review Answers" section.
+   添加动画和音效
 -->
 <!DOCTYPE html>
 <html lang="en">
@@ -10,15 +10,12 @@
     <title>Circle Theorems Practice - Premium UI</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles-quiz.css">
-    <link rel="stylesheet" href="../navbar/navbar.css">
-    <script src="../navbar/navbar.js"></script>
-    <style>
-
-    </style>
+    <link rel="stylesheet" href="../global/navbar.css">
+    <script src="../global/navbar.js"></script>
 </head>
 
 <body>
-    <top-navbar page-type="quiz" home-link="../index.html"></top-navbar>
+    <top-navbar page-type="quiz" home-link="../index/index.html"></top-navbar>
     <div id="home-view" class="view active">
         <header class="page-header">
             <h1 class="page-title" data-i18n="appTitle">Circle Theorems</h1>
@@ -53,6 +50,16 @@
                 </div>
                 <div class="menu-chevron">›</div>
             </div>
+            <!--menu-card-->
+            <div class="menu-card" id="mistakes-card" onclick="openMistakes()">
+                <div class="menu-icon icon-mistakes">M</div>
+                <div class="menu-text">
+                    <div class="menu-title"><span data-i18n="mistakesTitle">Mistakes Book</span> <span
+                            id="status-mistakes" class="level-status" data-i18n="statusEmpty">Empty</span></div>
+                    <div class="menu-desc" data-i18n="mistakesDesc">Analytics & Redo incorrect questions</div>
+                </div>
+                <div class="menu-chevron">›</div>
+            </div>
         </div>
     </div>
 
@@ -70,10 +77,22 @@
 
         <div id="dynamic-content" class="question-card active"></div>
     </div>
+    <div id="mistakes-view" class="view">
+        <div class="top-nav" style="margin-bottom: 1.5rem;">
+            <button class="back-btn" onclick="goHome()" data-i18n="btnBack">Back</button>
+            <div class="score-badge" data-i18n="mistakesTitle" style="font-size: 1.25rem;">Mistakes Book</div>
+        </div>
 
+        <div id="mistakes-dashboard" class="mistakes-dashboard">
+        </div>
+    </div>
 
     <script src="questionBank.js"></script>
     <script src="script-quiz.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <script src="../global/mouse_effects_cyber.js"></script>
+    <script src="../global/mouse_effects_ios.js"></script>
+    <script src="../global/mouse_effects.js"></script>
 
 </body>
 
