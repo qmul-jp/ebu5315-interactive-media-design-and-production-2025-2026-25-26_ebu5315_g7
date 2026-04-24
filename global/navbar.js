@@ -17,8 +17,14 @@ class TopNavbar extends HTMLElement {
             </div>
             <div class="nav-control">
                 <button class="nav-icon-btn" id="mouse-fx-toggle-btn" onclick="toggleMouseEffect()" title="Toggle Click Effect">✦</button>
-                <button class="nav-icon-btn" onclick="toggleColorblindMode()" title="Colorblind Mode">◑</button>
-                <button class="nav-icon-btn" onclick="toggleThemeMode()" title="Toggle Theme">☾</button>
+                <div class="nav-btn-wrapper" id="colorblind-btn-wrapper">
+                    <button class="nav-icon-btn" id="colorblind-toggle-btn" onclick="toggleColorblindMode()" title="Colorblind Mode">◑</button>
+                    <span class="nav-btn-status" id="colorblind-status">OFF</span>
+                </div>
+                <div class="nav-btn-wrapper" id="theme-btn-wrapper">
+                    <button class="nav-icon-btn" id="theme-toggle-btn" onclick="toggleThemeMode()" title="Toggle Theme">☾</button>
+                    <span class="nav-btn-status" id="theme-status">Light</span>
+                </div>
                 <div class="nav-lang-toggle" id="lang-toggle-btn" onclick="triggerLanguageToggle()" title="Switch Language">
                     <div class="lang-indicator"></div>
                     <span class="lang-label lang-label-zh active">中</span>
@@ -49,8 +55,14 @@ class TopNavbar extends HTMLElement {
                 </div>
                 <div class="nav-control">
                     <button class="nav-icon-btn" id="mouse-fx-toggle-btn" onclick="toggleMouseEffect()" title="Toggle Click Effect">✦</button>
-                    <button class="nav-icon-btn" onclick="toggleColorblindMode()" title="Colorblind Mode">◑</button>
-                    <button class="nav-icon-btn" onclick="toggleThemeMode()" title="Toggle Theme">☾</button>
+                    <div class="nav-btn-wrapper" id="colorblind-btn-wrapper">
+                        <button class="nav-icon-btn" id="colorblind-toggle-btn" onclick="toggleColorblindMode()" title="Colorblind Mode">◑</button>
+                        <span class="nav-btn-status" id="colorblind-status">OFF</span>
+                    </div>
+                    <div class="nav-btn-wrapper" id="theme-btn-wrapper">
+                        <button class="nav-icon-btn" id="theme-toggle-btn" onclick="toggleThemeMode()" title="Toggle Theme">☾</button>
+                        <span class="nav-btn-status" id="theme-status">Light</span>
+                    </div>
                     <div class="nav-lang-toggle" id="lang-toggle-btn" onclick="triggerLanguageToggle()" title="Switch Language">
                         <div class="lang-indicator"></div>
                         <span class="lang-label lang-label-zh active">中</span>
@@ -144,6 +156,19 @@ window.toggleColorblindMode = function () {
     if (typeof needsRedraw !== 'undefined') {
         needsRedraw = true;
     }
+    updateColorblindBtn();
+};
+
+// 更新色盲模式按钮的视觉状态
+window.updateColorblindBtn = function () {
+    const btn = document.getElementById('colorblind-toggle-btn');
+    const status = document.getElementById('colorblind-status');
+    const wrapper = document.getElementById('colorblind-btn-wrapper');
+    if (!btn) return;
+    const isOn = window.isColorblindMode;
+    btn.classList.toggle('nav-icon-btn--active', isOn);
+    if (wrapper) wrapper.classList.toggle('nav-btn-wrapper--active', isOn);
+    if (status) status.textContent = isOn ? 'ON' : 'OFF';
 };
 
 window.toggleThemeMode = function () {
@@ -156,6 +181,20 @@ window.toggleThemeMode = function () {
         // 持久化到 localStorage
         localStorage.setItem('app_theme', newTheme);
     }
+    updateThemeBtn();
+};
+
+// 更新主题切换按钮的视觉状态
+window.updateThemeBtn = function () {
+    const btn = document.getElementById('theme-toggle-btn');
+    const status = document.getElementById('theme-status');
+    const wrapper = document.getElementById('theme-btn-wrapper');
+    if (!btn) return;
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    btn.classList.toggle('nav-icon-btn--active', isDark);
+    if (wrapper) wrapper.classList.toggle('nav-btn-wrapper--active', isDark);
+    if (status) status.textContent = isDark ? 'Dark' : 'Light';
+    btn.textContent = isDark ? '☀' : '☾';
 };
 
 window.triggerLanguageToggle = function () {
@@ -186,5 +225,9 @@ window.updateNavLangToggle = function () {
 
 // 页面加载后初始化语言切换开关的视觉状态
 document.addEventListener('DOMContentLoaded', function () {
-    setTimeout(updateNavLangToggle, 50); // 延迟确保组件已渲染
+    setTimeout(function () {
+        updateNavLangToggle();  // 语言开关
+        updateColorblindBtn(); // 色盲模式按钮
+        updateThemeBtn();      // 主题按钮
+    }, 50); // 延迟确保组件已渲染
 });

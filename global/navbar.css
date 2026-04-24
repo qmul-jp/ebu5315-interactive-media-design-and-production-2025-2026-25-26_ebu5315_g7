@@ -30,9 +30,34 @@
 .nav-slider { -webkit-appearance: none; appearance: none; -moz-appearance: none; width: 80px; height: 4px; background: var(--border-strong, #ccc); border-radius: 2px; outline: none; }
 .nav-slider::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 16px; height: 16px; border-radius: 50%; background: var(--text-primary, #333); cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
 
-.nav-icon-btn { background: transparent; border: none; font-size: 1.25rem; color: var(--text-primary, #333); cursor: pointer; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: background 0.2s; }
+.nav-icon-btn { background: transparent; border: none; font-size: 1.25rem; color: var(--text-primary, #333); cursor: pointer; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: background 0.2s, color 0.2s; }
 .nav-icon-btn:hover { background: rgba(0,0,0,0.05); }
 :root[data-theme="dark"] .nav-icon-btn:hover { background: rgba(255,255,255,0.1); }
+.nav-icon-btn--active { color: #007AFF !important; }
+
+/* 按钮状态标签包裹器 */
+.nav-btn-wrapper {
+    display: flex; flex-direction: column; align-items: center; gap: 1px;
+    position: relative;
+}
+.nav-btn-status {
+    font-size: 0.55rem; font-weight: 700; letter-spacing: 0.03em;
+    color: var(--text-secondary, #86868B);
+    line-height: 1; pointer-events: none;
+    transition: color 0.2s, opacity 0.2s;
+    opacity: 0.7;
+    user-select: none; -webkit-user-select: none;
+}
+.nav-btn-wrapper--active .nav-btn-status {
+    color: #007AFF;
+    opacity: 1;
+}
+/* 色盲模式激活 — 橙色调 */
+#colorblind-btn-wrapper.nav-btn-wrapper--active .nav-icon-btn { color: #FF9500 !important; }
+#colorblind-btn-wrapper.nav-btn-wrapper--active .nav-btn-status { color: #FF9500; }
+/* 暗色模式激活 — 紫色调 */
+#theme-btn-wrapper.nav-btn-wrapper--active .nav-icon-btn { color: #BF5AF2 !important; }
+#theme-btn-wrapper.nav-btn-wrapper--active .nav-btn-status { color: #BF5AF2; }
 
 /* 语言左右切换开关 */
 .nav-lang-toggle {
