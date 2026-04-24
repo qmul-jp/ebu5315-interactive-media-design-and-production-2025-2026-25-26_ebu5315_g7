@@ -1,4 +1,4 @@
-// --- 随机打乱数组的工具函数 ---
+﻿// --- 随机打乱数组的工具函数 ---
 function shuffleArray(array) {
     const newArr = [...array];
     for (let i = newArr.length - 1; i > 0; i--) {
@@ -744,7 +744,10 @@ function goHome() {
     updateHomeMenu();
 }
 window.toggleLanguage = function () {
-    setLanguage(currentLang == 'en' ? 'zh' : 'en');
+    const newLang = currentLang == 'en' ? 'zh' : 'en';
+    setLanguage(newLang);
+    localStorage.setItem('app_lang', newLang);
 }
-// Init
-setLanguage('en');
+// Init: prefer saved language from localStorage, default to English
+const _savedLang = localStorage.getItem('app_lang');
+setLanguage(_savedLang === 'zh' ? 'zh' : 'en');
