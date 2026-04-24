@@ -26,15 +26,40 @@ body {
     line-height: 1.6;
     min-height: 100vh;
     overflow-x: hidden;
-    background-attachment: fixed;
+    transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+/* Optimized Fixed Background Implementation */
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    pointer-events: none;
+    background-color: inherit;
     /* Ambient Glow — matches quiz page */
     background-image:
         radial-gradient(circle at 15% 0%, rgba(0, 113, 227, 0.04) 0%, transparent 40%),
         radial-gradient(circle at 85% 100%, rgba(48, 209, 88, 0.04) 0%, transparent 40%);
-    transition: background-color 0.4s ease, color 0.4s ease;
+    transition: background-image 0.4s ease;
+}
+
+:root[data-theme="dark"] body::before {
+    background-image:
+        radial-gradient(circle at 15% 0%, rgba(0, 113, 227, 0.12) 0%, transparent 50%),
+        radial-gradient(circle at 85% 100%, rgba(48, 209, 88, 0.10) 0%, transparent 50%);
 }
 
 /* 护眼模式的专属高对比紫色背景与渐变效果 */
+body.eye-protection-mode::before {
+    background-image:
+        radial-gradient(circle at 15% 0%, rgba(10, 132, 255, 0.15) 0%, transparent 45%),
+        radial-gradient(circle at 85% 100%, rgba(48, 209, 88, 0.12) 0%, transparent 45%);
+}
+
 body.eye-protection-mode {
     --bg-color: #16141A;
     --card-bg: rgba(28, 28, 30, 0.75);
@@ -42,9 +67,6 @@ body.eye-protection-mode {
     --text-secondary: #A1A1A6;
     --border-light: rgba(255, 255, 255, 0.08);
     --border-strong: rgba(255, 255, 255, 0.15);
-    background-image:
-        radial-gradient(circle at 15% 0%, rgba(10, 132, 255, 0.15) 0%, transparent 45%),
-        radial-gradient(circle at 85% 100%, rgba(48, 209, 88, 0.12) 0%, transparent 45%);
 }
 
 /* Bootstrap CSS变量 */
@@ -221,6 +243,114 @@ body.eye-protection-mode {
     --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.06);
     --shadow-hover: 0 16px 48px rgba(0, 0, 0, 0.1);
     --text-dark: #1C1C1E;
+}
+
+/* Performance hint for scroll animations */
+h2 {
+    will-change: transform, opacity, background-position;
+}
+
+/* 广告展示区样式 */
+.ads-banner-section {
+    padding: 2rem 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.ads-banner-container {
+    max-width: 1200px;
+    width: 90%;
+    background: linear-gradient(135deg, #f6f8fb, #e5eef9);
+    border-radius: 20px;
+    padding: 3rem 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+    position: relative;
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.7);
+}
+
+:root[data-theme="dark"] .ads-banner-container {
+    background: linear-gradient(135deg, #1c1c1e, #2c2c2e);
+    border-color: rgba(255,255,255,0.1);
+}
+
+.ads-label {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    background: rgba(0,0,0,0.05);
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    color: #888;
+}
+
+.ads-banner-container h3 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--accent-blue, #0a84ff);
+    margin-bottom: 1rem;
+    z-index: 1;
+}
+
+.ads-banner-container p {
+    font-size: 1.1rem;
+    color: #555;
+    margin-bottom: 2rem;
+    text-align: center;
+    max-width: 600px;
+    z-index: 1;
+}
+
+:root[data-theme="dark"] .ads-banner-container p {
+    color: #a1a1a6;
+}
+
+.ads-cta-btn {
+    background: var(--accent-blue, #0a84ff);
+    color: white;
+    border: none;
+    padding: 0.8rem 2.5rem;
+    border-radius: 30px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(10, 132, 255, 0.3);
+    transition: transform 0.2s, box-shadow 0.2s;
+    z-index: 1;
+    will-change: transform;
+}
+
+.ads-cta-btn:hover {
+    transform: scale(1.05);
+}
+
+.ads-deco-circle {
+    position: absolute;
+    border-radius: 50%;
+    z-index: 0;
+}
+
+.ads-deco-1 {
+    width: 250px;
+    height: 250px;
+    background: linear-gradient(135deg, rgba(10, 132, 255, 0.08), rgba(10, 132, 255, 0));
+    top: -100px;
+    left: -100px;
+}
+
+.ads-deco-2 {
+    width: 300px;
+    height: 300px;
+    background: linear-gradient(135deg, rgba(150, 50, 255, 0.08), rgba(150, 50, 255, 0));
+    bottom: -120px;
+    right: -100px;
 }
 
 /* 平滑滚动 */
@@ -472,6 +602,13 @@ html {
     color: var(--text-primary);
     margin-bottom: 15px;
     line-height: 1.3;
+}
+
+.contact-section-header h2 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
 }
 
 .section-title p {
@@ -930,7 +1067,7 @@ html {
     /* Text on the left */
 }
 
-/* 圆形动画 */
+/* 圆形动画 - 可点击切换交互 */
 .animated-circle-container {
     width: 100%;
     height: 360px;
@@ -938,19 +1075,66 @@ html {
     align-items: center;
     justify-content: center;
     position: relative;
+    cursor: pointer;
+    -webkit-user-select: none;
+    user-select: none;
 }
 
-.animated-circle {
+.animated-circle-container:hover {
+    transform: scale(1.03);
+    transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.animated-circle-container:active {
+    transform: scale(0.97);
+    transition: transform 0.1s ease;
+}
+
+/* 所有圆形图层的公共样式（堆叠 + 交叉淡入淡出） */
+.circle-layer {
+    position: absolute;
     width: 280px;
     height: 280px;
     border-radius: 50%;
-    background: linear-gradient(135deg, rgba(10, 132, 255, 0.8) 0%, rgba(102, 16, 242, 0.8) 100%);
-    animation: rotate-gradient 12s linear infinite;
-    position: relative;
     z-index: 2;
+    opacity: 0;
+    transform: scale(0.85) rotate(-30deg);
+    transition: opacity 0.55s cubic-bezier(0.4, 0, 0.2, 1),
+                transform 0.55s cubic-bezier(0.34, 1.56, 0.64, 1);
+    will-change: opacity, transform;
+    pointer-events: none;
+}
+
+.circle-layer.active {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+}
+
+/* 退出动画类 */
+.circle-layer.exiting {
+    opacity: 0;
+    transform: scale(1.15) rotate(20deg);
+    transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+                transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* 原始渐变圆 */
+.animated-circle {
+    background: linear-gradient(135deg, rgba(10, 132, 255, 0.8) 0%, rgba(102, 16, 242, 0.8) 100%);
     box-shadow: inset 0 0 40px rgba(255, 255, 255, 0.4);
 }
 
+.animated-circle.active {
+    animation: rotate-gradient 12s linear infinite;
+}
+
+/* 圆形物品图片图层 */
+.circle-item-layer {
+    object-fit: cover;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18);
+}
+
+/* 光晕效果 */
 .animated-circle-glow {
     width: 280px;
     height: 280px;
@@ -959,8 +1143,27 @@ html {
     position: absolute;
     filter: blur(50px);
     opacity: 0.7;
-    animation: rotate-gradient 12s linear infinite, pulse-glow 4s ease-in-out infinite;
+    animation: pulse-glow 4s ease-in-out infinite;
     z-index: 1;
+    will-change: opacity, filter;
+    transition: background 0.6s ease, opacity 0.6s ease;
+}
+
+/* 不同物品对应不同光晕颜色 */
+.animated-circle-container[data-glow="basketball"] .animated-circle-glow {
+    background: radial-gradient(circle, rgba(255, 120, 30, 0.7) 0%, rgba(200, 80, 10, 0.4) 100%);
+}
+.animated-circle-container[data-glow="football"] .animated-circle-glow {
+    background: radial-gradient(circle, rgba(240, 240, 240, 0.5) 0%, rgba(50, 50, 50, 0.3) 100%);
+}
+.animated-circle-container[data-glow="tennis"] .animated-circle-glow {
+    background: radial-gradient(circle, rgba(200, 255, 0, 0.6) 0%, rgba(150, 200, 0, 0.3) 100%);
+}
+.animated-circle-container[data-glow="sun"] .animated-circle-glow {
+    background: radial-gradient(circle, rgba(255, 200, 50, 0.8) 0%, rgba(255, 150, 0, 0.4) 100%);
+}
+.animated-circle-container[data-glow="moon"] .animated-circle-glow {
+    background: radial-gradient(circle, rgba(180, 200, 230, 0.6) 0%, rgba(100, 120, 160, 0.3) 100%);
 }
 
 @keyframes rotate-gradient {
@@ -1148,9 +1351,9 @@ html {
 
 .cta-button.secondary {
     background: transparent;
-    color: white;
-    border: 2px solid white;
-    box-shadow: 0 4px 15px rgba(255, 255, 255, 0.2);
+    color: var(--text-primary);
+    border: 2px solid var(--border-strong);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
 }
 
 .cta-button.secondary:hover {
@@ -1167,18 +1370,13 @@ html {
 
 .features-section h2 {
     font-size: 2.2rem;
-    color: white;
+    color: var(--text-primary);
     text-align: center;
     margin-bottom: 3rem;
     font-weight: 600;
     position: relative;
-    background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
     padding: 1.5rem 2rem;
-    border-radius: var(--border-radius);
-    box-shadow: var(--box-shadow);
     transition: all 0.3s ease;
-    background-size: 200% 200%;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
 }
 
 .features-section h2::after {
@@ -1581,18 +1779,12 @@ html {
 
 .quiz-intro-section h2 {
     font-size: 2.5rem;
-    color: white;
+    color: var(--text-primary);
     text-align: center;
     margin-bottom: 3rem;
     font-weight: 700;
-    background: var(--gradient-primary);
     padding: 1.5rem 2rem;
-    border-radius: var(--border-radius);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
     transition: all 0.3s ease;
-    background-size: 200% 200%;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-    animation: gradient-shift 3s ease-in-out infinite;
 }
 
 .quiz-intro-section h2:hover {
@@ -1714,18 +1906,12 @@ html {
 
 .database-section h2 {
     font-size: 2.5rem;
-    color: white;
+    color: var(--text-primary);
     text-align: center;
     margin-bottom: 3rem;
     font-weight: 700;
-    background: var(--gradient-primary);
     padding: 1.5rem 2rem;
-    border-radius: var(--border-radius);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
     transition: all 0.3s ease;
-    background-size: 200% 200%;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-    animation: gradient-shift 3s ease-in-out infinite;
 }
 
 .database-section h2:hover {
@@ -1826,7 +2012,7 @@ html {
 
 .database-card h3 {
     font-size: 1.5rem;
-    color: white;
+    color: var(--primary-color);
     margin-bottom: 1rem;
     font-weight: 700;
     transition: color 0.3s ease;
@@ -1920,7 +2106,7 @@ html {
 
 .knowledge-slide h3 {
     font-size: 1.8rem;
-    color: white;
+    color: var(--text-primary);
     margin-bottom: 1.5rem;
     font-weight: 600;
 }
@@ -2042,9 +2228,9 @@ html {
 
 .module h2 {
     font-size: 2rem;
-    color: white;
+    color: var(--text-primary);
     margin-bottom: 2rem;
-    font-weight: 300;
+    font-weight: 600;
 }
 
 /* 卡片样式 */
@@ -2414,7 +2600,7 @@ select.input-field {
 
 .footer-section h4 {
     font-size: 1.1rem;
-    color: white;
+    color: var(--text-primary);
     margin-bottom: 1rem;
     font-weight: 600;
 }
@@ -2789,6 +2975,7 @@ select.input-field {
     text-align: center;
     transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1);
     transform-style: preserve-3d;
+    will-change: transform;
 }
 
 .flip-card:hover .flip-card-inner,
@@ -2819,8 +3006,9 @@ select.input-field {
 .flip-card-front {
     background-color: var(--card-bg);
     color: var(--text-primary);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    will-change: transform, opacity;
 }
 
 .flip-card-back {
