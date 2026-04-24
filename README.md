@@ -2,7 +2,7 @@
 
 ## Group Number: 25-26_ebu5315_g7
 
-## Project Title:
+## Project Title: Circle-learning-platform
 
 ## Members:
 
@@ -23,3 +23,10 @@ Yue Qu: Homepage
 Qitian Zhou: Game
 
 Changhao Yan: Quiz
+
+## Directions
+
+* "index" is Homepage section
+* "game" is Game section
+* "quiz" is Quiz section
+* Start with "index.html" in "index"

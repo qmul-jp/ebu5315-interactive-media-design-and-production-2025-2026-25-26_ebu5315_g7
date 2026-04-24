@@ -144,7 +144,7 @@ function openLevel(num) {
     if (breadcrumb) {
         const dict = i18nData[currentLang];
         breadcrumb.innerHTML = `
-            <span class="bc-item" data-i18n="bcHome" onclick="window.location.href='../index.html'" style="cursor:pointer;">${dict.bcHome}</span>
+            <span class="bc-item" data-i18n="bcHome" onclick="window.location.href='../index/index.html'" style="cursor:pointer;">${dict.bcHome}</span>
             <span class="bc-separator">/</span>
             <span class="bc-item" data-i18n="nav.quiz" onclick="goHome()" style="cursor:pointer;">${dict['nav.quiz']}</span>
             <span class="bc-separator">/</span>
@@ -177,7 +177,7 @@ function goHome() {
     if (breadcrumb) {
         const dict = i18nData[currentLang];
         breadcrumb.innerHTML = `
-            <span class="bc-item" data-i18n="bcHome" onclick="window.location.href='../index.html'" style="cursor:pointer;">${dict.bcHome}</span>
+            <span class="bc-item" data-i18n="bcHome" onclick="window.location.href='../index/index.html'" style="cursor:pointer;">${dict.bcHome}</span>
             <span class="bc-separator">/</span>
             <span class="bc-item" style="cursor:default; opacity:1;" data-i18n="nav.quiz">${dict['nav.quiz']}</span>
         `;
